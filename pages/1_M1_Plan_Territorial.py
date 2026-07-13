@@ -17,7 +17,7 @@ from streamlit_folium import st_folium
 from utils import (
     GLOBAL_CSS, COLOR, load_spt, load_geojson,
     score_color, fuente_tag_html, fmt_pct, fmt_num,
-    ARQUETIPOS, DEFAULT_ARQUETIPO,
+    ARQUETIPOS, DEFAULT_ARQUETIPO, check_password,
 )
 
 st.set_page_config(
@@ -25,6 +25,14 @@ st.set_page_config(
     page_icon="🗺️",
     layout="wide",
     initial_sidebar_state="expanded",
+)
+check_password()
+
+st.sidebar.markdown(
+    f"<div style='font-family:\"JetBrains Mono\",monospace; font-size:.7rem; "
+    f"color:{COLOR['text_muted']};'>Sesión: <b style='color:{COLOR['text_secondary']};'>"
+    f"{st.session_state.get('auth_user','—')}</b></div>",
+    unsafe_allow_html=True,
 )
 st.markdown(GLOBAL_CSS, unsafe_allow_html=True)
 

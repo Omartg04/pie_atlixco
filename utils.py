@@ -328,3 +328,87 @@ ARQUETIPOS = {
     },
 }
 DEFAULT_ARQUETIPO = ARQUETIPOS["General / mixto"]
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# ACCESO — contraseña compartida (sin usuarios diferenciados)
+# ════════════════════════════════════════════════════════════════════════════
+
+def check_password() -> None:
+    """Bloquea la página hasta que se ingrese usuario + contraseña válidos.
+
+    Requiere en st.secrets un bloque:
+        [users]
+        arturo_solano = "..."
+        victor_giorgiana = "..."
+        yarith_tannos = "..."
+        jclq = "..."
+        data_ai = "..."
+    (Streamlit Cloud: Settings → Secrets; local: .streamlit/secrets.toml,
+    en .gitignore, nunca se sube). Las 5 cuentas tienen los mismos privilegios;
+    el usuario solo sirve para identificar quién entró, no para restringir nada.
+
+    Llamar como primera línea de cada página (Home.py y cada archivo en pages/).
+    La sesión se comparte entre todas las páginas: una vez logueado, no se
+    vuelve a pedir al cambiar de módulo dentro del mismo navegador/sesión.
+    """
+    if st.session_state.get("auth_ok"):
+        return
+
+    st.markdown(GLOBAL_CSS, unsafe_allow_html=True)
+
+    st.markdown(f"""
+    <div style="max-width:420px; margin:80px auto 0; background:{COLOR['bg_raised']};
+                border:1px solid {COLOR['border_subtle']}; border-radius:10px;
+                padding:36px 32px; text-align:center;">
+      <div style="font-family:'JetBrains Mono',monospace; font-size:.68rem; font-weight:700;
+                  letter-spacing:.1em; text-transform:uppercase; color:{COLOR['amber']}; margin-bottom:10px;">
+        Acceso restringido
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif; font-weight:800; text-transform:uppercase;
+                  font-size:1.4rem; color:{COLOR['text_primary']}; margin-bottom:4px;">
+        PIE Atlixco
+      </div>
+      <div style="font-size:.82rem; color:{COLOR['text_secondary']}; margin-bottom:20px;">
+        Uso exclusivo del equipo de campaña
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    _, mid, _ = st.columns([1, 1.2, 1])
+    with mid:
+        user = st.text_input("Usuario", label_visibility="collapsed", placeholder="Usuario")
+        pwd = st.text_input("Contraseña", type="password", label_visibility="collapsed",
+                             placeholder="Contraseña")
+        entrar = st.button("Entrar", use_container_width=True)
+
+    if entrar:
+        usuarios = st.secrets.get("users", {})
+        user_clean = (user or "").strip().lower()
+        if user_clean in usuarios and pwd == usuarios[user_clean]:
+            st.session_state["auth_ok"] = True
+            st.session_state["auth_user"] = user_clean
+            st.rerun()
+        else:
+            st.error("Usuario o contraseña incorrectos.")
+
+    st.stop()
+
+
+def sidebar_sesion() -> None:
+    """Muestra el usuario logueado y un botón de cerrar sesión en la sidebar.
+    Llamar después de check_password() en cada página."""
+    st.sidebar.markdown(
+        f"<div style='font-family:\"JetBrains Mono\",monospace; font-size:.7rem; "
+        f"color:{COLOR['text_muted']};'>Sesión: <b style='color:{COLOR['text_secondary']};'>"
+        f"{st.session_state.get('auth_user', '—')}</b></div>",
+        unsafe_allow_html=True,
+    )
+    if st.sidebar.button("Cerrar sesión", use_container_width=True):
+        st.session_state["auth_ok"] = False
+        st.session_state["auth_user"] = None
+        st.rerun()
+    st.sidebar.markdown(
+        f"<hr style='border-color:{COLOR['border_subtle']}; margin:8px 0 16px;'>",
+        unsafe_allow_html=True,
+    )
