@@ -31,6 +31,10 @@ COLOR = {
     "green":         "#3f7a52",   # positivo / dato "sección" (no imputado)
     "green_text":    "#5fae78",
     "red_soft":      "#c4703f",   # alerta operativa (no partidista: ámbar-terracota)
+    # ── Escala tonal de cortes de manzana (M2) — acumulativos, misma familia ámbar ──
+    "corte_500":     "#a8681f",   # oscuro/saturado — núcleo, máxima prioridad
+    "corte_700":     "#e8a33d",   # = amber base — prioridad media
+    "corte_865":     "#f6d9a8",   # claro/desaturado — cierre de universo elegible
 }
 
 FONT_DISPLAY = "'Barlow Condensed', sans-serif"
@@ -259,6 +263,17 @@ def score_color(score: float, vmin: float = 0, vmax: float = 100) -> str:
             rgb = [a + (b - a) * local_t for a, b in zip(rgb0, rgb1)]
             return _rgb_to_hex(rgb)
     return "#e8a33d"
+
+
+def corte_color(corte: int) -> str:
+    """Color por corte acumulativo de manzana (500/700/865).
+    Escala tonal de la familia ámbar: oscuro = mayor prioridad (500),
+    claro = cierre de universo elegible (865)."""
+    return {
+        500: COLOR["corte_500"],
+        700: COLOR["corte_700"],
+        865: COLOR["corte_865"],
+    }.get(corte, COLOR["corte_865"])
 
 
 def fuente_tag_html(fuente: str) -> str:

@@ -10,6 +10,7 @@ import sys
 import os
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 import pandas as pd
 import streamlit as st
@@ -18,7 +19,7 @@ from streamlit_folium import st_folium
 
 from utils import (
     GLOBAL_CSS, COLOR, load_spt, load_geojson, load_manzanas, load_priorizacion_secciones,
-    fmt_num, ARQUETIPOS, DEFAULT_ARQUETIPO, check_password,
+    fmt_num, ARQUETIPOS, DEFAULT_ARQUETIPO, check_password, corte_color, score_color,
 )
 
 st.set_page_config(
@@ -66,9 +67,9 @@ OPCION_TODAS = "Todas las secciones (vista general)"
 ORDEN_CORTES = ["meta_500", "meta_700", "meta_865"]
 
 CAPA_COLOR = {
-    "meta_500": "#e8a33d",              # ámbar pleno — máxima prioridad
-    "meta_700": "#c9973f",              # ámbar medio
-    "meta_865": "#8a8564",              # oliva — universo focalizado completo
+    "meta_500": corte_color(500),       # ámbar oscuro — máxima prioridad
+    "meta_700": corte_color(700),       # ámbar base
+    "meta_865": corte_color(865),       # ámbar claro — universo focalizado completo
     "fuera_focalizado": "#3a4255",      # gris — dentro de la sección, fuera del corte 80%
 }
 CAPA_LABEL = {
@@ -247,6 +248,22 @@ if not feats_render:
     st.warning("No hay manzanas geolocalizadas para mostrar en el archivo cargado.")
     st.stop()
 
+# ── Ranking por LN dentro de cada sección — solo universo elegible (500/700/865),
+#    excluye manzanas "fuera del corte 80%" (esas no compiten por prioridad) ──
+from collections import defaultdict
+_feats_elegibles = [f for f in feats_render if f["properties"]["capa_prioridad"] in ORDEN_CORTES]
+_grupos_seccion = defaultdict(list)
+for _f in _feats_elegibles:
+    _grupos_seccion[_f["properties"]["seccion"]].append(_f)
+RANK_LOOKUP = {}
+for _sec_id, _feats_grupo in _grupos_seccion.items():
+    _ordenado = sorted(
+        _feats_grupo, key=lambda f: f["properties"]["LN_estimada_manzana"], reverse=True
+    )
+    _total = len(_ordenado)
+    for _i, _f in enumerate(_ordenado, start=1):
+        RANK_LOOKUP[(_f["properties"]["seccion"], _f["properties"]["id_unidad"])] = (_i, _total)
+
 if vista_general:
     # Universo focalizado completo (500+700+865, sin "fuera del corte"), fijo — denominador de LN.
     feats_focalizado = [
@@ -347,21 +364,48 @@ if vista_general:
         f for f in geo_secciones["features"]
         if f["properties"].get("seccion") in todas_las_secciones
     ]
+    df_spt_alcance = df_spt[df_spt["seccion"].isin(todas_las_secciones)]
+    spt_vmin = float(df_spt_alcance["indice_spt"].min()) if not df_spt_alcance.empty else 0
+    spt_vmax = float(df_spt_alcance["indice_spt"].max()) if not df_spt_alcance.empty else 100
 else:
     feats_seccion_borde = [
         f for f in geo_secciones["features"] if f["properties"].get("seccion") == sec_sel
     ]
+    spt_vmin = spt_vmax = None
 
 for feat_seccion in feats_seccion_borde:
     sec_borde = feat_seccion["properties"].get("seccion")
-    folium.GeoJson(
-        feat_seccion,
-        style_function=lambda x: {
-            "fillOpacity": 0, "color": COLOR["text_secondary"],
-            "weight": 2, "dashArray": "6,4",
-        },
-        tooltip=folium.Tooltip(f"Límite de la sección {sec_borde}"),
-    ).add_to(m)
+
+    if vista_general:
+        fila_spt_borde = df_spt[df_spt["seccion"] == sec_borde]
+        if not fila_spt_borde.empty:
+            val_spt = float(fila_spt_borde.iloc[0]["indice_spt"])
+            fill_color = score_color(val_spt, spt_vmin, spt_vmax)
+            tooltip_txt = (
+                f"Sección {sec_borde} · Índice SPT: {val_spt:.1f} "
+                f"(ranking #{int(fila_spt_borde.iloc[0]['ranking'])})"
+            )
+        else:
+            fill_color = COLOR["text_muted"]
+            tooltip_txt = f"Sección {sec_borde} · sin dato SPT"
+
+        folium.GeoJson(
+            feat_seccion,
+            style_function=lambda x, c=fill_color: {
+                "fillOpacity": .75, "fillColor": c, "color": "#0f1218", "weight": 1,
+            },
+            highlight_function=lambda x: {"weight": 2.5, "color": "#eef1f0", "fillOpacity": .9},
+            tooltip=folium.Tooltip(tooltip_txt),
+        ).add_to(m)
+    else:
+        folium.GeoJson(
+            feat_seccion,
+            style_function=lambda x: {
+                "fillOpacity": 0, "color": COLOR["text_secondary"],
+                "weight": 2, "dashArray": "6,4",
+            },
+            tooltip=folium.Tooltip(f"Límite de la sección {sec_borde}"),
+        ).add_to(m)
 
 hay_limite = len(feats_seccion_borde) > 0
 
@@ -379,19 +423,22 @@ for feat in feats_render:
     color = CAPA_COLOR.get(capa, "#5b7a9e")
     sec_feat = props["seccion"]
     alerta = " ⚠️" if (sec_feat == 160) else ""
+    peso_borde = 2 if capa == "meta_500" else 1  # corte 500: borde reforzado, máxima prioridad
+
+    rank_i, rank_total = RANK_LOOKUP.get((sec_feat, props["id_unidad"]), (None, None))
+    ranking_txt = f"Manzana #{rank_i} de {rank_total}" if rank_i else "Manzana s/d"
 
     tooltip_html = (
-        f"<b>{props['nombre_unidad']}</b>{alerta}<br>"
+        f"<b>{ranking_txt}</b>{alerta}<br>"
         f"Sección: {sec_feat}<br>"
         f"LN estimada: {props['LN_estimada_manzana']:.1f}<br>"
-        f"Capa: {CAPA_LABEL.get(capa, capa)}<br>"
-        f"Fuente: {props['fuente']}"
+        f"Capa: {CAPA_LABEL.get(capa, capa)}"
     )
 
     folium.GeoJson(
         feat,
-        style_function=lambda x, c=color: {
-            "fillColor": c, "color": "#0f1218", "weight": 1, "fillOpacity": .8,
+        style_function=lambda x, c=color, w=peso_borde: {
+            "fillColor": c, "color": "#0f1218", "weight": w, "fillOpacity": .8,
         },
         highlight_function=lambda x: {"weight": 2.5, "color": "#eef1f0", "fillOpacity": .95},
         tooltip=folium.Tooltip(
@@ -409,12 +456,19 @@ st_folium(
     key=f"m2_map_{sec_sel}_{corte_sel}_{show_fuera}",
 )
 
-# ── Leyenda dinámica: solo capas activas, con conteo + límite de sección ──
-limite_html = (
-    f'<span style="display:inline-flex; align-items:center; gap:6px; margin-right:16px; font-size:.78rem; color:{COLOR["text_secondary"]};">'
-    f'<span style="width:16px; height:0; border-top:2px dashed {COLOR["text_secondary"]}; display:inline-block;"></span>'
-    f'{"Límites de sección" if vista_general else "Límite de la sección"}</span>'
-) if hay_limite else ""
+# ── Leyenda dinámica: solo capas activas, con conteo + límite/SPT de sección ──
+if vista_general:
+    limite_html = (
+        f'<span style="display:inline-flex; align-items:center; gap:6px; margin-right:16px; font-size:.78rem; color:{COLOR["text_secondary"]};">'
+        f'<span style="width:11px; height:11px; border-radius:3px; background:linear-gradient(90deg,{COLOR["steel"]},{COLOR["amber"]}); display:inline-block;"></span>'
+        f'Índice SPT por sección (acero = menor prioridad, ámbar = mayor)</span>'
+    ) if hay_limite else ""
+else:
+    limite_html = (
+        f'<span style="display:inline-flex; align-items:center; gap:6px; margin-right:16px; font-size:.78rem; color:{COLOR["text_secondary"]};">'
+        f'<span style="width:16px; height:0; border-top:2px dashed {COLOR["text_secondary"]}; display:inline-block;"></span>'
+        f'Límite de la sección</span>'
+    ) if hay_limite else ""
 
 if capas_incluidas:
     legend_html = limite_html + "".join(
@@ -436,3 +490,90 @@ st.caption(
     f"Mostrando {total_visible} de {total_universo} manzanas de {ambito_txt}. "
     "El corte es acumulativo: 700 incluye las manzanas de 500, y 865 incluye a las de 700."
 )
+
+# ════════════════════════════════════════════════════════════════════════════
+# DESCARGA DE MAPA DE CAMPO (PDF) — solo modo detalle.
+# Documento oficial para brigadistas; generado en proyecto aparte.
+# ════════════════════════════════════════════════════════════════════════════
+
+if not vista_general:
+    ruta_pdf = os.path.join(BASE_DIR, "data", "mapas", f"seccion_{sec_sel}.pdf")
+    st.markdown("<br>", unsafe_allow_html=True)
+    if os.path.exists(ruta_pdf):
+        with open(ruta_pdf, "rb") as f:
+            st.download_button(
+                "📄 Descargar mapa de campo (PDF) — sección " + str(sec_sel),
+                data=f.read(),
+                file_name=f"seccion_{sec_sel}.pdf",
+                mime="application/pdf",
+            )
+    else:
+        st.caption(f"Mapa de campo aún no generado para la sección {sec_sel}.")
+
+# ════════════════════════════════════════════════════════════════════════════
+# RANKING DE MANZANAS POR LN (solo modo detalle) — insumo de planeación.
+# El mapa impreso, no esta tabla, es lo que orienta al brigadista en campo.
+# ════════════════════════════════════════════════════════════════════════════
+
+if not vista_general:
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown(f"""
+    <div style="font-family:'Barlow Condensed',sans-serif; font-weight:800;
+                text-transform:uppercase; color:{COLOR['text_primary']}; font-size:1.15rem; margin-bottom:2px;">
+      Ranking de manzanas por LN — sección {sec_sel}
+    </div>
+    <div style="font-size:.8rem; color:{COLOR['text_secondary']}; margin-bottom:10px;">
+      Orden de cobertura sugerido dentro de esta sección. Insumo de planeación — en campo,
+      el mapa impreso es la referencia operativa.
+    </div>
+    """, unsafe_allow_html=True)
+
+    feats_elegibles_sec = [
+        f for f in feats_render if f["properties"]["capa_prioridad"] in ORDEN_CORTES
+    ]
+    n_total_sec = len(feats_elegibles_sec)
+    filas_ranking = sorted(
+        (
+            {
+                "ln": f["properties"]["LN_estimada_manzana"],
+                "capa": f["properties"]["capa_prioridad"],
+                "ranking_i": RANK_LOOKUP[(f["properties"]["seccion"], f["properties"]["id_unidad"])][0],
+            }
+            for f in feats_elegibles_sec
+        ),
+        key=lambda r: r["ln"], reverse=True,
+    )
+    for fila in filas_ranking:
+        fila["ranking"] = f"{fila['ranking_i']} de {n_total_sec}"
+        fila["corte"] = CORTE_LABEL.get(fila["capa"], fila["capa"]).split(" —")[0]
+
+    df_ranking = pd.DataFrame(filas_ranking)[["ranking", "corte", "ln", "capa"]]
+    df_ranking.columns = ["Ranking", "Corte", "LN estimada", "_capa"]
+
+    corte_activo = set(corte_capas_activas)
+
+    def _resalta_corte_activo(row):
+        activo = row["_capa"] in corte_activo
+        estilos = [""] * len(row)
+        if activo:
+            estilos = [f"font-weight:700; background-color:rgba(232,163,61,.10);"] * len(row)
+        return estilos
+
+    def _color_columna_corte(val):
+        color_map = {"500": CAPA_COLOR["meta_500"], "700": CAPA_COLOR["meta_700"], "865": CAPA_COLOR["meta_865"]}
+        c = color_map.get(val, "#5b7a9e")
+        return f"background-color:{c}; color:#14181f; font-weight:700; border-radius:4px; text-align:center;"
+
+    styler = (
+        df_ranking.style
+        .apply(_resalta_corte_activo, axis=1)
+        .applymap(_color_columna_corte, subset=["Corte"])
+        .format({"LN estimada": "{:.1f}"})
+        .hide(axis="columns", subset=["_capa"])
+    )
+
+    st.dataframe(styler, use_container_width=True, height=420, hide_index=True)
+    st.caption(
+        "Filas resaltadas: manzanas del corte actualmente seleccionado en la barra lateral. "
+        "El ranking es por sección (no municipal) — la posición 1 siempre corresponde al corte 500."
+    )
