@@ -17,7 +17,7 @@ import streamlit as st
 import folium
 from streamlit_folium import st_folium
 
-from app_utils import (
+from utils import (
     GLOBAL_CSS, COLOR, load_spt, load_geojson, load_manzanas, load_priorizacion_secciones,
     fmt_num, ARQUETIPOS, DEFAULT_ARQUETIPO, check_password, corte_color, score_color,
 )
@@ -564,10 +564,10 @@ if not vista_general:
         c = color_map.get(val, "#5b7a9e")
         return f"background-color:{c}; color:#14181f; font-weight:700; border-radius:4px; text-align:center;"
 
+    _base_styler = df_ranking.style.apply(_resalta_corte_activo, axis=1)
+    _color_fn = getattr(_base_styler, "map", None) or _base_styler.applymap
     styler = (
-        df_ranking.style
-        .apply(_resalta_corte_activo, axis=1)
-        .applymap(_color_columna_corte, subset=["Corte"])
+        _color_fn(_color_columna_corte, subset=["Corte"])
         .format({"LN estimada": "{:.1f}"})
         .hide(axis="columns", subset=["_capa"])
     )
