@@ -14,7 +14,7 @@ import streamlit as st
 import folium
 from streamlit_folium import st_folium
 
-from utils import (
+from app_utils import (
     GLOBAL_CSS, COLOR, load_spt, load_geojson,
     score_color, fuente_tag_html, fmt_pct, fmt_num,
     ARQUETIPOS, DEFAULT_ARQUETIPO, check_password,

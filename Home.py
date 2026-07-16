@@ -5,7 +5,7 @@ Plataforma de Inteligencia Electoral · Arturo Solano Escobedo · Proceso intern
 
 import streamlit as st
 
-from utils import GLOBAL_CSS, COLOR, check_password, sidebar_sesion
+from app_utils import GLOBAL_CSS, COLOR, check_password, sidebar_sesion
 
 st.set_page_config(
     page_title="PIE Atlixco · Arturo Solano",
