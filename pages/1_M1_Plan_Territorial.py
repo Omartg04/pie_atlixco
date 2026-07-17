@@ -98,6 +98,14 @@ with st.sidebar:
 
     solo_alerta = st.checkbox("Solo secciones con alerta operativa", value=False)
 
+    st.markdown("### Capas del mapa")
+    mostrar_spt = st.checkbox(
+        "Mostrar índice SPT en el mapa",
+        value=True,
+        help="Apágalo para ver solo el contorno de cada sección sobre un mapa "
+             "con calles — útil para orientarse en campo antes de revisar manzanas.",
+    )
+
 df_f = df.copy()
 if f_zona != "Todas":
     df_f = df_f[df_f["zona"] == f_zona]
@@ -320,7 +328,7 @@ def render_detalle_completo(row: pd.Series) -> None:
 # MAPA
 # ════════════════════════════════════════════════════════════════════════════
 
-def build_map(df_sel: pd.DataFrame, geo: dict, vmin: float, vmax: float, sel_seccion: int = None) -> folium.Map:
+def build_map(df_sel: pd.DataFrame, geo: dict, vmin: float, vmax: float, sel_seccion: int = None, mostrar_spt: bool = True) -> folium.Map:
     ids_sel = set(df_sel["seccion"].tolist())
 
     def _centroid(features):
@@ -352,11 +360,19 @@ def build_map(df_sel: pd.DataFrame, geo: dict, vmin: float, vmax: float, sel_sec
         center = _centroid(geo["features"]) or [18.9, -98.43]
         zoom = 13
 
-    m = folium.Map(location=center, zoom_start=zoom, tiles="CartoDB dark_matter")
+    tiles = "CartoDB dark_matter" if mostrar_spt else "OpenStreetMap"
+    m = folium.Map(location=center, zoom_start=zoom, tiles=tiles)
     lookup_sel = df_sel.set_index("seccion")
 
     def style_fn(feature):
         sec = feature["properties"].get("seccion")
+        if not mostrar_spt:
+            # Solo contorno — sin relleno de índice, para orientarse con las calles del tile base.
+            style = {"fillColor": "#000000", "fillOpacity": 0, "color": "#e8a33d", "weight": 1.5}
+            if sec == sel_seccion:
+                style["color"] = "#3f7a52"
+                style["weight"] = 3.5
+            return style
         base = {"fillColor": "#2a3140", "color": "#3a4255", "weight": .5, "fillOpacity": .15}
         if sec not in ids_sel:
             return base
@@ -422,26 +438,34 @@ tab_mapa, tab_tabla = st.tabs(["🗺️ Mapa", "📋 Tabla / ranking"])
 with tab_mapa:
     vmin, vmax = df_f["indice_spt"].min(), df_f["indice_spt"].max()
 
-    # ── Barra de intensidad ARRIBA del mapa ──
-    st.markdown(f"""
-    <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px; font-size:.76rem; color:{COLOR['text_muted']};">
-      <span>Baja prioridad</span>
-      <div style="flex:1; height:8px; border-radius:4px;
-                  background:linear-gradient(90deg,#5b7a9e 0%,#8a8564 50%,#e8a33d 100%);"></div>
-      <span>Alta prioridad</span>
-    </div>
-    <div style="font-size:.72rem; color:{COLOR['text_muted']}; margin-bottom:14px;">
-      Colores más brillantes (ámbar) = mayor índice SPT = mayor prioridad territorial.
-      Secciones en gris no forman parte del filtro activo. Rango actual: {vmin:.1f}–{vmax:.1f}.
-    </div>
-    """, unsafe_allow_html=True)
+    # ── Barra de intensidad ARRIBA del mapa (solo con capa SPT activa) ──
+    if mostrar_spt:
+        st.markdown(f"""
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px; font-size:.76rem; color:{COLOR['text_muted']};">
+          <span>Baja prioridad</span>
+          <div style="flex:1; height:8px; border-radius:4px;
+                      background:linear-gradient(90deg,#5b7a9e 0%,#8a8564 50%,#e8a33d 100%);"></div>
+          <span>Alta prioridad</span>
+        </div>
+        <div style="font-size:.72rem; color:{COLOR['text_muted']}; margin-bottom:14px;">
+          Colores más brillantes (ámbar) = mayor índice SPT = mayor prioridad territorial.
+          Secciones en gris no forman parte del filtro activo. Rango actual: {vmin:.1f}–{vmax:.1f}.
+        </div>
+        """, unsafe_allow_html=True)
+    else:
+        st.markdown(f"""
+        <div style="font-size:.72rem; color:{COLOR['text_muted']}; margin-bottom:14px;">
+          Vista de orientación: solo contorno de sección sobre mapa con calles.
+          Actívala de nuevo desde el sidebar para volver a ver la prioridad SPT.
+        </div>
+        """, unsafe_allow_html=True)
 
     col_map, col_card = st.columns([1.4, 1], gap="medium")
 
     with col_map:
         sel_actual = st.session_state["m1_sel_seccion"]
-        m = build_map(df_f, geo, vmin, vmax, sel_seccion=sel_actual)
-        map_out = st_folium(m, height=520, use_container_width=True, key=f"m1_map_{sel_actual}")
+        m = build_map(df_f, geo, vmin, vmax, sel_seccion=sel_actual, mostrar_spt=mostrar_spt)
+        map_out = st_folium(m, height=520, use_container_width=True, key=f"m1_map_{sel_actual}_{mostrar_spt}")
 
         if map_out and map_out.get("last_active_drawing"):
             props = map_out["last_active_drawing"].get("properties", {})
