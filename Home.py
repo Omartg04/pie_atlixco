@@ -102,16 +102,18 @@ st.markdown("<br>", unsafe_allow_html=True)
 st.markdown(f"""
 <div class="stations-grid" style="grid-template-columns: 1fr;">
   <article class="station">
-    <span class="station-status pending"><i></i>EN DESARROLLO</span>
+    <span class="station-status on"><i></i>EN OPERACIÓN</span>
     <div class="station-tag">03 · ¿Cómo vamos en campo?</div>
     <h3>Seguimiento del operativo de inducción</h3>
-    <p>Cuando arranque el operativo de campo, este módulo dará seguimiento en vivo
-    al avance de la inducción: encuestador(a) por brigada, secciones y manzanas
-    cubiertas contra el plan y levantamiento de la encuesta de inducción conforme
-    se vaya reportando. Fecha de inicio: 17 de julio.</p>
+    <p>Avance en vivo del operativo de campo: encuestas de inducción capturadas contra
+    la lista nominal elegible por sección (corte 500), desempeño por encuestador(a),
+    y resultados preliminares de las preguntas clave sobre Arturo Solano. Arrancó el
+    18 de julio, 9:00 AM.</p>
   </article>
 </div>
 """, unsafe_allow_html=True)
+st.markdown("<br>", unsafe_allow_html=True)
+st.page_link("pages/3_M3_Como_vamos_en_campo.py", label="→ Ir al Módulo 3 · ¿Cómo vamos en campo?", icon="📡")
 
 st.markdown(f"""
 <div style="margin-top:36px; padding-top:16px; border-top:1px solid {COLOR['border_subtle']};
