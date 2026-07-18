@@ -109,52 +109,44 @@ def cargar_encuestas_induccion_mock(n_registros: int = 420) -> pd.DataFrame:
         duracion_min = max(2, rng.gauss(7, 2.5))
         fecha_modificacion = fecha_creacion + timedelta(minutes=duracion_min)
 
-        conoc = rng.choices(["Sí, lo conozco", "Lo conozco de vista", "No lo conozco"],
-                             weights=[0.42, 0.23, 0.35])[0]
-        buen_cand = rng.choices(["Sí", "No", "No sabe / No contesta"], weights=[0.55, 0.18, 0.27])[0]
+        conoc = rng.choices(["Sí", "No", "No respondió"], weights=[0.42, 0.35, 0.23])[0]
+        buen_cand = rng.choices(["Sí", "No", "No sabe (NO LEER)"], weights=[0.55, 0.18, 0.27])[0]
         votar = rng.choices(
-            ["Sí, con seguridad", "Probablemente sí", "Probablemente no",
-             "No", "No sabe / No contesta"],
-            weights=[0.30, 0.28, 0.14, 0.10, 0.18],
+            ["Votaría", "Nunca votaría", "No sabe (NO LEER)"],
+            weights=[0.52, 0.24, 0.24],
         )[0]
 
         # ── Resto de variables del instrumento (mock, para el tabulado completo) ──
         aprobacion_atlixco = rng.choices(
-            ["Buena", "Regular", "Mala", "No sabe / No contesta"], weights=[0.34, 0.36, 0.20, 0.10])[0]
+            ["APRUEBA", "APRUEBA MUCHO", "DESAPRUEBA", "DESAPRUEBA MUCHO"], weights=[0.30, 0.10, 0.36, 0.24])[0]
         aprobacion_gobernador = rng.choices(
-            ["Buena", "Regular", "Mala", "No sabe / No contesta"], weights=[0.38, 0.32, 0.18, 0.12])[0]
+            ["APRUEBA", "APRUEBA MUCHO", "DESAPRUEBA", "DESAPRUEBA MUCHO"], weights=[0.34, 0.14, 0.32, 0.20])[0]
         aprobacion_presidenta = rng.choices(
-            ["Buena", "Regular", "Mala", "No sabe / No contesta"], weights=[0.58, 0.24, 0.10, 0.08])[0]
-        amor_puebla = rng.choices(["Sí, lo conozco", "No lo conozco"], weights=[0.47, 0.53])[0]
-        percepcion_inseguridad = rng.choices(
-            ["Mucho", "Algo", "Poco", "Nada"], weights=[0.46, 0.30, 0.16, 0.08])[0]
+            ["APRUEBA", "APRUEBA MUCHO", "DESAPRUEBA", "DESAPRUEBA MUCHO"], weights=[0.40, 0.24, 0.24, 0.12])[0]
+        amor_puebla = rng.choices(["Sí", "No"], weights=[0.47, 0.53])[0]
+        percepcion_inseguridad = rng.choices(["Mucho", "Algo", "Poco"], weights=[0.50, 0.32, 0.18])[0]
         comite_vigilancia = rng.choices(
-            ["Sí, de acuerdo", "No, en desacuerdo", "No sabe / No contesta"], weights=[0.61, 0.19, 0.20])[0]
-        alarma_vecinal = rng.choices(
-            ["Muy útil", "Algo útil", "Poco útil", "Nada útil"], weights=[0.40, 0.32, 0.18, 0.10])[0]
+            ["Sí", "No", "No sabe (NO LEER)"], weights=[0.61, 0.19, 0.20])[0]
+        alarma_vecinal = rng.choices(["Mucho", "Algo", "Nada"], weights=[0.42, 0.38, 0.20])[0]
         seguridad_pct = rng.choices(
-            ["Mucho", "Algo", "Poco", "Nada"], weights=[0.22, 0.34, 0.28, 0.16])[0]
-        honestidad_arturo = rng.choices(
-            ["Sí", "No", "No sabe / No contesta"], weights=[0.50, 0.16, 0.34])[0]
-        cumplimiento_arturo = rng.choices(
-            ["Sí", "No", "No sabe / No contesta"], weights=[0.47, 0.18, 0.35])[0]
+            ["Mucho", "Algo", "Poco", "Nada", "No sabe (NO LEER)"], weights=[0.20, 0.32, 0.26, 0.14, 0.08])[0]
+        honestidad_arturo = rng.choices(["Mucho", "Algo", "Poco"], weights=[0.46, 0.34, 0.20])[0]
+        cumplimiento_arturo = rng.choices(["Mucho", "Algo", "Poco", "Nada"], weights=[0.40, 0.32, 0.18, 0.10])[0]
         principal_problema = rng.choices(
-            ["Inseguridad", "Desempleo", "Corrupción", "Servicios públicos", "Otro"],
-            weights=[0.44, 0.20, 0.16, 0.14, 0.06])[0]
+            ["Inseguridad", "Bajos salarios", "Calles en mal estado",
+             "Mala calidad de la educación pública",
+             "Mantenimiento y reparación del alumbrado público",
+             "Migración", "Otra ESPECIFICAR"],
+            weights=[0.34, 0.18, 0.16, 0.12, 0.10, 0.06, 0.04])[0]
         principal_problema_otro = (
-            rng.choice(["Falta de alumbrado público", "Bacheo de calles", "Falta de agua"])
-            if principal_problema == "Otro" else ""
+            rng.choice(["Falta de agua", "Falta de espacios recreativos"])
+            if principal_problema == "Otra ESPECIFICAR" else ""
         )
         tipo_inseguridad = (
-            rng.choices(
-                ["Robo a transeúnte", "Robo a casa habitación", "Extorsión", "Otro"],
-                weights=[0.38, 0.30, 0.20, 0.12])[0]
+            rng.choices(["Asaltos en vía pública y transporte", "No sabe"], weights=[0.78, 0.22])[0]
             if principal_problema == "Inseguridad" else ""
         )
-        tipo_inseguridad_otro = (
-            rng.choice(["Robo de autopartes", "Venta de droga en la esquina"])
-            if tipo_inseguridad == "Otro" else ""
-        )
+        tipo_inseguridad_otro = ""  # sin especificación "otro" observada en datos reales aún
         tiene_celular = rng.random() < 0.78
         tiene_email = rng.random() < 0.31
 
@@ -638,8 +630,15 @@ with tab_resultados:
     )
 
     def card_pregunta(titulo: str, columna: str, orden: list[str]):
-        conteo = df_encuestas[columna].value_counts(normalize=True).reindex(orden).fillna(0) * 100
+        respuestas_col = df_encuestas[columna]
+        n_base = respuestas_col.notna().sum()
+        n_total = len(df_encuestas)
+        conteo = respuestas_col.value_counts(normalize=True).reindex(orden).fillna(0) * 100
         st.markdown(f"**{titulo}**")
+        st.caption(f"Base: {n_base} de {n_total} encuestas respondieron esta pregunta.")
+        if n_base == 0:
+            st.caption("Sin respuestas todavía para esta pregunta en el periodo seleccionado.")
+            return
         for opcion in orden:
             pct = conteo.get(opcion, 0)
             st.markdown(f"""
@@ -674,18 +673,17 @@ with tab_resultados:
     with c1:
         card_pregunta(
             "Reconocimiento", "conocimiento_arturo",
-            ["Sí, lo conozco", "Lo conozco de vista", "No lo conozco"],
+            ["Sí", "No", "No respondió"],
         )
     with c2:
         card_pregunta(
             "Buena candidatura", "buena_candidatura_arturo",
-            ["Sí", "No", "No sabe / No contesta"],
+            ["Sí", "No", "No sabe (NO LEER)"],
         )
     with c3:
         card_pregunta(
             "Disposición a votar", "votar_o_no_arturo",
-            ["Sí, con seguridad", "Probablemente sí", "Probablemente no",
-             "No", "No sabe / No contesta"],
+            ["Votaría", "Nunca votaría", "No sabe (NO LEER)"],
         )
 
     # ── Programas ────────────────────────────────────────────────────────────
@@ -694,16 +692,16 @@ with tab_resultados:
     p1, p2, p3, p4 = st.columns(4)
     with p1:
         card_pregunta("Conocimiento del Programa Amor Puebla", "amor_puebla",
-                      ["Sí, lo conozco", "No lo conozco"])
+                      ["Sí", "No"])
     with p2:
         card_pregunta("Nivel de percepción de inseguridad", "percepcion_inseguridad",
-                      ["Mucho", "Algo", "Poco", "Nada"])
+                      ["Mucho", "Algo", "Poco"])
     with p3:
         card_pregunta("Aceptación de comités de vigilancia", "comite_vigilancia",
-                      ["Sí, de acuerdo", "No, en desacuerdo", "No sabe / No contesta"])
+                      ["Sí", "No", "No sabe (NO LEER)"])
     with p4:
         card_pregunta("Valoración de las alarmas vecinales", "alarma_vecinal",
-                      ["Muy útil", "Algo útil", "Poco útil", "Nada útil"])
+                      ["Mucho", "Algo", "Nada"])
 
     # ── Atributos ────────────────────────────────────────────────────────────
     st.markdown("---")
@@ -711,16 +709,15 @@ with tab_resultados:
     a1, a2, a3 = st.columns(3)
     with a1:
         card_pregunta("Percepción de cumplimiento de Arturo Solano Escobedo",
-                      "cumplimiento_arturo", ["Sí", "No", "No sabe / No contesta"])
+                      "cumplimiento_arturo", ["Mucho", "Algo", "Poco", "Nada"])
     with a2:
         card_pregunta("Percepción de honestidad de Arturo Solano Escobedo",
-                      "honestidad_arturo", ["Sí", "No", "No sabe / No contesta"])
+                      "honestidad_arturo", ["Mucho", "Algo", "Poco"])
     with a3:
         card_pregunta(
             "Percepción de votar o nunca votar de Arturo Solano Escobedo",
             "votar_o_no_arturo",
-            ["Sí, con seguridad", "Probablemente sí", "Probablemente no",
-             "No", "No sabe / No contesta"],
+            ["Votaría", "Nunca votaría", "No sabe (NO LEER)"],
         )
 
     # ── Problemáticas ────────────────────────────────────────────────────────
@@ -729,14 +726,19 @@ with tab_resultados:
     q1, q2 = st.columns(2)
     with q1:
         card_pregunta("Principal problema del estado", "principal_problema_estado_opciones",
-                      ["Inseguridad", "Desempleo", "Corrupción", "Servicios públicos", "Otro"])
+                      ["Inseguridad", "Bajos salarios", "Calles en mal estado",
+                       "Mala calidad de la educación pública",
+                       "Mantenimiento y reparación del alumbrado público",
+                       "Migración", "Otra ESPECIFICAR"])
         lista_otros("Especificación de otro problema del estado", "principal_problema_estado_otro")
     with q2:
         df_solo_inseguridad = df_encuestas[df_encuestas["principal_problema_estado_opciones"] == "Inseguridad"]
         st.markdown("**Principal tipo de inseguridad**")
         st.caption(f"Solo entre quienes respondieron \"Inseguridad\" arriba (n={len(df_solo_inseguridad)}).")
         if len(df_solo_inseguridad):
-            orden_tipo = ["Robo a transeúnte", "Robo a casa habitación", "Extorsión", "Otro"]
+            n_base_tipo = df_solo_inseguridad["tipo_inseguridad_opciones"].notna().sum()
+            st.caption(f"Base: {n_base_tipo} de {len(df_solo_inseguridad)} respondieron esta pregunta.")
+            orden_tipo = ["Asaltos en vía pública y transporte", "No sabe"]
             conteo_tipo = (
                 df_solo_inseguridad["tipo_inseguridad_opciones"]
                 .value_counts(normalize=True).reindex(orden_tipo).fillna(0) * 100
