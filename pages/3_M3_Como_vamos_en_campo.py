@@ -241,6 +241,8 @@ if _usar_bubble_real:
     df_encuestas_full, ultima_actualizacion, info_carga = get_encuestas_induccion(
         private_key=_bubble_secrets["private_key"], force_refresh=forzar_refresh,
     )
+    if forzar_refresh:
+        st.toast(f"Actualizado — {len(df_encuestas_full)} registros totales en Bubble.", icon="🔄")
     if df_encuestas_full.empty:
         st.warning(
             "Bubble respondió pero no hay encuestas capturadas todavía, o no se pudo "
@@ -273,10 +275,20 @@ else:
 # de total de encuestas. Bubble conserva ese historial, pero no es operativo.
 NOMBRES_EXCLUIDOS = {"omar téllez", "omar tellez"}
 
+_total_bubble_bruto = len(df_encuestas_full)
 df_encuestas_full = df_encuestas_full[
     (df_encuestas_full["fecha_creacion"] >= ANCLA_OPERATIVO)
     & (~df_encuestas_full["nombre_encuestador"].str.strip().str.lower().isin(NOMBRES_EXCLUIDOS))
 ].copy()
+_total_bubble_filtrado = len(df_encuestas_full)
+_descartados = _total_bubble_bruto - _total_bubble_filtrado
+
+if _descartados > 0:
+    st.caption(
+        f"🗓️ {_total_bubble_bruto} registros totales en Bubble · {_descartados} descartados "
+        f"por ser anteriores al arranque real del operativo (18 jul, 9:00 AM) o pruebas "
+        f"de configuración · **{_total_bubble_filtrado} dentro del operativo real**."
+    )
 
 if df_encuestas_full.empty:
     st.warning("No hay encuestas capturadas desde el arranque real del operativo (18 jul, 9:00 AM).")
