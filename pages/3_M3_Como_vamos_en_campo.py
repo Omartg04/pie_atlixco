@@ -301,7 +301,7 @@ if df_encuestas_full.empty:
 st.markdown("""
 <div class="header-modulo">
   <div class="hm-dots"><span></span><span></span><span></span></div>
-  <div class="hm-eyebrow">Módulo 03 · En desarrollo</div>
+  <div class="hm-eyebrow">Módulo 03 · En producción</div>
   <h1>¿Cómo vamos en campo?</h1>
   <p>Avance del operativo de inducción: cuántas entrevistas llevamos por sección
   contra la lista nominal elegible (corte 500), quién las está levantando, y qué
@@ -579,6 +579,28 @@ with tab_mapa:
             st.dataframe(df_sec_sem, hide_index=True, use_container_width=True)
         else:
             st.caption("Sin historial todavía.")
+
+    st.markdown("---")
+    st.markdown("### Todas las secciones")
+    st.caption("Encuestas capturadas y % de LN corte 500 cubierta, todas las secciones del plan.")
+
+    tabla_secciones = resumen.copy().sort_values("pct_ln_cubierta", ascending=False, na_position="last")
+    tabla_secciones_fmt = tabla_secciones[["seccion", "encuestas", "ln_meta_500", "pct_ln_cubierta"]].rename(
+        columns={
+            "seccion": "Sección", "encuestas": "Encuestas",
+            "ln_meta_500": "LN corte 500", "pct_ln_cubierta": "% LN cubierta",
+        }
+    )
+    st.dataframe(
+        tabla_secciones_fmt,
+        use_container_width=True,
+        hide_index=True,
+        column_config={
+            "% LN cubierta": st.column_config.ProgressColumn(
+                "% LN cubierta", min_value=0, max_value=100, format="%.1f%%",
+            ),
+        },
+    )
 
 # ── TAB 2 — Encuestadores ───────────────────────────────────────────────────
 with tab_encuestadores:
