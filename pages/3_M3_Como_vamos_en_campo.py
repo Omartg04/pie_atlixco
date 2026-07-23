@@ -36,7 +36,7 @@ from app_utils import (
 )
 from bubble_connector import (
     get_encuestas_induccion, HABITANTES_PROMEDIO_VIVIENDA, META_ENCUESTAS_DIARIAS,
-    MIN_RACHA_RAPIDA, calcular_alertas,
+    MIN_RACHA_RAPIDA, calcular_alertas, ahora_mexico,
 )
 
 st.set_page_config(
@@ -99,7 +99,7 @@ def cargar_encuestas_induccion_mock(n_registros: int = 420) -> pd.DataFrame:
     # Pesos: unas secciones con más avance que otras (simula campo real desigual)
     pesos = np_rng.dirichlet(np.ones(len(secciones)) * 0.6)
 
-    hoy = datetime.now()
+    hoy = ahora_mexico()
     dias_operativo = max((hoy - ANCLA_OPERATIVO).days, 1)
 
     filas = []
@@ -434,7 +434,7 @@ st.markdown("<br>", unsafe_allow_html=True)
 # PANEL FIJO — HOY (siempre visible, independiente del filtro de periodo)
 # ════════════════════════════════════════════════════════════════════════════
 
-_hoy = datetime.now().date()
+_hoy = ahora_mexico().date()
 df_hoy = df_encuestas_full[df_encuestas_full["fecha_creacion"].dt.date == _hoy].copy()
 
 with st.expander(f"📅 Hoy — {_hoy.strftime('%d/%m/%Y')} ({len(df_hoy)} encuestas)", expanded=True):
