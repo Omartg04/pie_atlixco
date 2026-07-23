@@ -39,11 +39,30 @@ CACHE_TTL_SEC = 600  # 10 min — dentro del rango 5-10 min acordado
 
 ANCLA_OPERATIVO = datetime(2026, 7, 18, 9, 0, 0)
 
+# Habitantes promedio por vivienda — censo Atlixco (confirmado por el usuario,
+# 22 jul 2026). Se usa para proyectar LN cubierta a partir de encuestas
+# (unidad = vivienda), en vez de comparar encuestas directo contra LN
+# (unidad = persona), que subestima el avance real de cobertura.
+HABITANTES_PROMEDIO_VIVIENDA = 3.86
+
+# Meta de desempeño diario por encuestador, para el monitoreo de campo.
+META_ENCUESTAS_DIARIAS = 20
+
+# Alerta de "racha de capturas rápidas": N o más encuestas SEGUIDAS (mismo
+# encuestador, mismo día, consecutivas en el tiempo) con duración por debajo
+# de este umbral. Una encuesta aislada de <2 min es plausible (el usuario lo
+# confirmó); una racha de varias seguidas es lo que amerita revisión, no el
+# tiempo absoluto de una sola.
+UMBRAL_DURACION_RACHA_MIN = 2.0
+MIN_RACHA_RAPIDA = 3
+
 # ── Mapeo campos Bubble (crudo) → app ───────────────────────────────────────
-# Confirmados en muestra real: atl_1, atl_2, P8_1, P14_1, P22_1/2/3.
-# Por analogía (mismo patrón de mayúsculas/minúsculas), sin confirmar aún:
-# atl_3, atl_4, atl_5, P10_1, P15_1, P16_1, P2_1, P2_2 — si Bubble regresa
-# alguno con otra capitalización, ajustar solo esta tabla.
+# Confirmado con datos reales (29 registros, 18 jul 2026) vía diagnostico_field_map.py:
+# TODOS los campos abajo existen exactamente con este nombre. atl_1-5 son en
+# minúscula, P8/P10/P14/P15/P16/P22/P2 llevan P mayúscula — así los regresa
+# Bubble consistentemente. P2_1_otro y P2_2_otro (especificación "Otro") no
+# aparecen en el JSON cuando están vacíos — Bubble omite campos sin valor,
+# no es un error de mapeo; el código ya usa .get() y no truena por esto.
 FIELD_MAP = {
     "_id":               "id_unico",
     "Created Date":      "fecha_creacion",
@@ -69,6 +88,13 @@ FIELD_MAP = {
     "P2_1_otro":         "principal_problema_estado_otro",
     "P2_2_text":         "tipo_inseguridad_opciones",
     "P2_2_otro":         "tipo_inseguridad_otro",
+}
+
+# Correcciones manuales confirmadas (typos de captura verificados con el
+# usuario) — solo se agregan aquí casos confirmados uno por uno, nunca por
+# fusión automática/adivinada.
+CORRECCIONES_MANUALES_NOMBRE = {
+    "MALEJANDRA MORALES MORENO": "ALEJANDRA MORALES MORENO",
 }
 
 # Campos de PII — nunca se incorporan al DataFrame final, solo se usan para
@@ -132,7 +158,16 @@ def _transform(records: list[dict]) -> pd.DataFrame:
     df = pd.DataFrame(filas)
 
     for col in ("fecha_creacion", "fecha_modificacion"):
-        df[col] = pd.to_datetime(df[col], utc=True, errors="coerce").dt.tz_localize(None)
+        # Bubble entrega Created/Modified Date en UTC. Se convierte a hora local
+        # de México antes de quitar el timezone — si no, el corte del operativo
+        # (18 jul, 9:00 AM) y cualquier filtro "por día" quedan desalineados por
+        # las 6 horas de diferencia (encuestas de la tarde/noche aparecían con
+        # fecha UTC del día siguiente, y viceversa en la madrugada).
+        df[col] = (
+            pd.to_datetime(df[col], utc=True, errors="coerce")
+            .dt.tz_convert("America/Mexico_City")
+            .dt.tz_localize(None)
+        )
 
     df["duracion_min"] = (
         (df["fecha_modificacion"] - df["fecha_creacion"]).dt.total_seconds().div(60).round(1)
@@ -144,6 +179,20 @@ def _transform(records: list[dict]) -> pd.DataFrame:
     df = df[df["fecha_creacion"].notna() & df["seccion_electoral"].notna()].copy()
     df["seccion_electoral"] = df["seccion_electoral"].astype(int)
     df["semana_operativo"] = df["fecha_creacion"].apply(semana_operativo)
+
+    # Normalización ligera de nombre_encuestador: quita espacios al inicio/final,
+    # colapsa espacios dobles, y estandariza a mayúsculas. Esto une duplicados
+    # como "Dulce Nayelli Baez Reyes " vs " DULCE NAYELLI BAEZ REYES " (misma
+    # persona, distinto formato). NO corrige typos reales (ej. un espacio
+    # faltante que crea un nombre distinto: "ALEJANDRA..." vs "MALEJANDRA...")
+    # — esos requieren corrección manual en Bubble o revisión caso por caso,
+    # porque intentar adivinar/fusionar automáticamente arriesga juntar a dos
+    # personas distintas por error.
+    df["nombre_encuestador"] = (
+        df["nombre_encuestador"].fillna("").str.strip()
+        .str.replace(r"\s+", " ", regex=True).str.upper()
+    )
+    df["nombre_encuestador"] = df["nombre_encuestador"].replace(CORRECCIONES_MANUALES_NOMBRE)
 
     return df
 
@@ -223,3 +272,97 @@ def _ts_to_dt(ts):
     if ts is None:
         return None
     return datetime.fromtimestamp(ts, tz=timezone.utc)
+
+
+# ── Alertas diarias de monitoreo de campo ───────────────────────────────────
+# Ambas funciones reciben el DataFrame YA filtrado por el corte del operativo
+# y exclusión de nombres de prueba (el mismo `df_encuestas_full` que usa M3).
+# Se centralizan aquí para que el módulo Streamlit y el reporte HTML calculen
+# exactamente lo mismo.
+
+def detectar_alerta_meta(df: pd.DataFrame, meta: int = META_ENCUESTAS_DIARIAS) -> pd.DataFrame:
+    """
+    Alerta 'Meta no cumplida': encuestador que tuvo actividad ese día (al
+    menos 1 encuesta) pero se quedó por debajo de la meta diaria. No se
+    marca a quien simplemente no trabajó ese día (0 encuestas) — eso es
+    inactividad, una alerta distinta que no se pidió implementar todavía.
+    """
+    if df.empty:
+        return pd.DataFrame(columns=["tipo", "dia", "encuestador", "detalle"])
+    d = df.copy()
+    d["dia"] = d["fecha_creacion"].dt.date
+    conteo = (
+        d.groupby(["nombre_encuestador", "dia"]).size().reset_index(name="encuestas")
+    )
+    alertas = conteo[(conteo["encuestas"] > 0) & (conteo["encuestas"] < meta)].copy()
+    alertas["tipo"] = "Meta no cumplida"
+    alertas["detalle"] = alertas["encuestas"].apply(lambda n: f"{n} de {meta} encuestas")
+    alertas = alertas.rename(columns={"nombre_encuestador": "encuestador"})
+    return alertas[["tipo", "dia", "encuestador", "detalle"]].sort_values(
+        ["dia", "encuestador"], ascending=[False, True]
+    )
+
+
+def detectar_alerta_racha(
+    df: pd.DataFrame,
+    umbral_min: float = UMBRAL_DURACION_RACHA_MIN,
+    min_racha: int = MIN_RACHA_RAPIDA,
+) -> pd.DataFrame:
+    """
+    Alerta 'Racha de capturas rápidas': N o más encuestas consecutivas
+    (mismo encuestador, mismo día, ordenadas por fecha_creacion) con
+    duración menor a `umbral_min`. Una encuesta rápida aislada no dispara
+    nada — solo rachas seguidas, que sí son señal distinta a "esta persona
+    es eficiente".
+    """
+    if df.empty:
+        return pd.DataFrame(columns=["tipo", "dia", "encuestador", "detalle"])
+    d = df.copy()
+    d["dia"] = d["fecha_creacion"].dt.date
+
+    resultados = []
+    for (enc, dia), grp in d.groupby(["nombre_encuestador", "dia"]):
+        grp = grp.sort_values("fecha_creacion")
+        racha = 0
+        inicio = None
+        prev_fecha = None
+        for _, fila in grp.iterrows():
+            if fila["duracion_min"] < umbral_min:
+                racha += 1
+                if racha == 1:
+                    inicio = fila["fecha_creacion"]
+            else:
+                if racha >= min_racha:
+                    resultados.append({
+                        "tipo": "Racha de capturas rápidas", "dia": dia, "encuestador": enc,
+                        "detalle": (
+                            f"{racha} encuestas seguidas <{umbral_min:.0f} min, "
+                            f"{inicio.strftime('%H:%M')}–{prev_fecha.strftime('%H:%M')}"
+                        ),
+                    })
+                racha = 0
+            prev_fecha = fila["fecha_creacion"]
+        if racha >= min_racha:
+            resultados.append({
+                "tipo": "Racha de capturas rápidas", "dia": dia, "encuestador": enc,
+                "detalle": (
+                    f"{racha} encuestas seguidas <{umbral_min:.0f} min, "
+                    f"{inicio.strftime('%H:%M')}–{prev_fecha.strftime('%H:%M')}"
+                ),
+            })
+
+    cols = ["tipo", "dia", "encuestador", "detalle"]
+    if not resultados:
+        return pd.DataFrame(columns=cols)
+    return pd.DataFrame(resultados)[cols].sort_values(["dia", "encuestador"], ascending=[False, True])
+
+
+def calcular_alertas(df: pd.DataFrame) -> pd.DataFrame:
+    """Combina ambas alertas en una sola tabla, ordenada por día (más reciente primero)."""
+    partes = [detectar_alerta_meta(df), detectar_alerta_racha(df)]
+    partes = [p for p in partes if not p.empty]
+    if not partes:
+        return pd.DataFrame(columns=["tipo", "dia", "encuestador", "detalle"])
+    return pd.concat(partes, ignore_index=True).sort_values(
+        ["dia", "tipo", "encuestador"], ascending=[False, True, True]
+    )
