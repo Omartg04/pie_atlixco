@@ -35,7 +35,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from bubble_connector import (
     _fetch_all_raw, _transform, ANCLA_OPERATIVO,
-    HABITANTES_PROMEDIO_VIVIENDA, META_ENCUESTAS_DIARIAS, calcular_alertas,
+    HABITANTES_PROMEDIO_VIVIENDA, META_ENCUESTAS_DIARIAS, calcular_alertas, ahora_mexico,
 )
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -155,7 +155,7 @@ def main():
     if df.empty:
         sys.exit("❌ No hay encuestas dentro del operativo real todavía. No se generó reporte.")
 
-    hoy = datetime.now().date()
+    hoy = ahora_mexico().date()
     df_hoy = df[df["fecha_creacion"].dt.date == hoy].copy()
 
     DIAS_ES = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"]
@@ -375,7 +375,7 @@ def main():
                             ["Mucho", "Algo", "Nada"]),
     ])
 
-    ahora = datetime.now()
+    ahora = ahora_mexico()
     html = f"""<!DOCTYPE html>
 <html lang="es">
 <head>

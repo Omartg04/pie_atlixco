@@ -24,6 +24,7 @@ Uso:
 import time
 import logging
 from datetime import datetime, timezone, date
+from zoneinfo import ZoneInfo
 
 import requests
 import pandas as pd
@@ -36,6 +37,24 @@ BUBBLE_THING_NAME = "Encuesta"
 BUBBLE_ENDPOINT = f"{BUBBLE_DATA_API_ROOT}/{BUBBLE_THING_NAME}"
 BUBBLE_PAGE_SIZE = 100
 CACHE_TTL_SEC = 600  # 10 min — dentro del rango 5-10 min acordado
+
+_TZ_MEXICO = ZoneInfo("America/Mexico_City")
+
+
+def ahora_mexico() -> datetime:
+    """
+    'Ahora' en hora de México, sin tzinfo (naive) — consistente con cómo se
+    guarda `fecha_creacion` en _transform() (ya convertida a America/Mexico_City
+    y con tz_localize(None)).
+
+    Necesario porque en Streamlit Cloud el servidor corre en UTC: usar
+    datetime.now() directo ahí hace que "hoy" cambie de fecha varias horas
+    antes de que en México en realidad sea el día siguiente (México va 6h
+    atrás de UTC), dejando el panel "Hoy" en una fecha sin encuestas todavía.
+    Localmente, en una Mac con reloj de sistema en México, ambas formas
+    coinciden — por eso el problema solo se ve en producción.
+    """
+    return datetime.now(_TZ_MEXICO).replace(tzinfo=None)
 
 ANCLA_OPERATIVO = datetime(2026, 7, 18, 9, 0, 0)
 
