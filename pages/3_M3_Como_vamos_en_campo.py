@@ -34,7 +34,10 @@ from app_utils import (
     GLOBAL_CSS, COLOR, load_spt, load_geojson, load_manzanas,
     score_color, fmt_pct, fmt_num, check_password, sidebar_sesion,
 )
-from bubble_connector import get_encuestas_induccion
+from bubble_connector import (
+    get_encuestas_induccion, HABITANTES_PROMEDIO_VIVIENDA, META_ENCUESTAS_DIARIAS,
+    MIN_RACHA_RAPIDA, calcular_alertas,
+)
 
 st.set_page_config(
     page_title="M3 · ¿Cómo vamos en campo? · PIE Atlixco",
@@ -371,11 +374,19 @@ conteo_seccion = (
 
 resumen = df_ln500.merge(conteo_seccion, on="seccion", how="left")
 resumen["encuestas"] = resumen["encuestas"].fillna(0).astype(int)
+# Proyección de cobertura: cada encuesta es por VIVIENDA, no por persona.
+# Visitar a cada persona de la LN es imposible (ni es el objetivo del
+# operativo) — lo que sí se puede proyectar es cuánta LN queda "tocada" al
+# tocar la vivienda, usando el promedio de habitantes por vivienda del censo
+# de Atlixco (3.86). No se limita a 100% por sección: una sección puede
+# proyectar más LN tocada de la que tiene si se visitaron más viviendas de
+# las que corresponden proporcionalmente al corte 500 (caso raro pero real).
+resumen["ln_proyectada_cubierta"] = (resumen["encuestas"] * HABITANTES_PROMEDIO_VIVIENDA).round(0).astype(int)
 # 5 secciones Modo B sin universo elegible por manzana (207,214,215,217,219):
 # ln_meta_500 == 0 → % no aplica (no se puede dividir entre 0), se deja NaN.
 resumen["pct_ln_cubierta"] = np.where(
     resumen["ln_meta_500"] > 0,
-    (resumen["encuestas"] / resumen["ln_meta_500"] * 100).clip(upper=100),
+    (resumen["ln_proyectada_cubierta"] / resumen["ln_meta_500"] * 100),
     np.nan,
 )
 
@@ -384,19 +395,27 @@ resumen["pct_ln_cubierta"] = np.where(
 # ════════════════════════════════════════════════════════════════════════════
 
 total_encuestas = len(df_encuestas)
+ln_proyectada_total = int(resumen["ln_proyectada_cubierta"].sum())
 secciones_cubiertas = int((resumen["encuestas"] > 0).sum())
 total_secciones = len(resumen)
 encuestadores_activos = df_encuestas["nombre_encuestador"].nunique()
 tiempo_prom = df_encuestas["duracion_min"].mean()
-pct_ln_total = (resumen["encuestas"].sum() / resumen["ln_meta_500"].sum() * 100)
+pct_ln_total = (resumen["ln_proyectada_cubierta"].sum() / resumen["ln_meta_500"].sum() * 100)
 
 kpis = [
-    ("% LN cubierta (corte 500)", fmt_pct(pct_ln_total), "Encuestas / LN elegible, universo 500"),
-    ("Encuestas capturadas", fmt_num(total_encuestas), "Periodo seleccionado"),
+    ("Encuestas capturadas", fmt_num(total_encuestas), "Periodo seleccionado, 1 encuesta = 1 vivienda"),
+    ("LN proyectada cubierta", fmt_num(ln_proyectada_total),
+     f"Encuestas × {HABITANTES_PROMEDIO_VIVIENDA} hab./vivienda (censo Atlixco)"),
+    ("% LN cubierta (proyectada)", fmt_pct(pct_ln_total), "LN proyectada / LN elegible, universo 500"),
     ("Secciones cubiertas", f"{secciones_cubiertas} de {total_secciones}", "Con al menos 1 encuesta"),
-    ("Encuestadores activos", fmt_num(encuestadores_activos), "En el periodo seleccionado"),
-    ("Tiempo promedio", f"{tiempo_prom:.1f} min", "Duración de la entrevista"),
+    ("Duración promedio", f"{tiempo_prom:.1f} min", "Duración de la entrevista, periodo seleccionado"),
 ]
+
+st.caption(
+    "⚠️ La cobertura es una **proyección**, no una meta de contactar a cada persona de la "
+    "LN (eso no es el objetivo del operativo, y sería imposible de cumplir). Se calcula "
+    f"asumiendo {HABITANTES_PROMEDIO_VIVIENDA} habitantes por vivienda visitada, dato del censo de Atlixco."
+)
 
 cols = st.columns(5)
 for col, (label, val, ctx) in zip(cols, kpis):
@@ -410,6 +429,84 @@ for col, (label, val, ctx) in zip(cols, kpis):
         """, unsafe_allow_html=True)
 
 st.markdown("<br>", unsafe_allow_html=True)
+
+# ════════════════════════════════════════════════════════════════════════════
+# PANEL FIJO — HOY (siempre visible, independiente del filtro de periodo)
+# ════════════════════════════════════════════════════════════════════════════
+
+_hoy = datetime.now().date()
+df_hoy = df_encuestas_full[df_encuestas_full["fecha_creacion"].dt.date == _hoy].copy()
+
+with st.expander(f"📅 Hoy — {_hoy.strftime('%d/%m/%Y')} ({len(df_hoy)} encuestas)", expanded=True):
+    if df_hoy.empty:
+        st.caption("Sin encuestas capturadas hoy todavía.")
+    else:
+        hc1, hc2, hc3, hc4 = st.columns(4)
+        with hc1:
+            st.markdown(f"""<div class="kpi-card"><div class="kpi-val">{len(df_hoy)}</div>
+            <div class="kpi-label">Encuestas hoy</div></div>""", unsafe_allow_html=True)
+        with hc2:
+            st.markdown(f"""<div class="kpi-card"><div class="kpi-val">{df_hoy['seccion_electoral'].nunique()}</div>
+            <div class="kpi-label">Secciones tocadas hoy</div></div>""", unsafe_allow_html=True)
+        with hc3:
+            st.markdown(f"""<div class="kpi-card"><div class="kpi-val">{df_hoy['nombre_encuestador'].nunique()}</div>
+            <div class="kpi-label">Encuestadores activos hoy</div></div>""", unsafe_allow_html=True)
+        with hc4:
+            st.markdown(f"""<div class="kpi-card"><div class="kpi-val">{df_hoy['duracion_min'].mean():.1f} min</div>
+            <div class="kpi-label">Duración promedio hoy</div></div>""", unsafe_allow_html=True)
+
+        st.markdown("**Desempeño por encuestador — hoy vs. meta diaria (20)**")
+        ranking_hoy = (
+            df_hoy.groupby("nombre_encuestador")
+            .agg(**{"Encuestas hoy": ("id_unico", "count"), "Duración promedio (min)": ("duracion_min", "mean")})
+            .reset_index().sort_values("Encuestas hoy", ascending=False)
+        )
+        ranking_hoy["Duración promedio (min)"] = ranking_hoy["Duración promedio (min)"].round(1)
+        ranking_hoy["Meta"] = META_ENCUESTAS_DIARIAS
+        ranking_hoy["Cumplida"] = np.where(ranking_hoy["Encuestas hoy"] >= META_ENCUESTAS_DIARIAS, "✅", "—")
+        st.dataframe(
+            ranking_hoy.rename(columns={"nombre_encuestador": "Encuestador"})[
+                ["Encuestador", "Encuestas hoy", "Duración promedio (min)", "Meta", "Cumplida"]
+            ],
+            hide_index=True, use_container_width=True,
+            column_config={
+                "Encuestas hoy": st.column_config.ProgressColumn(
+                    "Encuestas hoy", min_value=0, max_value=META_ENCUESTAS_DIARIAS, format="%d",
+                ),
+            },
+        )
+
+        # ── Alertas de hoy ───────────────────────────────────────────────
+        alertas_todas = calcular_alertas(df_encuestas_full)
+        alertas_hoy = alertas_todas[alertas_todas["dia"] == _hoy] if not alertas_todas.empty else alertas_todas
+
+        st.markdown(f"**⚠️ Alertas de hoy — {len(alertas_hoy)}**")
+        if alertas_hoy.empty:
+            st.caption("Sin alertas para hoy: nadie por debajo de la meta diaria, sin rachas de capturas rápidas.")
+        else:
+            n_meta = (alertas_hoy["tipo"] == "Meta no cumplida").sum()
+            n_racha = (alertas_hoy["tipo"] == "Racha de capturas rápidas").sum()
+            if n_meta:
+                st.caption(f"🔸 {n_meta} encuestador(es) por debajo de la meta diaria hoy.")
+            if n_racha:
+                st.caption(f"🔸 {n_racha} racha(s) de {MIN_RACHA_RAPIDA}+ capturas rápidas seguidas hoy.")
+            st.dataframe(
+                alertas_hoy[["tipo", "encuestador", "detalle"]].rename(
+                    columns={"tipo": "Tipo", "encuestador": "Encuestador", "detalle": "Detalle"}
+                ),
+                hide_index=True, use_container_width=True,
+            )
+
+        with st.expander("Ver histórico completo de alertas (todo el operativo)"):
+            if alertas_todas.empty:
+                st.caption("Sin alertas registradas en todo el operativo.")
+            else:
+                st.dataframe(
+                    alertas_todas.rename(
+                        columns={"tipo": "Tipo", "dia": "Día", "encuestador": "Encuestador", "detalle": "Detalle"}
+                    ),
+                    hide_index=True, use_container_width=True,
+                )
 
 # ════════════════════════════════════════════════════════════════════════════
 # TABS
@@ -499,11 +596,14 @@ with tab_mapa:
                 r = lookup_resumen.loc[sec]
                 f2["properties"].update({
                     "Encuestas": int(r["encuestas"]),
+                    "LN proyectada": int(r["ln_proyectada_cubierta"]),
                     "LN corte 500": int(r["ln_meta_500"]),
                     "% Cubierta": fmt_pct(r["pct_ln_cubierta"]),
                 })
             else:
-                f2["properties"].update({"Encuestas": "—", "LN corte 500": "—", "% Cubierta": "—"})
+                f2["properties"].update({
+                    "Encuestas": "—", "LN proyectada": "—", "LN corte 500": "—", "% Cubierta": "—",
+                })
             geo_rich["features"].append(f2)
 
         folium.GeoJson(
@@ -511,8 +611,8 @@ with tab_mapa:
             style_function=style_fn,
             highlight_function=highlight_fn,
             tooltip=folium.GeoJsonTooltip(
-                fields=["seccion", "Encuestas", "LN corte 500", "% Cubierta"],
-                aliases=["Sección", "Encuestas", "LN corte 500", "% Cubierta"],
+                fields=["seccion", "Encuestas", "LN proyectada", "LN corte 500", "% Cubierta"],
+                aliases=["Sección", "Encuestas", "LN proyectada (×3.86)", "LN corte 500", "% Cubierta"],
                 sticky=True, labels=True,
                 style="font-family:'DM Sans',sans-serif; font-size:12.5px; background:#1b212b; "
                       "color:#eef1f0; border:1px solid #3a4255; border-radius:6px;",
@@ -538,11 +638,9 @@ with tab_mapa:
         )
 
         if r["ln_meta_500"] > 0:
-            valor_principal = f"{int(r['encuestas'])} de {int(r['ln_meta_500'])}"
-            etiqueta_principal = f"{fmt_pct(r['pct_ln_cubierta'])} de la LN corte 500 cubierta"
+            etiqueta_principal = f"{fmt_pct(r['pct_ln_cubierta'])} de la LN corte 500 cubierta (proyectada)"
             ctx_ln = f"LN total de la sección: {int(r['ln_total_seccion']):,} (corte 500 = {int(r['ln_meta_500']):,})"
         else:
-            valor_principal = f"{int(r['encuestas'])} encuestas"
             etiqueta_principal = "Sección sin universo LN por manzana (Modo B, barrido total)"
             ctx_ln = f"LN total de la sección: {int(r['ln_total_seccion']):,}"
 
@@ -555,7 +653,20 @@ with tab_mapa:
                         letter-spacing:.1em; text-transform:uppercase; color:{COLOR['text_secondary']}; margin-bottom:10px;">
               SECCIÓN {sel}
             </div>
-            <div class="kpi-val" style="font-size:2rem;">{valor_principal}</div>
+            <div style="display:flex; gap:22px; flex-wrap:wrap; margin-bottom:6px;">
+              <div>
+                <div class="kpi-val" style="font-size:1.6rem;">{int(r['encuestas'])}</div>
+                <div class="kpi-label" style="font-size:.72rem;">Encuestas capturadas</div>
+              </div>
+              <div>
+                <div class="kpi-val" style="font-size:1.6rem;">{int(r['ln_proyectada_cubierta']):,}</div>
+                <div class="kpi-label" style="font-size:.72rem;">LN proyectada cubierta</div>
+              </div>
+              <div>
+                <div class="kpi-val" style="font-size:1.6rem; color:{color_pct};">{fmt_pct(r['pct_ln_cubierta']) if r['ln_meta_500'] > 0 else '—'}</div>
+                <div class="kpi-label" style="font-size:.72rem;">% LN cubierta</div>
+              </div>
+            </div>
             <div class="kpi-label">{etiqueta_principal}</div>
             <div class="kpi-ctx" style="margin-top:6px;">{ctx_ln}</div>
           </div>
@@ -585,9 +696,12 @@ with tab_mapa:
     st.caption("Encuestas capturadas y % de LN corte 500 cubierta, todas las secciones del plan.")
 
     tabla_secciones = resumen.copy().sort_values("pct_ln_cubierta", ascending=False, na_position="last")
-    tabla_secciones_fmt = tabla_secciones[["seccion", "encuestas", "ln_meta_500", "pct_ln_cubierta"]].rename(
+    tabla_secciones_fmt = tabla_secciones[
+        ["seccion", "encuestas", "ln_proyectada_cubierta", "ln_meta_500", "pct_ln_cubierta"]
+    ].rename(
         columns={
             "seccion": "Sección", "encuestas": "Encuestas",
+            "ln_proyectada_cubierta": "LN proyectada cubierta",
             "ln_meta_500": "LN corte 500", "pct_ln_cubierta": "% LN cubierta",
         }
     )
@@ -646,6 +760,49 @@ with tab_encuestadores:
                 max_value=int(tabla_enc["Total encuestas"].max()), format="%d",
             ),
         },
+    )
+
+    n_rapidas = int((df_encuestas["duracion_min"] < 2).sum())
+    if n_rapidas > 0:
+        st.caption(
+            f"⚠️ {n_rapidas} encuesta(s) en este periodo con duración menor a 2 minutos "
+            "(formulario de 14 páginas) — vale la pena revisar caso por caso si son "
+            "levantamientos legítimos muy eficientes o registros incompletos/de prueba."
+        )
+
+    # ── Desempeño diario vs. meta ────────────────────────────────────────────
+    st.markdown("---")
+    st.markdown("### Desempeño diario vs. meta (20 encuestas/día)")
+    st.caption(
+        "Independiente del filtro de periodo de arriba — siempre muestra todos los días "
+        "del operativo, para dar seguimiento día a día al desempeño de cada encuestador."
+    )
+
+    df_diario = df_encuestas_full.copy()
+    df_diario["dia"] = df_diario["fecha_creacion"].dt.date
+
+    pivote = (
+        df_diario.groupby(["nombre_encuestador", "dia"]).size()
+        .unstack(fill_value=0).sort_index(axis=1)
+    )
+    pivote.columns = [d.strftime("%d-%b") for d in pivote.columns]
+    pivote.insert(0, "Promedio/día", pivote.mean(axis=1).round(1))
+    pivote.insert(1, "% días con meta cumplida",
+                  (pivote.iloc[:, 1:] >= META_ENCUESTAS_DIARIAS).mean(axis=1).mul(100).round(0))
+    pivote = pivote.sort_values("Promedio/día", ascending=False)
+
+    st.dataframe(
+        pivote.reset_index().rename(columns={"nombre_encuestador": "Encuestador"}),
+        hide_index=True, use_container_width=True,
+        column_config={
+            "% días con meta cumplida": st.column_config.ProgressColumn(
+                "% días con meta cumplida", min_value=0, max_value=100, format="%.0f%%",
+            ),
+        },
+    )
+    st.caption(
+        f"Celdas = encuestas capturadas ese día calendario. Meta diaria: {META_ENCUESTAS_DIARIAS} "
+        "encuestas por encuestador."
     )
 
 # ── TAB 3 — Resultados preliminares ─────────────────────────────────────────
