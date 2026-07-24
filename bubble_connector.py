@@ -65,7 +65,7 @@ ANCLA_OPERATIVO = datetime(2026, 7, 18, 9, 0, 0)
 HABITANTES_PROMEDIO_VIVIENDA = 3.86
 
 # Meta de desempeño diario por encuestador, para el monitoreo de campo.
-META_ENCUESTAS_DIARIAS = 20
+META_ENCUESTAS_DIARIAS = 25
 
 # Alerta de "racha de capturas rápidas": N o más encuestas SEGUIDAS (mismo
 # encuestador, mismo día, consecutivas en el tiempo) con duración por debajo
