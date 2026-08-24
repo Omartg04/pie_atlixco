@@ -33,7 +33,7 @@ import streamlit as st
 logger = logging.getLogger(__name__)
 
 BUBBLE_DATA_API_ROOT = "https://encuestainduccionatlixco.bubbleapps.io/api/1.1/obj"
-BUBBLE_THING_NAME = "Encuesta"
+BUBBLE_THING_NAME = "encuesta"
 BUBBLE_ENDPOINT = f"{BUBBLE_DATA_API_ROOT}/{BUBBLE_THING_NAME}"
 BUBBLE_PAGE_SIZE = 100
 CACHE_TTL_SEC = 600  # 10 min — dentro del rango 5-10 min acordado
