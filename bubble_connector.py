@@ -1,3 +1,4 @@
+
 """
 PIE Atlixco · bubble_connector.py
 Conector a la Data API de Bubble para el formulario de inducción ("Encuesta").
@@ -36,7 +37,7 @@ BUBBLE_DATA_API_ROOT = "https://encuestainduccionatlixco.bubbleapps.io/api/1.1/o
 BUBBLE_THING_NAME = "encuesta"
 BUBBLE_ENDPOINT = f"{BUBBLE_DATA_API_ROOT}/{BUBBLE_THING_NAME}"
 BUBBLE_PAGE_SIZE = 100
-CACHE_TTL_SEC = 600  # 10 min — dentro del rango 5-10 min acordado
+CACHE_TTL_SEC = 1800  # 30 min — suficiente para monitoreo operativo (~3-4 enc/hora por encuestador)
 
 _TZ_MEXICO = ZoneInfo("America/Mexico_City")
 
@@ -139,15 +140,29 @@ def _fetch_all_raw(private_key: str) -> list[dict]:
     no 50K+) no hace falta paginación por ventanas de tiempo ni descarga
     paralela — una sola pasada de páginas de 100 es más que suficiente y
     más simple de mantener.
+
+    Optimización C: se solicitan únicamente los campos definidos en FIELD_MAP
+    más los de PII (para el booleano tiene_celular/tiene_email). Bubble omite
+    del payload los campos no solicitados, reduciendo el tamaño de cada
+    respuesta y el WU asociado al procesamiento. Los campos _id, Created Date
+    y Modified Date se incluyen siempre (son metadatos del sistema).
     """
     headers = {"Authorization": f"Bearer {private_key}"}
     resultados: list[dict] = []
     cursor = 0
 
+    # Campos a solicitar: claves Bubble del FIELD_MAP + PII (solo para booleano)
+    _campos_bubble = list(FIELD_MAP.keys()) + CAMPOS_PII
+
     while True:
         resp = requests.get(
             BUBBLE_ENDPOINT, headers=headers,
-            params={"limit": BUBBLE_PAGE_SIZE, "cursor": cursor}, timeout=20,
+            params={
+                "limit": BUBBLE_PAGE_SIZE,
+                "cursor": cursor,
+                "fields": ",".join(_campos_bubble),
+            },
+            timeout=20,
         )
         resp.raise_for_status()
         body = resp.json().get("response", {})
