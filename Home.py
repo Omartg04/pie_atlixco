@@ -115,6 +115,24 @@ st.markdown(f"""
 st.markdown("<br>", unsafe_allow_html=True)
 st.page_link("pages/3_M3_Como_vamos_en_campo.py", label="→ Ir al Módulo 3 · ¿Cómo vamos en campo?", icon="📡")
 
+st.markdown("<br>", unsafe_allow_html=True)
+
+st.markdown(f"""
+<div class="stations-grid" style="grid-template-columns: 1fr;">
+  <article class="station">
+    <span class="station-status on"><i></i>EN OPERACIÓN</span>
+    <div class="station-tag">04 · ¿Cómo vamos en campo, por colonia?</div>
+    <h3>El mismo avance, en el nombre que reconocen las brigadas</h3>
+    <p>Vista complementaria al Módulo 3: mismo operativo de inducción, orientado por
+    colonia en vez de número de sección. El universo elegible (LN corte 500) es exacto;
+    las encuestas por colonia son una estimación por reparto proporcional, ya que Bubble
+    solo captura la sección de cada encuesta.</p>
+  </article>
+</div>
+""", unsafe_allow_html=True)
+st.markdown("<br>", unsafe_allow_html=True)
+st.page_link("pages/4_M4_Colonias.py", label="→ Ir al Módulo 4 · ¿Cómo vamos en campo, por colonia?", icon="🏘️")
+
 st.markdown(f"""
 <div style="margin-top:36px; padding-top:16px; border-top:1px solid {COLOR['border_subtle']};
             font-family:'JetBrains Mono',monospace; font-size:.68rem; color:{COLOR['text_muted']};

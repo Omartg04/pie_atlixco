@@ -18,6 +18,7 @@ from app_utils import (
     GLOBAL_CSS, COLOR, load_spt, load_geojson,
     score_color, fuente_tag_html, fmt_pct, fmt_num,
     ARQUETIPOS, DEFAULT_ARQUETIPO, check_password,
+    carto_tiles, CARTO_ATTR,
 )
 
 st.set_page_config(
@@ -360,8 +361,10 @@ def build_map(df_sel: pd.DataFrame, geo: dict, vmin: float, vmax: float, sel_sec
         center = _centroid(geo["features"]) or [18.9, -98.43]
         zoom = 13
 
-    tiles = "CartoDB dark_matter" if mostrar_spt else "OpenStreetMap"
-    m = folium.Map(location=center, zoom_start=zoom, tiles=tiles)
+    if mostrar_spt:
+        m = folium.Map(location=center, zoom_start=zoom, tiles=carto_tiles(), attr=CARTO_ATTR)
+    else:
+        m = folium.Map(location=center, zoom_start=zoom, tiles="OpenStreetMap")
     lookup_sel = df_sel.set_index("seccion")
 
     def style_fn(feature):

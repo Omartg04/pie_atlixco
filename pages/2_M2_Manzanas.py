@@ -20,6 +20,7 @@ from streamlit_folium import st_folium
 from app_utils import (
     GLOBAL_CSS, COLOR, load_spt, load_geojson, load_manzanas, load_priorizacion_secciones,
     fmt_num, ARQUETIPOS, DEFAULT_ARQUETIPO, check_password, corte_color, score_color,
+    carto_tiles, CARTO_ATTR,
 )
 
 st.set_page_config(
@@ -356,7 +357,7 @@ for feat in feats_render:
 center = [sum(lats) / len(lats), sum(lons) / len(lons)] if lats else [18.9, -98.43]
 zoom_inicial = 12 if vista_general else 15
 
-m = folium.Map(location=center, zoom_start=zoom_inicial, tiles="CartoDB dark_matter")
+m = folium.Map(location=center, zoom_start=zoom_inicial, tiles=carto_tiles(), attr=CARTO_ATTR)
 
 # ── Contorno(s) de sección (contexto espacial, sin relleno) ──
 if vista_general:

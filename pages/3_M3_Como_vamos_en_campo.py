@@ -33,6 +33,7 @@ from streamlit_folium import st_folium
 from app_utils import (
     GLOBAL_CSS, COLOR, load_spt, load_geojson, load_manzanas,
     score_color, fmt_pct, fmt_num, check_password, sidebar_sesion,
+    carto_tiles, CARTO_ATTR,
 )
 from bubble_connector import (
     get_encuestas_induccion, HABITANTES_PROMEDIO_VIVIENDA, META_ENCUESTAS_DIARIAS,
@@ -570,7 +571,7 @@ with tab_mapa:
         center = (_centroid([feat_sel]) if feat_sel else None) or [18.9, -98.43]
         zoom = 16 if feat_sel else 13
 
-        m = folium.Map(location=center, zoom_start=zoom, tiles="CartoDB dark_matter")
+        m = folium.Map(location=center, zoom_start=zoom, tiles=carto_tiles(), attr=CARTO_ATTR)
 
         def style_fn(feature):
             sec = feature["properties"].get("seccion")

@@ -37,6 +37,31 @@ COLOR = {
     "corte_865":     "#f6d9a8",   # claro/desaturado — cierre de universo elegible
 }
 
+# ════════════════════════════════════════════════════════════════════════════
+# BASEMAP — CARTO ahora exige API key en los tiles raster (si falta, sale el
+# watermark "API KEY REQUIRED" sobre el mapa). Se toma de
+# st.secrets["carto"]["api_key"] si existe; si no, cae al key que Omar
+# compartió como respaldo para no romper el mapa mientras se agrega a
+# secrets.toml. Recomendado: mover el key a .streamlit/secrets.toml (mismo
+# patrón que ya se usa para [bubble]) y quitar el fallback de aquí.
+# ════════════════════════════════════════════════════════════════════════════
+_CARTO_API_KEY_FALLBACK = "cb1_2vkv_1_663774fb3312be33ef90a6d2"
+CARTO_API_KEY = st.secrets.get("carto", {}).get("api_key", _CARTO_API_KEY_FALLBACK)
+CARTO_ATTR = (
+    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> '
+    'contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+)
+
+
+def carto_tiles(style: str = "dark_all") -> str:
+    """URL de tiles raster de CARTO con API key incluida, lista para pasarse a
+    folium.Map(tiles=carto_tiles(), attr=CARTO_ATTR). Estilo por default:
+    dark_all (el que usan M3/M4 hoy, vía el alias "CartoDB dark_matter" que
+    ya no funciona sin key). Otros estilos: "light_all", o "rastertiles/voyager"
+    (voyager usa un path distinto al de dark_all/light_all)."""
+    return f"https://basemaps.cartocdn.com/{style}/{{z}}/{{x}}/{{y}}.png?key={CARTO_API_KEY}"
+
+
 FONT_DISPLAY = "'Barlow Condensed', sans-serif"
 FONT_BODY = "'DM Sans', sans-serif"
 FONT_MONO = "'JetBrains Mono', monospace"
@@ -204,8 +229,22 @@ def load_geojson() -> dict:
 
 @st.cache_data
 def load_manzanas() -> dict:
-    """Geojson de manzanas/localidades con capas de priorización 500/700/865."""
+    """Geojson de manzanas/localidades con capas de priorización 500/700/865.
+    Cada feature trae ademas colonia_nombre/colonia_tipo/colonia_cvegeo/
+    origen_colonia (INEGI/INE/None) para las unidades dentro de las 37
+    secciones en_alcance_42_secciones — ver memoria_calculo_modulo_colonias_atlixco.md."""
     path = os.path.join(DATA_DIR, "atlixco_unificado_web_capas.geojson")
+    with open(path, encoding="utf-8") as f:
+        return json.load(f)
+
+
+@st.cache_data
+def load_colonias_geojson() -> dict:
+    """Geojson de poligonos de colonia (INEGI 2025 + rescatadas del INE donde
+    INEGI no tenia cobertura), en WGS84, listo para folium. Usado por M4
+    (cobertura por colonia). Ver memoria_calculo_modulo_colonias_atlixco.md
+    para la metodologia del cruce manzana->colonia."""
+    path = os.path.join(DATA_DIR, "colonias_atlixco_web.geojson")
     with open(path, encoding="utf-8") as f:
         return json.load(f)
 
