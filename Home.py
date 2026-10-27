@@ -72,15 +72,16 @@ with col_a:
     <div class="stations-grid" style="grid-template-columns: 1fr;">
       <article class="station">
         <span class="station-status on"><i></i>EN OPERACIÓN</span>
-        <div class="station-tag">01 · Plan Territorial</div>
-        <h3>¿A dónde va Arturo primero?</h3>
-        <p>Ordena las 42 secciones del municipio de mayor a menor prioridad, para saber
-        en qué zonas conviene invertir tiempo de campaña primero y por qué.</p>
+        <div class="station-tag">01 · Planeación Territorial</div>
+        <h3>¿A dónde manda el equipo las brigadas?</h3>
+        <p>Ordena las 74 secciones del municipio de mayor a menor prioridad y arma el
+        recorrido del día, con el mensaje listo para mandarle al brigadista por WhatsApp
+        y el enlace del mapa de su sección.</p>
       </article>
     </div>
     """, unsafe_allow_html=True)
     st.markdown("<br>", unsafe_allow_html=True)
-    st.page_link("pages/1_M1_Plan_Territorial.py", label="→ Ir al Módulo 1 · Plan Territorial", icon="🗺️")
+    st.page_link("pages/1_M1_Planeacion_Territorial.py", label="→ Ir al Módulo 1 · Planeación Territorial", icon="🗺️")
 
 with col_b:
     st.markdown(f"""

@@ -1,0 +1,970 @@
+id_unidad,seccion,localidad,manzana,unidad,LN_manzana,capa_prioridad_v2,ranking_mz_seccion,nav_tipo,nav_id,nav_nombre,nav_nombre_pendiente,ambito,clase_crosswalk
+154-0001-0037,154,1,37,manzana_urbana,55.8,prioritaria_50,15.0,colonia,2101900010032,GUADALUPE VICTORIA CUARTA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+154-0001-0049,154,1,49,manzana_urbana,61.9,prioritaria_50,9.0,colonia,2101900010032,GUADALUPE VICTORIA CUARTA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+154-0001-0015,154,1,15,manzana_urbana,56.9,prioritaria_50,14.0,colonia,2101900010029,GUADALUPE VICTORIA PRIMERA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+154-0001-0021,154,1,21,manzana_urbana,108.6,prioritaria_50,2.0,colonia,2101900010029,GUADALUPE VICTORIA PRIMERA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+154-0001-0023,154,1,23,manzana_urbana,59.9,prioritaria_50,10.0,colonia,2101900010029,GUADALUPE VICTORIA PRIMERA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+154-0001-0029,154,1,29,manzana_urbana,100.5,prioritaria_50,3.0,colonia,2101900010029,GUADALUPE VICTORIA PRIMERA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+154-0001-0043,154,1,43,manzana_urbana,73.1,prioritaria_50,6.0,colonia,2101900010033,GUADALUPE VICTORIA QUINTA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+154-0001-0026,154,1,26,manzana_urbana,134.0,prioritaria_50,1.0,colonia,2101900010030,GUADALUPE VICTORIA SEGUNDA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+154-0001-0031,154,1,31,manzana_urbana,58.9,prioritaria_50,12.0,colonia,2101900010030,GUADALUPE VICTORIA SEGUNDA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+154-0001-0032,154,1,32,manzana_urbana,58.9,prioritaria_50,13.0,colonia,2101900010030,GUADALUPE VICTORIA SEGUNDA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+154-0001-0033,154,1,33,manzana_urbana,64.0,prioritaria_50,7.0,colonia,2101900010030,GUADALUPE VICTORIA SEGUNDA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+154-0001-0036,154,1,36,manzana_urbana,92.4,prioritaria_50,4.0,colonia,2101900010030,GUADALUPE VICTORIA SEGUNDA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+154-0001-0073,154,1,73,manzana_urbana,78.2,prioritaria_50,5.0,colonia,2101900010046,IXTEPEC,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+154-0001-0044,154,1,44,manzana_urbana,64.0,prioritaria_50,8.0,colonia,2101900010053,METEPEC CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+154-0001-0045,154,1,45,manzana_urbana,55.8,prioritaria_50,16.0,colonia,2101900010053,METEPEC CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+154-0001-0047,154,1,47,manzana_urbana,59.9,prioritaria_50,11.0,colonia,2101900010053,METEPEC CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+155-0001-0022,155,1,22,manzana_urbana,103.6,prioritaria_50,1.0,colonia,2101900010053,METEPEC CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+155-0001-0028,155,1,28,manzana_urbana,94.7,prioritaria_50,2.0,colonia,2101900010053,METEPEC CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+156-0001-0018,156,1,18,manzana_urbana,108.6,prioritaria_50,1.0,colonia,2101900010053,METEPEC CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+157-0001-0005,157,1,5,manzana_urbana,67.7,prioritaria_50,4.0,colonia,2101900010053,METEPEC CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+157-0001-0011,157,1,11,manzana_urbana,80.8,prioritaria_50,3.0,colonia,2101900010053,METEPEC CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+157-0001-0013,157,1,13,manzana_urbana,61.6,prioritaria_50,5.0,colonia,2101900010053,METEPEC CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+157-0001-0014,157,1,14,manzana_urbana,102.1,prioritaria_50,2.0,colonia,2101900010053,METEPEC CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+157-0001-0018,157,1,18,manzana_urbana,110.1,prioritaria_50,1.0,colonia,2101900010053,METEPEC CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+158-0001-0003,158,1,3,manzana_urbana,40.5,prioritaria_50,10.0,colonia,INE-1243,EL LEON,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+158-0001-0010,158,1,10,manzana_urbana,51.7,prioritaria_50,2.0,colonia,INE-1243,EL LEON,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+158-0001-0013,158,1,13,manzana_urbana,50.6,prioritaria_50,3.0,colonia,INE-1243,EL LEON,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+158-0001-0021,158,1,21,manzana_urbana,35.5,prioritaria_50,18.0,colonia,INE-1243,EL LEON,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+158-0001-0022,158,1,22,manzana_urbana,38.5,prioritaria_50,13.0,colonia,INE-1243,EL LEON,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+158-0001-0024,158,1,24,manzana_urbana,49.6,prioritaria_50,4.0,colonia,INE-1243,EL LEON,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+158-0001-0025,158,1,25,manzana_urbana,37.5,prioritaria_50,15.0,colonia,INE-1243,EL LEON,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+158-0001-0027,158,1,27,manzana_urbana,69.9,prioritaria_50,1.0,colonia,INE-1243,EL LEON,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+158-0001-0031,158,1,31,manzana_urbana,32.4,prioritaria_50,20.0,colonia,INE-1243,EL LEON,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+158-0001-0002,158,1,2,manzana_urbana,47.6,prioritaria_50,6.0,colonia,2101900010043,EL LEÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+158-0001-0004,158,1,4,manzana_urbana,36.5,prioritaria_50,16.0,colonia,2101900010043,EL LEÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+158-0001-0008,158,1,8,manzana_urbana,40.5,prioritaria_50,11.0,colonia,2101900010043,EL LEÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+158-0001-0011,158,1,11,manzana_urbana,37.5,prioritaria_50,14.0,colonia,2101900010043,EL LEÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+158-0001-0023,158,1,23,manzana_urbana,40.5,prioritaria_50,12.0,colonia,2101900010043,EL LEÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+158-0001-0026,158,1,26,manzana_urbana,43.6,prioritaria_50,8.0,colonia,2101900010043,EL LEÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+158-0001-0028,158,1,28,manzana_urbana,44.6,prioritaria_50,7.0,colonia,2101900010043,EL LEÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+158-0001-0030,158,1,30,manzana_urbana,48.6,prioritaria_50,5.0,colonia,2101900010043,EL LEÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+158-0065-0010,158,65,10,manzana_rural,34.4,prioritaria_50,19.0,localidad,LOC-0065,Localidad 65,1,rural,A_MATCH_EXACTO_ELEGIBLE
+158-0065-0020,158,65,20,manzana_rural,36.5,prioritaria_50,17.0,colonia,2101900010084,VILLA LA PRIMERA SECCIÓN,0,rural,A_MATCH_EXACTO_ELEGIBLE
+158-0065-0022,158,65,22,manzana_rural,43.6,prioritaria_50,9.0,colonia,2101900010084,VILLA LA PRIMERA SECCIÓN,0,rural,A_MATCH_EXACTO_ELEGIBLE
+159-0001-0042,159,1,42,manzana_urbana,96.6,prioritaria_50,4.0,colonia,2101900010003,AHUEHUETE,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+159-0001-0043,159,1,43,manzana_urbana,122.0,prioritaria_50,2.0,colonia,2101900010003,AHUEHUETE,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+159-0001-0081,159,1,81,manzana_urbana,56.9,prioritaria_50,13.0,colonia,2101900010010,CABRERA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+159-0001-0035,159,1,35,manzana_urbana,89.4,prioritaria_50,5.0,colonia,2101900010025,FOVISSSTE,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+159-0001-0051,159,1,51,manzana_urbana,67.1,prioritaria_50,9.0,colonia,2101900010055,LAS MONJAS,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+159-0001-0057,159,1,57,manzana_urbana,82.3,prioritaria_50,6.0,colonia,2101900010055,LAS MONJAS,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+159-0001-0058,159,1,58,manzana_urbana,70.1,prioritaria_50,7.0,colonia,2101900010055,LAS MONJAS,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+159-0001-0061,159,1,61,manzana_urbana,53.9,prioritaria_50,14.0,colonia,2101900010055,LAS MONJAS,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+159-0001-0039,159,1,39,manzana_urbana,67.1,prioritaria_50,8.0,colonia,2101900010130,RANCHO BUGAMBILIAS,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+159-0001-0036,159,1,36,manzana_urbana,64.0,prioritaria_50,10.0,colonia,2101900010109,SAN ANTONIO LAS MONJAS,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+159-0001-0029,159,1,29,manzana_urbana,217.5,prioritaria_50,1.0,colonia,2101900010076,SOLARES CHICOS,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+159-0001-0044,159,1,44,manzana_urbana,63.0,prioritaria_50,11.0,colonia,2101900010076,SOLARES CHICOS,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+159-0001-0071,159,1,71,manzana_urbana,58.9,prioritaria_50,12.0,colonia,INE-4246,TENERIA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+159-0001-0037,159,1,37,manzana_urbana,112.8,prioritaria_50,3.0,colonia,2101900010091,ÁREA DE LA XALPATLACO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+160R-0001-0018,160,1,18,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010001,AENSCA EL BARREAL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0123,160,1,123,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010001,AENSCA EL BARREAL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0083,160,1,83,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010002,AENSCA LOS LLANOS,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0084,160,1,84,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010002,AENSCA LOS LLANOS,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0085,160,1,85,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010002,AENSCA LOS LLANOS,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0101,160,1,101,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010002,AENSCA LOS LLANOS,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0103,160,1,103,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010002,AENSCA LOS LLANOS,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0367,160,1,367,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010002,AENSCA LOS LLANOS,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0368,160,1,368,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010002,AENSCA LOS LLANOS,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0369,160,1,369,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010002,AENSCA LOS LLANOS,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0017,160,1,17,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010004,ALTAVISTA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0002,160,1,2,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010007,ATLIXCO 90,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0003,160,1,3,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010007,ATLIXCO 90,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0004,160,1,4,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010007,ATLIXCO 90,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0005,160,1,5,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010007,ATLIXCO 90,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0016,160,1,16,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010007,ATLIXCO 90,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0019,160,1,19,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010007,ATLIXCO 90,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0025,160,1,25,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010007,ATLIXCO 90,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0028,160,1,28,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010007,ATLIXCO 90,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0029,160,1,29,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010007,ATLIXCO 90,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0035,160,1,35,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010007,ATLIXCO 90,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0037,160,1,37,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010007,ATLIXCO 90,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0038,160,1,38,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010007,ATLIXCO 90,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0039,160,1,39,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010007,ATLIXCO 90,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0040,160,1,40,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010007,ATLIXCO 90,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0048,160,1,48,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010007,ATLIXCO 90,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0052,160,1,52,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010007,ATLIXCO 90,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0350,160,1,350,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010007,ATLIXCO 90,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0351,160,1,351,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010007,ATLIXCO 90,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0352,160,1,352,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010007,ATLIXCO 90,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0353,160,1,353,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010007,ATLIXCO 90,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0354,160,1,354,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010007,ATLIXCO 90,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0030,160,1,30,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010009,BENITO JUÁREZ,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0049,160,1,49,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010009,BENITO JUÁREZ,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0057,160,1,57,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010009,BENITO JUÁREZ,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0058,160,1,58,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010009,BENITO JUÁREZ,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0059,160,1,59,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010009,BENITO JUÁREZ,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0064,160,1,64,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010009,BENITO JUÁREZ,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0373,160,1,373,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010009,BENITO JUÁREZ,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0381,160,1,381,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010009,BENITO JUÁREZ,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0382,160,1,382,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010009,BENITO JUÁREZ,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0014,160,1,14,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010008,EL BARREAL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0042,160,1,42,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010143,EL BARREAL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0043,160,1,43,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010143,EL BARREAL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0044,160,1,44,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010143,EL BARREAL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0045,160,1,45,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010143,EL BARREAL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0071,160,1,71,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010008,EL BARREAL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0072,160,1,72,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010008,EL BARREAL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0073,160,1,73,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010008,EL BARREAL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0074,160,1,74,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010008,EL BARREAL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0087,160,1,87,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010008,EL BARREAL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0088,160,1,88,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010008,EL BARREAL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0091,160,1,91,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010143,EL BARREAL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0161,160,1,161,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010008,EL BARREAL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0225,160,1,225,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010008,EL BARREAL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0239,160,1,239,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010008,EL BARREAL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0361,160,1,361,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010008,EL BARREAL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0136,160,1,136,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0137,160,1,137,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0138,160,1,138,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0141,160,1,141,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0144,160,1,144,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0145,160,1,145,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0146,160,1,146,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0147,160,1,147,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0148,160,1,148,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0149,160,1,149,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0151,160,1,151,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0152,160,1,152,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0153,160,1,153,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0154,160,1,154,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0155,160,1,155,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0157,160,1,157,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0158,160,1,158,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0163,160,1,163,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0164,160,1,164,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0165,160,1,165,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0166,160,1,166,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0167,160,1,167,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0169,160,1,169,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0171,160,1,171,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0172,160,1,172,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0173,160,1,173,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0174,160,1,174,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0175,160,1,175,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0176,160,1,176,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0177,160,1,177,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0178,160,1,178,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0191,160,1,191,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0192,160,1,192,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0193,160,1,193,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0194,160,1,194,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0206,160,1,206,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0207,160,1,207,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0208,160,1,208,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0209,160,1,209,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0228,160,1,228,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0251,160,1,251,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0278,160,1,278,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0340,160,1,340,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0341,160,1,341,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410001,EL ENCANTO DEL CERRIL,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0020,160,1,20,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010037,HUERTAS SAN JOSÉ,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0021,160,1,21,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010037,HUERTAS SAN JOSÉ,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0060,160,1,60,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010037,HUERTAS SAN JOSÉ,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0066,160,1,66,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010037,HUERTAS SAN JOSÉ,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0067,160,1,67,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010037,HUERTAS SAN JOSÉ,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0068,160,1,68,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010037,HUERTAS SAN JOSÉ,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0069,160,1,69,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010037,HUERTAS SAN JOSÉ,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0070,160,1,70,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010037,HUERTAS SAN JOSÉ,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0114,160,1,114,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010037,HUERTAS SAN JOSÉ,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0115,160,1,115,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010037,HUERTAS SAN JOSÉ,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0315,160,1,315,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010037,HUERTAS SAN JOSÉ,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0374,160,1,374,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010037,HUERTAS SAN JOSÉ,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0375,160,1,375,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010037,HUERTAS SAN JOSÉ,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0376,160,1,376,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010037,HUERTAS SAN JOSÉ,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0012,160,1,12,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010106,INFONAVIT,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0109,160,1,109,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010106,INFONAVIT,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0293,160,1,293,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010106,INFONAVIT,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0031,160,1,31,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010006,LOS ÁNGELES,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0047,160,1,47,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010006,LOS ÁNGELES,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0050,160,1,50,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010006,LOS ÁNGELES,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0061,160,1,61,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010006,LOS ÁNGELES,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0065,160,1,65,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010006,LOS ÁNGELES,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0317,160,1,317,bloque_reseccionado,,bloque_reseccionado,,localidad,LOC-0001,Localidad 1,1,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0318,160,1,318,bloque_reseccionado,,bloque_reseccionado,,localidad,LOC-0001,Localidad 1,1,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0319,160,1,319,bloque_reseccionado,,bloque_reseccionado,,localidad,LOC-0001,Localidad 1,1,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0321,160,1,321,bloque_reseccionado,,bloque_reseccionado,,localidad,LOC-0001,Localidad 1,1,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0324,160,1,324,bloque_reseccionado,,bloque_reseccionado,,localidad,LOC-0001,Localidad 1,1,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0325,160,1,325,bloque_reseccionado,,bloque_reseccionado,,localidad,LOC-0001,Localidad 1,1,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0326,160,1,326,bloque_reseccionado,,bloque_reseccionado,,localidad,LOC-0001,Localidad 1,1,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0331,160,1,331,bloque_reseccionado,,bloque_reseccionado,,localidad,LOC-0001,Localidad 1,1,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0383,160,1,383,bloque_reseccionado,,bloque_reseccionado,,localidad,LOC-0001,Localidad 1,1,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0285,160,1,285,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900880002,NINGUNO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0286,160,1,286,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900880002,NINGUNO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0287,160,1,287,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900880002,NINGUNO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0291,160,1,291,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900880002,NINGUNO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0292,160,1,292,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900880002,NINGUNO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0299,160,1,299,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900880002,NINGUNO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0332,160,1,332,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900880002,NINGUNO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0333,160,1,333,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900880002,NINGUNO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0334,160,1,334,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900880002,NINGUNO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0335,160,1,335,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900880002,NINGUNO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0336,160,1,336,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900880002,NINGUNO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0337,160,1,337,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900880002,NINGUNO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0036,160,1,36,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010128,PLAZA SAN JUAN,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0126,160,1,126,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010128,PLAZA SAN JUAN,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0370,160,1,370,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010128,PLAZA SAN JUAN,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0371,160,1,371,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010128,PLAZA SAN JUAN,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0372,160,1,372,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010128,PLAZA SAN JUAN,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0384,160,1,384,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010128,PLAZA SAN JUAN,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0006,160,1,6,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010129,POTRERO CHICO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0281,160,1,281,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010129,POTRERO CHICO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0282,160,1,282,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010129,POTRERO CHICO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0283,160,1,283,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010129,POTRERO CHICO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0284,160,1,284,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010129,POTRERO CHICO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0365,160,1,365,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010129,POTRERO CHICO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0277,160,1,277,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410002,REAL CONVEIMA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0279,160,1,279,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410002,REAL CONVEIMA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0306,160,1,306,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410002,REAL CONVEIMA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0307,160,1,307,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410002,REAL CONVEIMA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0308,160,1,308,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410002,REAL CONVEIMA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0342,160,1,342,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410002,REAL CONVEIMA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0343,160,1,343,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410002,REAL CONVEIMA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0344,160,1,344,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410002,REAL CONVEIMA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0348,160,1,348,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410002,REAL CONVEIMA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0202,160,1,202,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410003,SOAPAMA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0203,160,1,203,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410003,SOAPAMA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0204,160,1,204,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410003,SOAPAMA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0205,160,1,205,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410003,SOAPAMA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0217,160,1,217,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410003,SOAPAMA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0226,160,1,226,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410003,SOAPAMA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0229,160,1,229,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410003,SOAPAMA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0231,160,1,231,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410003,SOAPAMA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0233,160,1,233,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410003,SOAPAMA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0288,160,1,288,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410003,SOAPAMA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0345,160,1,345,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410003,SOAPAMA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0346,160,1,346,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410003,SOAPAMA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0347,160,1,347,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410003,SOAPAMA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0356,160,1,356,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410003,SOAPAMA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0357,160,1,357,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410003,SOAPAMA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0358,160,1,358,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410003,SOAPAMA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0196,160,1,196,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-4961,TIZAYUCA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0197,160,1,197,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-4961,TIZAYUCA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0212,160,1,212,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-4961,TIZAYUCA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0252,160,1,252,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-4961,TIZAYUCA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0380,160,1,380,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-4961,TIZAYUCA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0033,160,1,33,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010126,TIZAYUCA EX-HACIENDA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0198,160,1,198,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010126,TIZAYUCA EX-HACIENDA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0219,160,1,219,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010126,TIZAYUCA EX-HACIENDA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0378,160,1,378,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010126,TIZAYUCA EX-HACIENDA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0379,160,1,379,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010126,TIZAYUCA EX-HACIENDA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0008,160,1,8,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010138,UNIDAD HABITACIONAL SAN JUAN II LOS VOLCANES,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0009,160,1,9,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010138,UNIDAD HABITACIONAL SAN JUAN II LOS VOLCANES,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0081,160,1,81,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010138,UNIDAD HABITACIONAL SAN JUAN II LOS VOLCANES,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0105,160,1,105,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010138,UNIDAD HABITACIONAL SAN JUAN II LOS VOLCANES,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0106,160,1,106,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010138,UNIDAD HABITACIONAL SAN JUAN II LOS VOLCANES,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0385,160,1,385,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010138,UNIDAD HABITACIONAL SAN JUAN II LOS VOLCANES,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0386,160,1,386,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010138,UNIDAD HABITACIONAL SAN JUAN II LOS VOLCANES,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0387,160,1,387,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010138,UNIDAD HABITACIONAL SAN JUAN II LOS VOLCANES,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0001,160,1,1,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-5839,UNIVERSIDAD,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0214,160,1,214,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-5839,UNIVERSIDAD,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0289,160,1,289,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-5839,UNIVERSIDAD,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0294,160,1,294,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-5839,UNIVERSIDAD,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0295,160,1,295,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-5839,UNIVERSIDAD,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0296,160,1,296,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-5839,UNIVERSIDAD,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0301,160,1,301,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-5839,UNIVERSIDAD,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0305,160,1,305,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-5839,UNIVERSIDAD,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0322,160,1,322,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-5839,UNIVERSIDAD,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0323,160,1,323,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-5839,UNIVERSIDAD,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0327,160,1,327,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-5839,UNIVERSIDAD,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0328,160,1,328,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-5839,UNIVERSIDAD,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0329,160,1,329,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-5839,UNIVERSIDAD,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0330,160,1,330,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-5839,UNIVERSIDAD,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0338,160,1,338,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-5839,UNIVERSIDAD,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0339,160,1,339,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-5839,UNIVERSIDAD,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0195,160,1,195,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-6529,VISTA BELLA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0201,160,1,201,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-6529,VISTA BELLA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0211,160,1,211,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-6529,VISTA BELLA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0377,160,1,377,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-6529,VISTA BELLA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0063,160,1,63,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010086,VISTA HERMOSA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0075,160,1,75,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010086,VISTA HERMOSA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0076,160,1,76,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010086,VISTA HERMOSA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0077,160,1,77,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010086,VISTA HERMOSA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0078,160,1,78,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010086,VISTA HERMOSA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0079,160,1,79,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010086,VISTA HERMOSA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0090,160,1,90,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010086,VISTA HERMOSA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0094,160,1,94,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010086,VISTA HERMOSA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0095,160,1,95,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010086,VISTA HERMOSA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0096,160,1,96,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010086,VISTA HERMOSA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0118,160,1,118,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010086,VISTA HERMOSA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0119,160,1,119,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010086,VISTA HERMOSA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0121,160,1,121,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010086,VISTA HERMOSA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0122,160,1,122,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010086,VISTA HERMOSA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0133,160,1,133,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010086,VISTA HERMOSA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0134,160,1,134,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010086,VISTA HERMOSA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0135,160,1,135,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010086,VISTA HERMOSA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0139,160,1,139,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010086,VISTA HERMOSA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0162,160,1,162,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010086,VISTA HERMOSA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0237,160,1,237,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010086,VISTA HERMOSA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0238,160,1,238,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010086,VISTA HERMOSA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0359,160,1,359,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010086,VISTA HERMOSA,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0010,160,1,10,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-1324,XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0143,160,1,143,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-1324,XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0168,160,1,168,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-1324,XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0179,160,1,179,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-1324,XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0215,160,1,215,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410004,XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0218,160,1,218,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-1324,XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0253,160,1,253,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-1324,XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0254,160,1,254,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-1324,XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0255,160,1,255,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-1324,XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0256,160,1,256,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-1324,XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0257,160,1,257,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-1324,XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0262,160,1,262,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-1324,XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0263,160,1,263,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-1324,XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0264,160,1,264,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-1324,XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0265,160,1,265,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-1324,XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0268,160,1,268,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-1324,XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0271,160,1,271,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-1324,XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0273,160,1,273,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410004,XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0274,160,1,274,bloque_reseccionado,,bloque_reseccionado,,colonia,2101902410004,XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0302,160,1,302,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-1324,XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0303,160,1,303,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-1324,XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0304,160,1,304,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-1324,XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0349,160,1,349,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-1324,XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0364,160,1,364,bloque_reseccionado,,bloque_reseccionado,,colonia,INE-1324,XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0007,160,1,7,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010091,ÁREA DE LA XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0080,160,1,80,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010145,ÁREA DE LA XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0116,160,1,116,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010091,ÁREA DE LA XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0117,160,1,117,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010091,ÁREA DE LA XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0159,160,1,159,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010091,ÁREA DE LA XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0222,160,1,222,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010091,ÁREA DE LA XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0224,160,1,224,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010091,ÁREA DE LA XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0355,160,1,355,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010145,ÁREA DE LA XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0360,160,1,360,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010145,ÁREA DE LA XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0362,160,1,362,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010091,ÁREA DE LA XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0363,160,1,363,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010091,ÁREA DE LA XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+160R-0001-0366,160,1,366,bloque_reseccionado,,bloque_reseccionado,,colonia,2101900010091,ÁREA DE LA XALPATLACO,0,urbano,C_BLOQUE_160R_OPERATIVO
+161-0001-0005,161,1,5,manzana_urbana,66.8,prioritaria_50,6.0,colonia,2101900010038,INFONAVIT,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+161-0001-0018,161,1,18,manzana_urbana,96.2,prioritaria_50,5.0,colonia,2101900010038,INFONAVIT,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+161-0001-0019,161,1,19,manzana_urbana,66.8,prioritaria_50,7.0,colonia,2101900010106,INFONAVIT,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+161-0001-0029,161,1,29,manzana_urbana,104.3,prioritaria_50,3.0,colonia,2101900010106,INFONAVIT,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+161-0001-0035,161,1,35,manzana_urbana,100.2,prioritaria_50,4.0,colonia,2101900010106,INFONAVIT,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+161-0001-0042,161,1,42,manzana_urbana,119.5,prioritaria_50,2.0,colonia,2101900010106,INFONAVIT,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+161-0001-0050,161,1,50,manzana_urbana,134.6,prioritaria_50,1.0,colonia,2101900010106,INFONAVIT,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+162-0001-0033,162,1,33,manzana_urbana,70.5,prioritaria_50,6.0,colonia,2101900010143,EL BARREAL,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+162-0001-0006,162,1,6,manzana_urbana,68.4,prioritaria_50,7.0,colonia,2101900010038,INFONAVIT,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+162-0001-0008,162,1,8,manzana_urbana,77.5,prioritaria_50,5.0,colonia,2101900010038,INFONAVIT,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+162-0001-0013,162,1,13,manzana_urbana,87.6,prioritaria_50,3.0,colonia,2101900010038,INFONAVIT,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+162-0001-0027,162,1,27,manzana_urbana,201.3,prioritaria_50,1.0,colonia,2101900010038,INFONAVIT,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+162-0001-0032,162,1,32,manzana_urbana,81.5,prioritaria_50,4.0,colonia,2101900010038,INFONAVIT,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+162-0001-0040,162,1,40,manzana_urbana,97.6,prioritaria_50,2.0,colonia,2101900010038,INFONAVIT,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+162-0001-0043,162,1,43,manzana_urbana,64.4,prioritaria_50,8.0,colonia,2101900010038,INFONAVIT,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+164-0001-0018,164,1,18,manzana_urbana,104.7,prioritaria_50,7.0,colonia,2101900010004,ALTAVISTA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+164-0001-0019,164,1,19,manzana_urbana,112.9,prioritaria_50,5.0,colonia,2101900010004,ALTAVISTA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+164-0001-0033,164,1,33,manzana_urbana,98.6,prioritaria_50,8.0,colonia,2101900010004,ALTAVISTA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+164-0001-0027,164,1,27,manzana_urbana,86.4,prioritaria_50,12.0,colonia,2101900010006,LOS ÁNGELES,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+164-0001-0032,164,1,32,manzana_urbana,83.4,prioritaria_50,13.0,colonia,2101900010006,LOS ÁNGELES,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+164-0001-0047,164,1,47,manzana_urbana,81.3,prioritaria_50,14.0,colonia,2101900010006,LOS ÁNGELES,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+164-0001-0049,164,1,49,manzana_urbana,90.5,prioritaria_50,11.0,colonia,2101900010006,LOS ÁNGELES,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+164-0001-0021,164,1,21,manzana_urbana,145.4,prioritaria_50,2.0,colonia,2101900010052,MAXIMINO ÁVILA CAMACHO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+164-0001-0022,164,1,22,manzana_urbana,143.4,prioritaria_50,3.0,colonia,2101900010052,MAXIMINO ÁVILA CAMACHO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+164-0001-0037,164,1,37,manzana_urbana,203.4,prioritaria_50,1.0,colonia,2101900010052,MAXIMINO ÁVILA CAMACHO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+164-0001-0038,164,1,38,manzana_urbana,115.9,prioritaria_50,4.0,colonia,2101900010052,MAXIMINO ÁVILA CAMACHO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+164-0001-0039,164,1,39,manzana_urbana,94.6,prioritaria_50,9.0,colonia,2101900010052,MAXIMINO ÁVILA CAMACHO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+164-0001-0062,164,1,62,manzana_urbana,92.5,prioritaria_50,10.0,colonia,2101900010052,MAXIMINO ÁVILA CAMACHO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+164-0001-0063,164,1,63,manzana_urbana,109.8,prioritaria_50,6.0,colonia,2101900010052,MAXIMINO ÁVILA CAMACHO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+165-0001-0012,165,1,12,manzana_urbana,108.7,prioritaria_50,3.0,colonia,2101900010004,ALTAVISTA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+165-0001-0013,165,1,13,manzana_urbana,93.5,prioritaria_50,6.0,colonia,2101900010004,ALTAVISTA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+165-0001-0015,165,1,15,manzana_urbana,89.4,prioritaria_50,8.0,colonia,2101900010004,ALTAVISTA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+165-0001-0023,165,1,23,manzana_urbana,178.9,prioritaria_50,2.0,colonia,2101900010004,ALTAVISTA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+165-0001-0029,165,1,29,manzana_urbana,216.5,prioritaria_50,1.0,colonia,2101900010004,ALTAVISTA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+165-0001-0030,165,1,30,manzana_urbana,91.5,prioritaria_50,7.0,colonia,2101900010004,ALTAVISTA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+165-0001-0059,165,1,59,manzana_urbana,95.5,prioritaria_50,5.0,colonia,2101900010004,ALTAVISTA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+165-0001-0063,165,1,63,manzana_urbana,96.5,prioritaria_50,4.0,colonia,2101900010004,ALTAVISTA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+165-0001-0064,165,1,64,manzana_urbana,85.4,prioritaria_50,9.0,colonia,2101900010004,ALTAVISTA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+166-0001-0045,166,1,45,manzana_urbana,93.8,prioritaria_50,6.0,colonia,2101900010004,ALTAVISTA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+166-0001-0023,166,1,23,manzana_urbana,145.2,prioritaria_50,4.0,colonia,2101900010009,BENITO JUÁREZ,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+166-0001-0029,166,1,29,manzana_urbana,204.7,prioritaria_50,1.0,colonia,2101900010009,BENITO JUÁREZ,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+166-0001-0037,166,1,37,manzana_urbana,150.3,prioritaria_50,3.0,colonia,2101900010009,BENITO JUÁREZ,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+166-0001-0038,166,1,38,manzana_urbana,95.8,prioritaria_50,5.0,colonia,2101900010009,BENITO JUÁREZ,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+166-0001-0013,166,1,13,manzana_urbana,155.3,prioritaria_50,2.0,colonia,2101900010018,CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+167-0001-0007,167,1,7,manzana_urbana,114.9,prioritaria_50,3.0,colonia,2101900010003,AHUEHUETE,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+167-0001-0016,167,1,16,manzana_urbana,96.7,prioritaria_50,5.0,colonia,2101900010003,AHUEHUETE,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+167-0001-0014,167,1,14,manzana_urbana,97.7,prioritaria_50,4.0,colonia,2101900010018,CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+167-0001-0015,167,1,15,manzana_urbana,221.6,prioritaria_50,1.0,colonia,2101900010018,CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+167-0001-0031,167,1,31,manzana_urbana,127.9,prioritaria_50,2.0,colonia,2101900010076,SOLARES CHICOS,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+168-0001-0001,168,1,1,manzana_urbana,102.9,prioritaria_50,6.0,colonia,2101900010018,CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+168-0001-0045,168,1,45,manzana_urbana,79.7,prioritaria_50,8.0,colonia,2101900010066,RICARDO TREVIÑO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+168-0001-0049,168,1,49,manzana_urbana,90.8,prioritaria_50,7.0,colonia,2101900010066,RICARDO TREVIÑO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+168-0001-0050,168,1,50,manzana_urbana,132.2,prioritaria_50,3.0,colonia,2101900010066,RICARDO TREVIÑO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+168-0001-0062,168,1,62,manzana_urbana,216.0,prioritaria_50,1.0,colonia,2101900010066,RICARDO TREVIÑO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+168-0001-0043,168,1,43,manzana_urbana,135.2,prioritaria_50,2.0,colonia,2101900010076,SOLARES CHICOS,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+168-0001-0034,168,1,34,manzana_urbana,119.1,prioritaria_50,5.0,colonia,2101900010077,SOLARES GRANDES,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+168-0001-0039,168,1,39,manzana_urbana,121.1,prioritaria_50,4.0,colonia,2101900010077,SOLARES GRANDES,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+169-0001-0036,169,1,36,manzana_urbana,79.6,prioritaria_50,13.0,colonia,2101900010010,CABRERA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+169-0001-0037,169,1,37,manzana_urbana,104.1,prioritaria_50,8.0,colonia,2101900010010,CABRERA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+169-0001-0038,169,1,38,manzana_urbana,92.9,prioritaria_50,11.0,colonia,2101900010010,CABRERA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+169-0001-0039,169,1,39,manzana_urbana,124.5,prioritaria_50,3.0,colonia,2101900010010,CABRERA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+169-0001-0040,169,1,40,manzana_urbana,86.7,prioritaria_50,12.0,colonia,2101900010010,CABRERA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+169-0001-0041,169,1,41,manzana_urbana,98.0,prioritaria_50,10.0,colonia,2101900010010,CABRERA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+169-0001-0044,169,1,44,manzana_urbana,134.7,prioritaria_50,2.0,colonia,2101900010010,CABRERA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+169-0001-0045,169,1,45,manzana_urbana,117.4,prioritaria_50,5.0,colonia,2101900010010,CABRERA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+169-0001-0031,169,1,31,manzana_urbana,98.0,prioritaria_50,9.0,colonia,2101900010114,CRUCERO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+169-0001-0083,169,1,83,manzana_urbana,141.8,prioritaria_50,1.0,colonia,2101900010024,EX-RANCHO GAMBOA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+169-0001-0052,169,1,52,manzana_urbana,123.5,prioritaria_50,4.0,colonia,2101900010089,ÁREA DE LA DEL BOSQUE,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+169-0001-0072,169,1,72,manzana_urbana,107.1,prioritaria_50,6.0,colonia,2101900010089,ÁREA DE LA DEL BOSQUE,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+169-0001-0081,169,1,81,manzana_urbana,106.1,prioritaria_50,7.0,colonia,2101900010089,ÁREA DE LA DEL BOSQUE,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+170-0001-0068,170,1,68,manzana_urbana,61.0,prioritaria_50,12.0,colonia,2101900010087,7 DE ENERO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+170-0001-0089,170,1,89,manzana_urbana,61.0,prioritaria_50,13.0,colonia,2101900010087,7 DE ENERO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+170-0001-0030,170,1,30,manzana_urbana,92.5,prioritaria_50,5.0,colonia,INE-1243,EL LEON,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+170-0001-0027,170,1,27,manzana_urbana,101.7,prioritaria_50,3.0,colonia,2101900010043,EL LEÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+170-0001-0001,170,1,1,manzana_urbana,92.5,prioritaria_50,4.0,colonia,2101900010060,PRADOS EL LEÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+170-0001-0007,170,1,7,manzana_urbana,71.2,prioritaria_50,8.0,colonia,2101900010060,PRADOS EL LEÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+170-0001-0008,170,1,8,manzana_urbana,148.4,prioritaria_50,1.0,colonia,2101900010060,PRADOS EL LEÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+170-0001-0011,170,1,11,manzana_urbana,66.1,prioritaria_50,9.0,colonia,2101900010060,PRADOS EL LEÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+170-0001-0015,170,1,15,manzana_urbana,62.0,prioritaria_50,10.0,colonia,2101900010060,PRADOS EL LEÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+170-0001-0022,170,1,22,manzana_urbana,73.2,prioritaria_50,7.0,colonia,2101900010060,PRADOS EL LEÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+170-0001-0025,170,1,25,manzana_urbana,121.0,prioritaria_50,2.0,colonia,2101900010071,SANTA CECILIA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+170-0001-0026,170,1,26,manzana_urbana,62.0,prioritaria_50,11.0,colonia,2101900010084,VILLA LA PRIMERA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+170-0001-0019,170,1,19,manzana_urbana,86.4,prioritaria_50,6.0,colonia,2101900010089,ÁREA DE LA DEL BOSQUE,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+171-0001-0005,171,1,5,manzana_urbana,92.1,prioritaria_50,2.0,colonia,2101900010033,GUADALUPE VICTORIA QUINTA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+171-0001-0001,171,1,1,manzana_urbana,101.3,prioritaria_50,1.0,colonia,2101900010053,METEPEC CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+171-0001-0004,171,1,4,manzana_urbana,64.5,prioritaria_50,4.0,colonia,2101900010053,METEPEC CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+171-0001-0006,171,1,6,manzana_urbana,83.9,prioritaria_50,3.0,colonia,2101900010053,METEPEC CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+172-0001-0014,172,1,14,manzana_urbana,60.9,prioritaria_50,1.0,colonia,2101900010053,METEPEC CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+172-0001-0017,172,1,17,manzana_urbana,42.6,prioritaria_50,2.0,colonia,2101900010053,METEPEC CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+172-0001-0027,172,1,27,manzana_urbana,42.6,prioritaria_50,3.0,colonia,2101900010053,METEPEC CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+173-0001-0006,173,1,6,manzana_urbana,144.3,prioritaria_50,4.0,colonia,2101900010102,AXOCOPAN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+173-0001-0018,173,1,18,manzana_urbana,142.3,prioritaria_50,5.0,colonia,2101900010102,AXOCOPAN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+173-0001-0038,173,1,38,manzana_urbana,159.6,prioritaria_50,3.0,colonia,2101900010102,AXOCOPAN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+173-0001-0002,173,1,2,manzana_urbana,100.6,prioritaria_50,8.0,colonia,2101900010049,LA MAGDALENA AXOCOPAN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+173-0001-0008,173,1,8,manzana_urbana,132.1,prioritaria_50,6.0,colonia,2101900010049,LA MAGDALENA AXOCOPAN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+173-0001-0009,173,1,9,manzana_urbana,162.6,prioritaria_50,2.0,colonia,2101900010049,LA MAGDALENA AXOCOPAN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+173-0001-0010,173,1,10,manzana_urbana,104.7,prioritaria_50,7.0,colonia,2101900010049,LA MAGDALENA AXOCOPAN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+173-0001-0017,173,1,17,manzana_urbana,199.2,prioritaria_50,1.0,colonia,2101900010049,LA MAGDALENA AXOCOPAN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+174-0001-0017,174,1,17,manzana_urbana,56.0,prioritaria_50,20.0,colonia,2101900010102,AXOCOPAN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+174-0001-0032,174,1,32,manzana_urbana,81.5,prioritaria_50,11.0,colonia,2101900010102,AXOCOPAN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+174-0001-0021,174,1,21,manzana_urbana,82.5,prioritaria_50,10.0,colonia,2101900010019,CHAPULTEPEC,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+174-0001-0043,174,1,43,manzana_urbana,54.0,prioritaria_50,23.0,colonia,2101900010019,CHAPULTEPEC,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+174-0001-0001,174,1,1,manzana_urbana,94.7,prioritaria_50,4.0,colonia,2101900010049,LA MAGDALENA AXOCOPAN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+174-0001-0004,174,1,4,manzana_urbana,106.9,prioritaria_50,3.0,colonia,2101900010049,LA MAGDALENA AXOCOPAN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+174-0001-0005,174,1,5,manzana_urbana,87.6,prioritaria_50,8.0,colonia,2101900010049,LA MAGDALENA AXOCOPAN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+174-0001-0006,174,1,6,manzana_urbana,192.4,prioritaria_50,1.0,colonia,2101900010049,LA MAGDALENA AXOCOPAN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+174-0001-0007,174,1,7,manzana_urbana,92.7,prioritaria_50,6.0,colonia,2101900010049,LA MAGDALENA AXOCOPAN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+174-0001-0011,174,1,11,manzana_urbana,70.3,prioritaria_50,13.0,colonia,2101900010049,LA MAGDALENA AXOCOPAN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+174-0001-0012,174,1,12,manzana_urbana,87.6,prioritaria_50,9.0,colonia,2101900010049,LA MAGDALENA AXOCOPAN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+174-0001-0013,174,1,13,manzana_urbana,119.1,prioritaria_50,2.0,colonia,2101900010049,LA MAGDALENA AXOCOPAN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+174-0001-0015,174,1,15,manzana_urbana,76.4,prioritaria_50,12.0,colonia,2101900010049,LA MAGDALENA AXOCOPAN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+174-0001-0020,174,1,20,manzana_urbana,94.7,prioritaria_50,5.0,colonia,2101900010049,LA MAGDALENA AXOCOPAN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+174-0001-0023,174,1,23,manzana_urbana,56.0,prioritaria_50,21.0,colonia,2101900010049,LA MAGDALENA AXOCOPAN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+174-0001-0026,174,1,26,manzana_urbana,63.1,prioritaria_50,16.0,colonia,2101900010049,LA MAGDALENA AXOCOPAN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+174-0001-0033,174,1,33,manzana_urbana,92.7,prioritaria_50,7.0,colonia,2101900010049,LA MAGDALENA AXOCOPAN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+174-0001-0062,174,1,62,manzana_urbana,64.1,prioritaria_50,15.0,colonia,2101900010049,LA MAGDALENA AXOCOPAN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+174-0001-0060,174,1,60,manzana_urbana,59.1,prioritaria_50,18.0,colonia,2101900010123,LA TRUPERA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+174-0079-0011,174,79,11,manzana_rural,61.1,prioritaria_50,17.0,colonia,2101900010101,LOMAS DE AXOCOPAN,0,rural,A_MATCH_EXACTO_ELEGIBLE
+174-0022-0003,174,22,3,manzana_rural,58.0,prioritaria_50,19.0,localidad,LOC-0022,Localidad 22,1,rural,A_MATCH_EXACTO_ELEGIBLE
+174-0001-0072,174,1,72,manzana_urbana,68.2,prioritaria_50,14.0,colonia,2101900010074,SANTA MÓNICA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+174-0001-0057,174,1,57,manzana_urbana,56.0,prioritaria_50,22.0,colonia,2101900010092,ÁREA DEL AXOCOPAN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+175-0001-0041,175,1,41,manzana_urbana,200.9,prioritaria_50,1.0,colonia,2101900010058,EL POPO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+175-0001-0040,175,1,40,manzana_urbana,111.2,prioritaria_50,5.0,colonia,2101900010041,INSURGENTES,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+175-0001-0033,175,1,33,manzana_urbana,147.9,prioritaria_50,2.0,colonia,2101900010016,LA CAROLINA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+175-0001-0002,175,1,2,manzana_urbana,100.0,prioritaria_50,6.0,colonia,2101900010074,SANTA MÓNICA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+175-0001-0004,175,1,4,manzana_urbana,111.2,prioritaria_50,4.0,colonia,2101900010074,SANTA MÓNICA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+175-0001-0006,175,1,6,manzana_urbana,126.5,prioritaria_50,3.0,colonia,2101900010074,SANTA MÓNICA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+176-0001-0004,176,1,4,manzana_urbana,50.2,prioritaria_50,11.0,colonia,2101900010115,EL POPO 1,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+176-0001-0014,176,1,14,manzana_urbana,86.0,prioritaria_50,2.0,colonia,2101900010115,EL POPO 1,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+176-0001-0015,176,1,15,manzana_urbana,71.7,prioritaria_50,4.0,colonia,2101900010115,EL POPO 1,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+176-0001-0027,176,1,27,manzana_urbana,57.3,prioritaria_50,8.0,colonia,2101900010115,EL POPO 1,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+176-0001-0028,176,1,28,manzana_urbana,87.0,prioritaria_50,1.0,colonia,2101900010115,EL POPO 1,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+176-0001-0016,176,1,16,manzana_urbana,55.3,prioritaria_50,9.0,colonia,2101900010023,EMPLEADO FEDERAL,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+176-0001-0047,176,1,47,manzana_urbana,58.4,prioritaria_50,7.0,colonia,2101900010023,EMPLEADO FEDERAL,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+176-0001-0006,176,1,6,manzana_urbana,80.9,prioritaria_50,3.0,colonia,2101900010036,HOGAR DEL OBRERO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+176-0001-0007,176,1,7,manzana_urbana,62.5,prioritaria_50,5.0,colonia,2101900010036,HOGAR DEL OBRERO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+176-0001-0019,176,1,19,manzana_urbana,61.4,prioritaria_50,6.0,colonia,2101900010036,HOGAR DEL OBRERO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+176-0001-0051,176,1,51,manzana_urbana,55.3,prioritaria_50,10.0,colonia,2101900010132,RANCHO LA CANDELARIA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+177-0001-0038,177,1,38,manzana_urbana,160.0,prioritaria_50,4.0,colonia,2101900010075,SANTA ROSA CHAPULAPA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+177-0001-0043,177,1,43,manzana_urbana,138.6,prioritaria_50,5.0,colonia,2101900010075,SANTA ROSA CHAPULAPA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+177-0001-0045,177,1,45,manzana_urbana,162.0,prioritaria_50,3.0,colonia,2101900010075,SANTA ROSA CHAPULAPA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+177-0001-0046,177,1,46,manzana_urbana,127.4,prioritaria_50,6.0,colonia,2101900010075,SANTA ROSA CHAPULAPA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+177-0001-0050,177,1,50,manzana_urbana,179.3,prioritaria_50,1.0,colonia,2101900010075,SANTA ROSA CHAPULAPA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+177-0001-0054,177,1,54,manzana_urbana,164.0,prioritaria_50,2.0,colonia,2101900010075,SANTA ROSA CHAPULAPA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+178-0001-0016,178,1,16,manzana_urbana,120.8,prioritaria_50,4.0,colonia,2101900010018,CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+178-0001-0017,178,1,17,manzana_urbana,112.6,prioritaria_50,5.0,colonia,2101900010018,CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+178-0001-0020,178,1,20,manzana_urbana,144.3,prioritaria_50,2.0,colonia,2101900010018,CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+178-0001-0032,178,1,32,manzana_urbana,175.0,prioritaria_50,1.0,colonia,2101900010075,SANTA ROSA CHAPULAPA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+178-0001-0026,178,1,26,manzana_urbana,140.2,prioritaria_50,3.0,colonia,2101900010077,SOLARES GRANDES,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+179-0001-0002,179,1,2,manzana_urbana,133.2,prioritaria_50,1.0,colonia,2101900010018,CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+179-0001-0008,179,1,8,manzana_urbana,129.2,prioritaria_50,2.0,colonia,2101900010018,CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+179-0001-0009,179,1,9,manzana_urbana,129.2,prioritaria_50,3.0,colonia,2101900010018,CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+180-0001-0006,180,1,6,manzana_urbana,109.5,prioritaria_50,3.0,colonia,2101900010018,CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+180-0001-0011,180,1,11,manzana_urbana,140.7,prioritaria_50,1.0,colonia,2101900010018,CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+180-0001-0013,180,1,13,manzana_urbana,115.5,prioritaria_50,2.0,colonia,2101900010018,CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+181-0001-0005,181,1,5,manzana_urbana,75.8,prioritaria_50,3.0,colonia,2101900010018,CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+181-0001-0017,181,1,17,manzana_urbana,87.8,prioritaria_50,1.0,colonia,2101900010018,CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+181-0001-0018,181,1,18,manzana_urbana,79.8,prioritaria_50,2.0,colonia,2101900010018,CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+182-0001-0012,182,1,12,manzana_urbana,57.4,prioritaria_50,3.0,colonia,2101900010018,CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+182-0001-0019,182,1,19,manzana_urbana,65.6,prioritaria_50,1.0,colonia,2101900010018,CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+182-0001-0020,182,1,20,manzana_urbana,64.6,prioritaria_50,2.0,colonia,2101900010018,CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+183-0001-0021,183,1,21,manzana_urbana,102.7,prioritaria_50,1.0,colonia,2101900010018,CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+183-0001-0022,183,1,22,manzana_urbana,83.6,prioritaria_50,2.0,colonia,2101900010018,CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+184-0001-0029,184,1,29,manzana_urbana,166.7,prioritaria_50,1.0,colonia,2101900010018,CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+184-0001-0033,184,1,33,manzana_urbana,79.3,prioritaria_50,2.0,colonia,2101900010018,CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+184-0001-0035,184,1,35,manzana_urbana,70.3,prioritaria_50,3.0,colonia,2101900010018,CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+185-0001-0013,185,1,13,manzana_urbana,129.4,prioritaria_50,6.0,colonia,2101900010004,ALTAVISTA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+185-0001-0025,185,1,25,manzana_urbana,127.4,prioritaria_50,7.0,colonia,2101900010004,ALTAVISTA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+185-0001-0026,185,1,26,manzana_urbana,168.8,prioritaria_50,2.0,colonia,2101900010004,ALTAVISTA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+185-0001-0028,185,1,28,manzana_urbana,137.5,prioritaria_50,4.0,colonia,2101900010004,ALTAVISTA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+185-0001-0043,185,1,43,manzana_urbana,135.4,prioritaria_50,5.0,colonia,2101900010004,ALTAVISTA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+185-0001-0002,185,1,2,manzana_urbana,160.7,prioritaria_50,3.0,colonia,2101900010018,CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+185-0001-0041,185,1,41,manzana_urbana,224.4,prioritaria_50,1.0,colonia,2101900010052,MAXIMINO ÁVILA CAMACHO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+186-0001-0001,186,1,1,manzana_urbana,162.6,prioritaria_50,3.0,colonia,2101900010065,RICARDO FLORES MAGÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+186-0001-0002,186,1,2,manzana_urbana,113.5,prioritaria_50,9.0,colonia,2101900010065,RICARDO FLORES MAGÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+186-0001-0003,186,1,3,manzana_urbana,156.4,prioritaria_50,4.0,colonia,2101900010065,RICARDO FLORES MAGÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+186-0001-0009,186,1,9,manzana_urbana,127.8,prioritaria_50,7.0,colonia,2101900010065,RICARDO FLORES MAGÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+186-0001-0010,186,1,10,manzana_urbana,128.8,prioritaria_50,6.0,colonia,2101900010065,RICARDO FLORES MAGÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+186-0001-0018,186,1,18,manzana_urbana,154.4,prioritaria_50,5.0,colonia,2101900010065,RICARDO FLORES MAGÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+186-0001-0019,186,1,19,manzana_urbana,165.6,prioritaria_50,2.0,colonia,2101900010065,RICARDO FLORES MAGÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+186-0001-0028,186,1,28,manzana_urbana,175.8,prioritaria_50,1.0,colonia,2101900010065,RICARDO FLORES MAGÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+186-0001-0038,186,1,38,manzana_urbana,117.6,prioritaria_50,8.0,colonia,2101900010065,RICARDO FLORES MAGÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+187-0001-0014,187,1,14,manzana_urbana,107.3,prioritaria_50,6.0,colonia,2101900010064,REVOLUCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+187-0001-0021,187,1,21,manzana_urbana,108.3,prioritaria_50,5.0,colonia,2101900010064,REVOLUCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+187-0001-0022,187,1,22,manzana_urbana,182.9,prioritaria_50,2.0,colonia,2101900010064,REVOLUCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+187-0001-0040,187,1,40,manzana_urbana,114.5,prioritaria_50,4.0,colonia,2101900010064,REVOLUCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+187-0001-0041,187,1,41,manzana_urbana,140.0,prioritaria_50,3.0,colonia,2101900010064,REVOLUCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+187-0001-0042,187,1,42,manzana_urbana,194.2,prioritaria_50,1.0,colonia,2101900010064,REVOLUCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+188-0001-0027,188,1,27,manzana_urbana,85.3,prioritaria_50,3.0,colonia,2101900010018,CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+188-0001-0032,188,1,32,manzana_urbana,139.1,prioritaria_50,1.0,colonia,2101900010018,CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+188-0001-0034,188,1,34,manzana_urbana,117.8,prioritaria_50,2.0,colonia,2101900010018,CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+188-0001-0051,188,1,51,manzana_urbana,83.3,prioritaria_50,4.0,colonia,2101900010018,CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+189-0001-0005,189,1,5,manzana_urbana,169.1,prioritaria_50,1.0,colonia,2101900010005,ÁLVARO OBREGÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+189-0001-0006,189,1,6,manzana_urbana,108.3,prioritaria_50,4.0,colonia,2101900010005,ÁLVARO OBREGÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+189-0001-0012,189,1,12,manzana_urbana,126.5,prioritaria_50,2.0,colonia,2101900010005,ÁLVARO OBREGÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+189-0001-0014,189,1,14,manzana_urbana,116.4,prioritaria_50,3.0,colonia,2101900010005,ÁLVARO OBREGÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+189-0001-0024,189,1,24,manzana_urbana,96.2,prioritaria_50,5.0,colonia,2101900010005,ÁLVARO OBREGÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+190-0001-0002,190,1,2,manzana_urbana,136.8,prioritaria_50,2.0,colonia,2101900010036,HOGAR DEL OBRERO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+190-0001-0012,190,1,12,manzana_urbana,154.9,prioritaria_50,1.0,colonia,2101900010036,HOGAR DEL OBRERO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+190-0001-0013,190,1,13,manzana_urbana,132.8,prioritaria_50,3.0,colonia,2101900010036,HOGAR DEL OBRERO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+190-0001-0026,190,1,26,manzana_urbana,125.7,prioritaria_50,4.0,colonia,2101900010036,HOGAR DEL OBRERO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+191-0001-0033,191,1,33,manzana_urbana,77.5,prioritaria_50,4.0,colonia,2101900010015,EL CARMEN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+191-0001-0039,191,1,39,manzana_urbana,73.5,prioritaria_50,5.0,colonia,2101900010015,EL CARMEN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+191-0001-0040,191,1,40,manzana_urbana,150.0,prioritaria_50,2.0,colonia,2101900010015,EL CARMEN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+191-0001-0041,191,1,41,manzana_urbana,153.0,prioritaria_50,1.0,colonia,2101900010015,EL CARMEN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+191-0001-0047,191,1,47,manzana_urbana,97.7,prioritaria_50,3.0,colonia,2101900010015,EL CARMEN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+192-0001-0018,192,1,18,manzana_urbana,135.5,prioritaria_50,3.0,colonia,2101900010028,GUADALUPE VICTORIA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+192-0001-0019,192,1,19,manzana_urbana,197.7,prioritaria_50,1.0,colonia,2101900010028,GUADALUPE VICTORIA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+192-0001-0048,192,1,48,manzana_urbana,186.4,prioritaria_50,2.0,colonia,2101900010028,GUADALUPE VICTORIA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+193-0001-0001,193,1,1,manzana_urbana,132.1,prioritaria_50,3.0,colonia,2101900010005,ÁLVARO OBREGÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+193-0001-0004,193,1,4,manzana_urbana,138.2,prioritaria_50,2.0,colonia,2101900010005,ÁLVARO OBREGÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+193-0001-0005,193,1,5,manzana_urbana,130.1,prioritaria_50,4.0,colonia,2101900010005,ÁLVARO OBREGÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+193-0001-0010,193,1,10,manzana_urbana,142.2,prioritaria_50,1.0,colonia,2101900010005,ÁLVARO OBREGÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+193-0001-0016,193,1,16,manzana_urbana,125.1,prioritaria_50,5.0,colonia,2101900010005,ÁLVARO OBREGÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+193-0001-0023,193,1,23,manzana_urbana,108.9,prioritaria_50,6.0,colonia,2101900010005,ÁLVARO OBREGÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+194-0001-0031,194,1,31,manzana_urbana,83.1,prioritaria_50,5.0,colonia,2101900010026,FRANCISCO I. MADERO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+194-0001-0038,194,1,38,manzana_urbana,104.4,prioritaria_50,4.0,colonia,2101900010026,FRANCISCO I. MADERO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+194-0001-0042,194,1,42,manzana_urbana,114.5,prioritaria_50,3.0,colonia,2101900010064,REVOLUCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+194-0001-0043,194,1,43,manzana_urbana,162.1,prioritaria_50,1.0,colonia,2101900010064,REVOLUCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+194-0001-0044,194,1,44,manzana_urbana,125.6,prioritaria_50,2.0,colonia,2101900010064,REVOLUCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+194-0001-0045,194,1,45,manzana_urbana,58.8,prioritaria_50,7.0,colonia,2101900010064,REVOLUCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+194-0001-0077,194,1,77,manzana_urbana,76.0,prioritaria_50,6.0,colonia,2101900010107,REVOLUCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+195-0001-0002,195,1,2,manzana_urbana,94.3,prioritaria_50,3.0,localidad,LOC-0001,Localidad 1,1,urbano,A_MATCH_EXACTO_ELEGIBLE
+195-0001-0011,195,1,11,manzana_urbana,64.9,prioritaria_50,6.0,localidad,LOC-0001,Localidad 1,1,urbano,A_MATCH_EXACTO_ELEGIBLE
+195-0001-0012,195,1,12,manzana_urbana,72.0,prioritaria_50,5.0,localidad,LOC-0001,Localidad 1,1,urbano,A_MATCH_EXACTO_ELEGIBLE
+195-0078-0001,195,78,1,manzana_rural,76.1,prioritaria_50,4.0,localidad,LOC-0078,Localidad 78,1,rural,A_MATCH_EXACTO_ELEGIBLE
+195-0078-0004,195,78,4,manzana_rural,58.8,prioritaria_50,7.0,localidad,LOC-0078,Localidad 78,1,rural,A_MATCH_EXACTO_ELEGIBLE
+195-0001-0004,195,1,4,manzana_urbana,106.5,prioritaria_50,1.0,colonia,2101900010090,ÁREA DE LA LA ALFONSINA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+195-0001-0017,195,1,17,manzana_urbana,105.5,prioritaria_50,2.0,colonia,2101900010090,ÁREA DE LA LA ALFONSINA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+196-0001-0025,196,1,25,manzana_urbana,88.1,prioritaria_50,5.0,colonia,2101900010057,EL PEDREGAL,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+196-0001-0103,196,1,103,manzana_urbana,78.9,prioritaria_50,6.0,colonia,2101900010057,EL PEDREGAL,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+196-0001-0002,196,1,2,manzana_urbana,48.2,prioritaria_50,12.0,colonia,2101900010026,FRANCISCO I. MADERO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+196-0001-0003,196,1,3,manzana_urbana,97.4,prioritaria_50,2.0,colonia,2101900010026,FRANCISCO I. MADERO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+196-0001-0004,196,1,4,manzana_urbana,58.4,prioritaria_50,8.0,colonia,2101900010026,FRANCISCO I. MADERO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+196-0001-0005,196,1,5,manzana_urbana,88.1,prioritaria_50,4.0,colonia,2101900010026,FRANCISCO I. MADERO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+196-0001-0012,196,1,12,manzana_urbana,47.1,prioritaria_50,13.0,colonia,2101900010026,FRANCISCO I. MADERO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+196-0001-0013,196,1,13,manzana_urbana,168.1,prioritaria_50,1.0,colonia,2101900010026,FRANCISCO I. MADERO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+196-0001-0014,196,1,14,manzana_urbana,50.2,prioritaria_50,11.0,colonia,2101900010026,FRANCISCO I. MADERO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+196-0001-0047,196,1,47,manzana_urbana,56.4,prioritaria_50,9.0,colonia,2101900010073,SANTA CRUZ,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+196-0001-0048,196,1,48,manzana_urbana,91.2,prioritaria_50,3.0,colonia,2101900010073,SANTA CRUZ,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+196-0001-0022,196,1,22,manzana_urbana,68.7,prioritaria_50,7.0,colonia,2101900010080,VAL DE CRISTO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+196-0001-0051,196,1,51,manzana_urbana,51.2,prioritaria_50,10.0,colonia,2101900010080,VAL DE CRISTO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+197-0001-0009,197,1,9,manzana_urbana,93.2,prioritaria_50,8.0,colonia,2101900010026,FRANCISCO I. MADERO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+197-0001-0015,197,1,15,manzana_urbana,101.3,prioritaria_50,5.0,colonia,2101900010026,FRANCISCO I. MADERO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+197-0001-0020,197,1,20,manzana_urbana,99.2,prioritaria_50,7.0,colonia,2101900010026,FRANCISCO I. MADERO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+197-0001-0032,197,1,32,manzana_urbana,107.3,prioritaria_50,3.0,colonia,2101900010026,FRANCISCO I. MADERO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+197-0001-0039,197,1,39,manzana_urbana,176.2,prioritaria_50,1.0,colonia,2101900010026,FRANCISCO I. MADERO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+197-0001-0040,197,1,40,manzana_urbana,101.3,prioritaria_50,6.0,colonia,2101900010026,FRANCISCO I. MADERO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+197-0001-0042,197,1,42,manzana_urbana,149.9,prioritaria_50,2.0,colonia,2101900010026,FRANCISCO I. MADERO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+197-0001-0043,197,1,43,manzana_urbana,103.3,prioritaria_50,4.0,colonia,2101900010026,FRANCISCO I. MADERO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+198-0001-0029,198,1,29,manzana_urbana,331.7,prioritaria_50,2.0,colonia,2101900010028,GUADALUPE VICTORIA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+198-0001-0031,198,1,31,manzana_urbana,353.0,prioritaria_50,1.0,colonia,2101900010028,GUADALUPE VICTORIA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+199-0001-0001,199,1,1,manzana_urbana,189.5,prioritaria_50,2.0,colonia,2101900010028,GUADALUPE VICTORIA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+199-0001-0009,199,1,9,manzana_urbana,184.4,prioritaria_50,3.0,colonia,2101900010028,GUADALUPE VICTORIA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+199-0001-0004,199,1,4,manzana_urbana,294.8,prioritaria_50,1.0,colonia,2101900010081,VALLE SUR,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+200-0001-0012,200,1,12,manzana_urbana,57.6,prioritaria_50,5.0,colonia,2101900010081,VALLE SUR,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+200-0001-0023,200,1,23,manzana_urbana,101.1,prioritaria_50,3.0,colonia,2101900010081,VALLE SUR,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+200-0001-0024,200,1,24,manzana_urbana,63.7,prioritaria_50,4.0,colonia,2101900010081,VALLE SUR,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+200-0001-0025,200,1,25,manzana_urbana,118.3,prioritaria_50,1.0,colonia,2101900010081,VALLE SUR,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+200-0001-0036,200,1,36,manzana_urbana,115.3,prioritaria_50,2.0,colonia,2101900010081,VALLE SUR,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+201-0001-0001,201,1,1,manzana_urbana,83.4,prioritaria_50,10.0,colonia,2101900010081,VALLE SUR,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+201-0001-0002,201,1,2,manzana_urbana,88.5,prioritaria_50,6.0,colonia,2101900010081,VALLE SUR,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+201-0001-0007,201,1,7,manzana_urbana,67.2,prioritaria_50,16.0,colonia,2101900010081,VALLE SUR,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+201-0001-0012,201,1,12,manzana_urbana,103.8,prioritaria_50,1.0,colonia,2101900010081,VALLE SUR,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+201-0001-0013,201,1,13,manzana_urbana,77.3,prioritaria_50,11.0,colonia,2101900010081,VALLE SUR,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+201-0001-0014,201,1,14,manzana_urbana,64.1,prioritaria_50,17.0,colonia,2101900010081,VALLE SUR,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+201-0001-0016,201,1,16,manzana_urbana,90.6,prioritaria_50,5.0,colonia,2101900010081,VALLE SUR,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+201-0001-0018,201,1,18,manzana_urbana,70.2,prioritaria_50,13.0,colonia,2101900010081,VALLE SUR,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+201-0001-0019,201,1,19,manzana_urbana,70.2,prioritaria_50,14.0,colonia,2101900010081,VALLE SUR,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+201-0001-0023,201,1,23,manzana_urbana,94.6,prioritaria_50,3.0,colonia,2101900010081,VALLE SUR,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+201-0001-0025,201,1,25,manzana_urbana,88.5,prioritaria_50,7.0,colonia,2101900010081,VALLE SUR,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+201-0001-0026,201,1,26,manzana_urbana,87.5,prioritaria_50,8.0,colonia,2101900010081,VALLE SUR,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+201-0001-0027,201,1,27,manzana_urbana,86.5,prioritaria_50,9.0,colonia,2101900010081,VALLE SUR,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+201-0001-0028,201,1,28,manzana_urbana,64.1,prioritaria_50,18.0,colonia,2101900010081,VALLE SUR,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+201-0001-0031,201,1,31,manzana_urbana,100.7,prioritaria_50,2.0,colonia,2101900010081,VALLE SUR,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+201-0001-0034,201,1,34,manzana_urbana,77.3,prioritaria_50,12.0,colonia,2101900010081,VALLE SUR,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+201-0001-0035,201,1,35,manzana_urbana,70.2,prioritaria_50,15.0,colonia,2101900010081,VALLE SUR,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+201-0001-0059,201,1,59,manzana_urbana,91.6,prioritaria_50,4.0,colonia,2101900010081,VALLE SUR,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+201-0001-0060,201,1,60,manzana_urbana,62.1,prioritaria_50,19.0,colonia,2101900010081,VALLE SUR,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+202-0001-0002,202,1,2,manzana_urbana,60.3,prioritaria_50,7.0,colonia,2101900010068,SAN DIEGO ACAPULCO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+202-0001-0004,202,1,4,manzana_urbana,50.1,prioritaria_50,15.0,colonia,2101900010068,SAN DIEGO ACAPULCO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+202-0001-0008,202,1,8,manzana_urbana,96.1,prioritaria_50,4.0,colonia,2101900010068,SAN DIEGO ACAPULCO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+202-0001-0012,202,1,12,manzana_urbana,112.5,prioritaria_50,3.0,colonia,2101900010068,SAN DIEGO ACAPULCO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+202-0001-0013,202,1,13,manzana_urbana,150.3,prioritaria_50,1.0,colonia,2101900010068,SAN DIEGO ACAPULCO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+202-0001-0030,202,1,30,manzana_urbana,58.3,prioritaria_50,8.0,colonia,2101900010068,SAN DIEGO ACAPULCO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+202-0001-0034,202,1,34,manzana_urbana,52.2,prioritaria_50,13.0,colonia,2101900010068,SAN DIEGO ACAPULCO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+202-0001-0050,202,1,50,manzana_urbana,68.5,prioritaria_50,6.0,colonia,2101900010068,SAN DIEGO ACAPULCO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+202-0001-0059,202,1,59,manzana_urbana,51.1,prioritaria_50,14.0,colonia,2101900010068,SAN DIEGO ACAPULCO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+202-0001-0068,202,1,68,manzana_urbana,53.2,prioritaria_50,12.0,colonia,2101900010068,SAN DIEGO ACAPULCO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+202-0001-0072,202,1,72,manzana_urbana,57.3,prioritaria_50,9.0,colonia,2101900010068,SAN DIEGO ACAPULCO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+202-0001-0005,202,1,5,manzana_urbana,84.9,prioritaria_50,5.0,colonia,2101900010017,SAN JUAN CASTILLOTLA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+202-0001-0021,202,1,21,manzana_urbana,53.2,prioritaria_50,11.0,colonia,2101900010017,SAN JUAN CASTILLOTLA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+202-0001-0025,202,1,25,manzana_urbana,145.2,prioritaria_50,2.0,colonia,2101900010017,SAN JUAN CASTILLOTLA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+202-0001-0026,202,1,26,manzana_urbana,47.0,prioritaria_50,16.0,colonia,2101900010017,SAN JUAN CASTILLOTLA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+202-0001-0076,202,1,76,manzana_urbana,55.2,prioritaria_50,10.0,colonia,2101900010017,SAN JUAN CASTILLOTLA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+203-0027-0003,203,27,3,manzana_rural,84.6,prioritaria_50,2.0,colonia,INE-2355,LA SABANA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+203-0027-0005,203,27,5,manzana_rural,54.0,prioritaria_50,10.0,colonia,INE-2355,LA SABANA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+203-0027-0007,203,27,7,manzana_rural,110.1,prioritaria_50,1.0,colonia,INE-2355,LA SABANA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+203-0027-0009,203,27,9,manzana_rural,60.2,prioritaria_50,5.0,colonia,INE-2355,LA SABANA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+203-0027-0011,203,27,11,manzana_rural,58.1,prioritaria_50,7.0,colonia,INE-2355,LA SABANA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+203-0027-0021,203,27,21,manzana_rural,59.1,prioritaria_50,6.0,colonia,INE-2355,LA SABANA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+203-0001-0001,203,1,1,manzana_urbana,42.8,prioritaria_50,13.0,colonia,2101900010139,VERACRUZ,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+203-0001-0002,203,1,2,manzana_urbana,56.1,prioritaria_50,9.0,colonia,2101900010139,VERACRUZ,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+203-0001-0006,203,1,6,manzana_urbana,42.8,prioritaria_50,14.0,colonia,2101900010139,VERACRUZ,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+203-0001-0007,203,1,7,manzana_urbana,73.4,prioritaria_50,3.0,colonia,2101900010139,VERACRUZ,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+203-0001-0013,203,1,13,manzana_urbana,53.0,prioritaria_50,11.0,colonia,2101900010082,VERACRUZ,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+203-0001-0014,203,1,14,manzana_urbana,57.1,prioritaria_50,8.0,colonia,2101900010082,VERACRUZ,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+203-0001-0015,203,1,15,manzana_urbana,51.0,prioritaria_50,12.0,colonia,2101900010082,VERACRUZ,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+203-0001-0026,203,1,26,manzana_urbana,65.3,prioritaria_50,4.0,colonia,2101900010082,VERACRUZ,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+204-0001-0001,204,1,1,manzana_urbana,72.4,prioritaria_50,2.0,colonia,2101900010079,LA TRINIDAD TEPANGO CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+204-0001-0002,204,1,2,manzana_urbana,55.1,prioritaria_50,7.0,colonia,2101900010079,LA TRINIDAD TEPANGO CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+204-0001-0003,204,1,3,manzana_urbana,57.1,prioritaria_50,5.0,colonia,2101900010079,LA TRINIDAD TEPANGO CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+204-0001-0007,204,1,7,manzana_urbana,53.0,prioritaria_50,8.0,colonia,2101900010079,LA TRINIDAD TEPANGO CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+204-0001-0013,204,1,13,manzana_urbana,47.9,prioritaria_50,11.0,colonia,2101900010079,LA TRINIDAD TEPANGO CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+204-0001-0014,204,1,14,manzana_urbana,38.8,prioritaria_50,16.0,colonia,2101900010079,LA TRINIDAD TEPANGO CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+204-0001-0027,204,1,27,manzana_urbana,76.5,prioritaria_50,1.0,colonia,2101900010079,LA TRINIDAD TEPANGO CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+204-0001-0028,204,1,28,manzana_urbana,65.3,prioritaria_50,3.0,colonia,2101900010079,LA TRINIDAD TEPANGO CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+204-0001-0029,204,1,29,manzana_urbana,53.0,prioritaria_50,9.0,colonia,2101900010079,LA TRINIDAD TEPANGO CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+204-0001-0070,204,1,70,manzana_urbana,59.1,prioritaria_50,4.0,colonia,2101900010079,LA TRINIDAD TEPANGO CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+204-0001-0079,204,1,79,manzana_urbana,43.8,prioritaria_50,12.0,colonia,2101900010079,LA TRINIDAD TEPANGO CENTRO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+204-0001-0042,204,1,42,manzana_urbana,39.8,prioritaria_50,15.0,colonia,2101900010083,MÉXICO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+204-0001-0047,204,1,47,manzana_urbana,48.9,prioritaria_50,10.0,colonia,2101900010083,MÉXICO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+204-0018-0003,204,18,3,manzana_rural,57.1,prioritaria_50,6.0,colonia,INE-2348,SAN JUAN DE LOS LAURELES,0,rural,A_MATCH_EXACTO_ELEGIBLE
+204-0018-0005,204,18,5,manzana_rural,41.8,prioritaria_50,14.0,colonia,INE-2348,SAN JUAN DE LOS LAURELES,0,rural,A_MATCH_EXACTO_ELEGIBLE
+204-0018-0009,204,18,9,manzana_rural,42.8,prioritaria_50,13.0,colonia,INE-2348,SAN JUAN DE LOS LAURELES,0,rural,A_MATCH_EXACTO_ELEGIBLE
+205-0044-0007,205,44,7,manzana_rural,53.1,prioritaria_50,4.0,colonia,INE-1195,SAN PEDRO BENITO JUAREZ,0,rural,A_MATCH_EXACTO_ELEGIBLE
+205-0044-0013,205,44,13,manzana_rural,37.8,prioritaria_50,12.0,colonia,INE-1195,SAN PEDRO BENITO JUAREZ,0,rural,A_MATCH_EXACTO_ELEGIBLE
+205-0044-0022,205,44,22,manzana_rural,68.5,prioritaria_50,2.0,colonia,INE-1195,SAN PEDRO BENITO JUAREZ,0,rural,A_MATCH_EXACTO_ELEGIBLE
+205-0044-0024,205,44,24,manzana_rural,67.4,prioritaria_50,3.0,colonia,INE-1195,SAN PEDRO BENITO JUAREZ,0,rural,A_MATCH_EXACTO_ELEGIBLE
+205-0044-0025,205,44,25,manzana_rural,53.1,prioritaria_50,5.0,colonia,INE-1195,SAN PEDRO BENITO JUAREZ,0,rural,A_MATCH_EXACTO_ELEGIBLE
+205-0044-0031,205,44,31,manzana_rural,38.8,prioritaria_50,11.0,colonia,INE-1195,SAN PEDRO BENITO JUAREZ,0,rural,A_MATCH_EXACTO_ELEGIBLE
+205-0044-0032,205,44,32,manzana_rural,53.1,prioritaria_50,6.0,colonia,INE-1195,SAN PEDRO BENITO JUAREZ,0,rural,A_MATCH_EXACTO_ELEGIBLE
+205-0044-0035,205,44,35,manzana_rural,47.0,prioritaria_50,8.0,colonia,INE-1195,SAN PEDRO BENITO JUAREZ,0,rural,A_MATCH_EXACTO_ELEGIBLE
+205-0044-0039,205,44,39,manzana_rural,46.0,prioritaria_50,9.0,colonia,INE-1195,SAN PEDRO BENITO JUAREZ,0,rural,A_MATCH_EXACTO_ELEGIBLE
+205-0044-0042,205,44,42,manzana_rural,42.9,prioritaria_50,10.0,colonia,INE-1195,SAN PEDRO BENITO JUAREZ,0,rural,A_MATCH_EXACTO_ELEGIBLE
+205-0044-0043,205,44,43,manzana_rural,80.7,prioritaria_50,1.0,colonia,INE-1195,SAN PEDRO BENITO JUAREZ,0,rural,A_MATCH_EXACTO_ELEGIBLE
+205-0044-0044,205,44,44,manzana_rural,48.0,prioritaria_50,7.0,colonia,INE-1195,SAN PEDRO BENITO JUAREZ,0,rural,A_MATCH_EXACTO_ELEGIBLE
+206-0044-0004,206,44,4,manzana_rural,68.1,prioritaria_50,2.0,colonia,2101900760001,CUARTA SECCIÓN,0,rural,A_MATCH_EXACTO_ELEGIBLE
+206-0044-0008,206,44,8,manzana_rural,37.6,prioritaria_50,14.0,colonia,2101900760001,CUARTA SECCIÓN,0,rural,A_MATCH_EXACTO_ELEGIBLE
+206-0044-0028,206,44,28,manzana_rural,72.1,prioritaria_50,1.0,colonia,2101900760001,CUARTA SECCIÓN,0,rural,A_MATCH_EXACTO_ELEGIBLE
+206-0044-0056,206,44,56,manzana_rural,55.9,prioritaria_50,6.0,colonia,2101900760001,CUARTA SECCIÓN,0,rural,A_MATCH_EXACTO_ELEGIBLE
+206-0044-0001,206,44,1,manzana_rural,43.7,prioritaria_50,11.0,colonia,INE-1195,SAN PEDRO BENITO JUAREZ,0,rural,A_MATCH_EXACTO_ELEGIBLE
+206-0044-0005,206,44,5,manzana_rural,53.8,prioritaria_50,7.0,colonia,INE-1195,SAN PEDRO BENITO JUAREZ,0,rural,A_MATCH_EXACTO_ELEGIBLE
+206-0044-0027,206,44,27,manzana_rural,44.7,prioritaria_50,10.0,colonia,INE-1195,SAN PEDRO BENITO JUAREZ,0,rural,A_MATCH_EXACTO_ELEGIBLE
+206-0044-0058,206,44,58,manzana_rural,39.6,prioritaria_50,12.0,colonia,INE-1195,SAN PEDRO BENITO JUAREZ,0,rural,A_MATCH_EXACTO_ELEGIBLE
+206-0044-0061,206,44,61,manzana_rural,68.1,prioritaria_50,3.0,colonia,INE-1195,SAN PEDRO BENITO JUAREZ,0,rural,A_MATCH_EXACTO_ELEGIBLE
+206-0044-0068,206,44,68,manzana_rural,56.9,prioritaria_50,4.0,colonia,INE-1195,SAN PEDRO BENITO JUAREZ,0,rural,A_MATCH_EXACTO_ELEGIBLE
+206-0044-0076,206,44,76,manzana_rural,56.9,prioritaria_50,5.0,colonia,INE-1195,SAN PEDRO BENITO JUAREZ,0,rural,A_MATCH_EXACTO_ELEGIBLE
+206-0044-0012,206,44,12,manzana_rural,47.7,prioritaria_50,9.0,colonia,2101900760005,TERCERA SECCIÓN,0,rural,A_MATCH_EXACTO_ELEGIBLE
+206-0044-0014,206,44,14,manzana_rural,48.8,prioritaria_50,8.0,colonia,2101900760005,TERCERA SECCIÓN,0,rural,A_MATCH_EXACTO_ELEGIBLE
+206-0044-0015,206,44,15,manzana_rural,38.6,prioritaria_50,13.0,colonia,2101900760005,TERCERA SECCIÓN,0,rural,A_MATCH_EXACTO_ELEGIBLE
+207-0024-0006,207,24,6,manzana_rural,41.4,prioritaria_50,18.0,localidad,LOC-0024,Localidad 24,1,rural,A_MATCH_EXACTO_ELEGIBLE
+207-0024-0007,207,24,7,manzana_rural,55.6,prioritaria_50,10.0,localidad,LOC-0024,Localidad 24,1,rural,A_MATCH_EXACTO_ELEGIBLE
+207-0024-0008,207,24,8,manzana_rural,47.5,prioritaria_50,14.0,localidad,LOC-0024,Localidad 24,1,rural,A_MATCH_EXACTO_ELEGIBLE
+207-0024-0011,207,24,11,manzana_rural,64.7,prioritaria_50,6.0,localidad,LOC-0024,Localidad 24,1,rural,A_MATCH_EXACTO_ELEGIBLE
+207-0024-0017,207,24,17,manzana_rural,45.5,prioritaria_50,15.0,localidad,LOC-0024,Localidad 24,1,rural,A_MATCH_EXACTO_ELEGIBLE
+207-0024-0018,207,24,18,manzana_rural,65.7,prioritaria_50,5.0,localidad,LOC-0024,Localidad 24,1,rural,A_MATCH_EXACTO_ELEGIBLE
+207-0024-0021,207,24,21,manzana_rural,92.9,prioritaria_50,2.0,localidad,LOC-0024,Localidad 24,1,rural,A_MATCH_EXACTO_ELEGIBLE
+207-0024-0023,207,24,23,manzana_rural,50.5,prioritaria_50,12.0,localidad,LOC-0024,Localidad 24,1,rural,A_MATCH_EXACTO_ELEGIBLE
+207-0024-0037,207,24,37,manzana_rural,56.6,prioritaria_50,9.0,localidad,LOC-0024,Localidad 24,1,rural,A_MATCH_EXACTO_ELEGIBLE
+207-0024-0041,207,24,41,manzana_rural,55.6,prioritaria_50,11.0,localidad,LOC-0024,Localidad 24,1,rural,A_MATCH_EXACTO_ELEGIBLE
+207-0024-0047,207,24,47,manzana_rural,48.5,prioritaria_50,13.0,localidad,LOC-0024,Localidad 24,1,rural,A_MATCH_EXACTO_ELEGIBLE
+207-0044-0001,207,44,1,manzana_rural,71.7,prioritaria_50,4.0,colonia,INE-1195,SAN PEDRO BENITO JUAREZ,0,rural,A_MATCH_EXACTO_ELEGIBLE
+207-0044-0002,207,44,2,manzana_rural,59.6,prioritaria_50,7.0,colonia,INE-1195,SAN PEDRO BENITO JUAREZ,0,rural,A_MATCH_EXACTO_ELEGIBLE
+207-0044-0004,207,44,4,manzana_rural,59.6,prioritaria_50,8.0,colonia,INE-1195,SAN PEDRO BENITO JUAREZ,0,rural,A_MATCH_EXACTO_ELEGIBLE
+207-0044-0041,207,44,41,manzana_rural,84.9,prioritaria_50,3.0,colonia,INE-1195,SAN PEDRO BENITO JUAREZ,0,rural,A_MATCH_EXACTO_ELEGIBLE
+207-0044-0042,207,44,42,manzana_rural,42.4,prioritaria_50,17.0,colonia,INE-1195,SAN PEDRO BENITO JUAREZ,0,rural,A_MATCH_EXACTO_ELEGIBLE
+207-0044-0048,207,44,48,manzana_rural,100.0,prioritaria_50,1.0,colonia,INE-1195,SAN PEDRO BENITO JUAREZ,0,rural,A_MATCH_EXACTO_ELEGIBLE
+207-0044-0051,207,44,51,manzana_rural,45.5,prioritaria_50,16.0,colonia,INE-1195,SAN PEDRO BENITO JUAREZ,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0008-0003,208,8,3,manzana_rural,52.0,prioritaria_50,28.0,colonia,INE-5792,EMILIANO ZAPATA  (COLONIA EJIDAL),0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0008-0004,208,8,4,manzana_rural,62.2,prioritaria_50,15.0,colonia,INE-5792,EMILIANO ZAPATA  (COLONIA EJIDAL),0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0008-0006,208,8,6,manzana_rural,54.0,prioritaria_50,24.0,colonia,INE-5792,EMILIANO ZAPATA  (COLONIA EJIDAL),0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0008-0008,208,8,8,manzana_rural,55.0,prioritaria_50,21.0,colonia,INE-5792,EMILIANO ZAPATA  (COLONIA EJIDAL),0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0053-0002,208,53,2,manzana_rural,81.5,prioritaria_50,11.0,localidad,LOC-0053,Localidad 53,1,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0031-0003,208,31,3,manzana_rural,95.8,prioritaria_50,6.0,colonia,INE-5791,SAN AGUSTIN LOS MOLINOS,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0001,208,50,1,manzana_rural,46.9,prioritaria_50,34.0,colonia,2101900880001,SANTA CRUZ TEHUIXPANGO,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0004,208,50,4,manzana_rural,45.9,prioritaria_50,35.0,colonia,2101900880001,SANTA CRUZ TEHUIXPANGO,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0006,208,50,6,manzana_rural,60.1,prioritaria_50,16.0,colonia,2101900880001,SANTA CRUZ TEHUIXPANGO,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0007,208,50,7,manzana_rural,47.9,prioritaria_50,32.0,colonia,2101900880001,SANTA CRUZ TEHUIXPANGO,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0008,208,50,8,manzana_rural,59.1,prioritaria_50,19.0,colonia,2101900880001,SANTA CRUZ TEHUIXPANGO,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0009,208,50,9,manzana_rural,63.2,prioritaria_50,14.0,colonia,2101900880001,SANTA CRUZ TEHUIXPANGO,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0011,208,50,11,manzana_rural,83.6,prioritaria_50,7.0,colonia,2101900880001,SANTA CRUZ TEHUIXPANGO,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0012,208,50,12,manzana_rural,111.1,prioritaria_50,3.0,colonia,2101900880001,SANTA CRUZ TEHUIXPANGO,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0016,208,50,16,manzana_rural,44.8,prioritaria_50,37.0,colonia,2101900880001,SANTA CRUZ TEHUIXPANGO,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0133,208,50,133,manzana_rural,47.9,prioritaria_50,33.0,colonia,2101900880001,SANTA CRUZ TEHUIXPANGO,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0021,208,50,21,manzana_rural,83.6,prioritaria_50,8.0,colonia,2101900880004,VALLE REAL,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0024,208,50,24,manzana_rural,54.0,prioritaria_50,25.0,colonia,2101900880004,VALLE REAL,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0025,208,50,25,manzana_rural,51.0,prioritaria_50,29.0,colonia,2101900880004,VALLE REAL,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0026,208,50,26,manzana_rural,81.5,prioritaria_50,10.0,colonia,2101900880004,VALLE REAL,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0036,208,50,36,manzana_rural,60.1,prioritaria_50,17.0,colonia,2101900880004,VALLE REAL,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0043,208,50,43,manzana_rural,100.9,prioritaria_50,4.0,colonia,2101900880004,VALLE REAL,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0055,208,50,55,manzana_rural,119.2,prioritaria_50,1.0,colonia,2101900880005,VALLE REAL,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0062,208,50,62,manzana_rural,82.6,prioritaria_50,9.0,colonia,2101900880006,VALLE REAL,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0066,208,50,66,manzana_rural,56.1,prioritaria_50,20.0,colonia,2101900880006,VALLE REAL,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0067,208,50,67,manzana_rural,70.3,prioritaria_50,13.0,colonia,2101900880006,VALLE REAL,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0075,208,50,75,manzana_rural,60.1,prioritaria_50,18.0,colonia,2101900880006,VALLE REAL,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0077,208,50,77,manzana_rural,53.0,prioritaria_50,26.0,colonia,2101900880006,VALLE REAL,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0082,208,50,82,manzana_rural,55.0,prioritaria_50,22.0,colonia,2101900880006,VALLE REAL,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0084,208,50,84,manzana_rural,49.9,prioritaria_50,31.0,colonia,2101900880006,VALLE REAL,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0085,208,50,85,manzana_rural,72.4,prioritaria_50,12.0,colonia,2101900880006,VALLE REAL,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0086,208,50,86,manzana_rural,97.8,prioritaria_50,5.0,colonia,2101900880006,VALLE REAL,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0087,208,50,87,manzana_rural,55.0,prioritaria_50,23.0,colonia,2101900880006,VALLE REAL,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0097,208,50,97,manzana_rural,45.9,prioritaria_50,36.0,colonia,2101900880006,VALLE REAL,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0104,208,50,104,manzana_rural,51.0,prioritaria_50,30.0,colonia,2101900880006,VALLE REAL,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0121,208,50,121,manzana_rural,53.0,prioritaria_50,27.0,colonia,2101900880006,VALLE REAL,0,rural,A_MATCH_EXACTO_ELEGIBLE
+208-0050-0124,208,50,124,manzana_rural,119.2,prioritaria_50,2.0,colonia,2101900880006,VALLE REAL,0,rural,A_MATCH_EXACTO_ELEGIBLE
+209-0002-0004,209,2,4,manzana_rural,34.6,prioritaria_50,20.0,colonia,INE-5789,ALMAZANTLA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+209-0002-0007,209,2,7,manzana_rural,49.8,prioritaria_50,6.0,colonia,INE-5789,ALMAZANTLA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+209-0002-0009,209,2,9,manzana_rural,38.7,prioritaria_50,14.0,colonia,INE-5789,ALMAZANTLA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+209-0002-0025,209,2,25,manzana_rural,33.6,prioritaria_50,23.0,colonia,INE-5789,ALMAZANTLA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+209-0002-0026,209,2,26,manzana_rural,34.6,prioritaria_50,21.0,colonia,INE-5789,ALMAZANTLA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+209-0028-0053,209,28,53,manzana_rural,51.9,prioritaria_50,5.0,colonia,INE-13103,RESIDENCIAL SANTA ELENA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+209-0028-0002,209,28,2,manzana_rural,38.7,prioritaria_50,15.0,colonia,INE-5796,SAN AGUSTIN,0,rural,A_MATCH_EXACTO_ELEGIBLE
+209-0028-0003,209,28,3,manzana_rural,98.7,prioritaria_50,1.0,colonia,INE-5796,SAN AGUSTIN,0,rural,A_MATCH_EXACTO_ELEGIBLE
+209-0028-0006,209,28,6,manzana_rural,71.2,prioritaria_50,2.0,colonia,INE-5796,SAN AGUSTIN,0,rural,A_MATCH_EXACTO_ELEGIBLE
+209-0029-0006,209,29,6,manzana_rural,39.7,prioritaria_50,13.0,colonia,INE-5787,SAN AGUSTIN HUIXAXTLA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+209-0029-0009,209,29,9,manzana_rural,34.6,prioritaria_50,22.0,colonia,INE-5787,SAN AGUSTIN HUIXAXTLA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+209-0029-0011,209,29,11,manzana_rural,37.6,prioritaria_50,17.0,colonia,INE-5787,SAN AGUSTIN HUIXAXTLA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+209-0029-0012,209,29,12,manzana_rural,45.8,prioritaria_50,9.0,colonia,INE-5787,SAN AGUSTIN HUIXAXTLA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+209-0029-0013,209,29,13,manzana_rural,38.7,prioritaria_50,16.0,colonia,INE-5787,SAN AGUSTIN HUIXAXTLA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+209-0029-0017,209,29,17,manzana_rural,43.7,prioritaria_50,11.0,colonia,INE-5787,SAN AGUSTIN HUIXAXTLA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+209-0029-0018,209,29,18,manzana_rural,35.6,prioritaria_50,19.0,colonia,INE-5787,SAN AGUSTIN HUIXAXTLA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+209-0029-0019,209,29,19,manzana_rural,53.9,prioritaria_50,4.0,colonia,INE-5787,SAN AGUSTIN HUIXAXTLA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+209-0029-0020,209,29,20,manzana_rural,46.8,prioritaria_50,7.0,colonia,INE-5787,SAN AGUSTIN HUIXAXTLA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+209-0029-0034,209,29,34,manzana_rural,45.8,prioritaria_50,10.0,colonia,INE-5787,SAN AGUSTIN HUIXAXTLA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+209-0052-0003,209,52,3,manzana_rural,55.9,prioritaria_50,3.0,colonia,INE-5788,TOLOMETLA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+209-0052-0005,209,52,5,manzana_rural,46.8,prioritaria_50,8.0,colonia,INE-5788,TOLOMETLA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+209-0052-0007,209,52,7,manzana_rural,37.6,prioritaria_50,18.0,colonia,INE-5788,TOLOMETLA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+209-0052-0008,209,52,8,manzana_rural,42.7,prioritaria_50,12.0,colonia,INE-5788,TOLOMETLA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+210-0011-0001,210,11,1,manzana_rural,32.5,prioritaria_50,2.0,localidad,LOC-0011,Localidad 11,1,rural,A_MATCH_EXACTO_ELEGIBLE
+210-0011-0002,210,11,2,manzana_rural,23.4,prioritaria_50,7.0,localidad,LOC-0011,Localidad 11,1,rural,A_MATCH_EXACTO_ELEGIBLE
+210-0011-0008,210,11,8,manzana_rural,37.6,prioritaria_50,1.0,localidad,LOC-0011,Localidad 11,1,rural,A_MATCH_EXACTO_ELEGIBLE
+210-0011-0011,210,11,11,manzana_rural,28.5,prioritaria_50,3.0,localidad,LOC-0011,Localidad 11,1,rural,A_MATCH_EXACTO_ELEGIBLE
+210-0011-0015,210,11,15,manzana_rural,27.4,prioritaria_50,4.0,localidad,LOC-0011,Localidad 11,1,rural,A_MATCH_EXACTO_ELEGIBLE
+210-0011-0016,210,11,16,manzana_rural,24.4,prioritaria_50,6.0,localidad,LOC-0011,Localidad 11,1,rural,A_MATCH_EXACTO_ELEGIBLE
+210-0011-0018,210,11,18,manzana_rural,26.4,prioritaria_50,5.0,localidad,LOC-0011,Localidad 11,1,rural,A_MATCH_EXACTO_ELEGIBLE
+211-0038-0032,211,38,32,manzana_rural,83.0,prioritaria_50,4.0,colonia,2101900650001,CENTRO DEL PUEBLO COYULA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+211-0038-0003,211,38,3,manzana_rural,68.9,prioritaria_50,6.0,colonia,2101900650005,SAN MIGUEL AYALA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+211-0038-0005,211,38,5,manzana_rural,69.9,prioritaria_50,5.0,colonia,2101900650005,SAN MIGUEL AYALA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+211-0038-0015,211,38,15,manzana_rural,114.4,prioritaria_50,2.0,colonia,2101900650005,SAN MIGUEL AYALA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+211-0038-0016,211,38,16,manzana_rural,65.8,prioritaria_50,7.0,colonia,2101900650005,SAN MIGUEL AYALA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+211-0038-0022,211,38,22,manzana_rural,93.2,prioritaria_50,3.0,colonia,2101900650005,SAN MIGUEL AYALA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+211-0038-0026,211,38,26,manzana_rural,62.8,prioritaria_50,8.0,colonia,2101900650005,SAN MIGUEL AYALA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+211-0038-0031,211,38,31,manzana_rural,146.8,prioritaria_50,1.0,colonia,2101900650005,SAN MIGUEL AYALA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+212-0038-0001,212,38,1,manzana_rural,116.3,prioritaria_50,2.0,colonia,2101900650001,CENTRO DEL PUEBLO COYULA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+212-0038-0002,212,38,2,manzana_rural,80.6,prioritaria_50,15.0,colonia,2101900650001,CENTRO DEL PUEBLO COYULA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+212-0038-0008,212,38,8,manzana_rural,90.8,prioritaria_50,9.0,colonia,2101900650001,CENTRO DEL PUEBLO COYULA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+212-0038-0009,212,38,9,manzana_rural,132.6,prioritaria_50,1.0,colonia,2101900650001,CENTRO DEL PUEBLO COYULA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+212-0038-0010,212,38,10,manzana_rural,102.0,prioritaria_50,5.0,colonia,2101900650001,CENTRO DEL PUEBLO COYULA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+212-0038-0013,212,38,13,manzana_rural,111.2,prioritaria_50,3.0,colonia,2101900650001,CENTRO DEL PUEBLO COYULA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+212-0038-0016,212,38,16,manzana_rural,81.6,prioritaria_50,14.0,colonia,2101900650001,CENTRO DEL PUEBLO COYULA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+212-0038-0022,212,38,22,manzana_rural,98.0,prioritaria_50,8.0,colonia,2101900650001,CENTRO DEL PUEBLO COYULA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+212-0038-0035,212,38,35,manzana_rural,102.0,prioritaria_50,6.0,colonia,2101900650001,CENTRO DEL PUEBLO COYULA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+212-0038-0048,212,38,48,manzana_rural,82.7,prioritaria_50,13.0,colonia,2101900650001,CENTRO DEL PUEBLO COYULA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+212-0038-0049,212,38,49,manzana_rural,101.0,prioritaria_50,7.0,colonia,2101900650001,CENTRO DEL PUEBLO COYULA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+212-0038-0026,212,38,26,manzana_rural,86.7,prioritaria_50,12.0,colonia,2101900650004,MORELOS,0,rural,A_MATCH_EXACTO_ELEGIBLE
+212-0038-0037,212,38,37,manzana_rural,107.1,prioritaria_50,4.0,colonia,2101900650004,MORELOS,0,rural,A_MATCH_EXACTO_ELEGIBLE
+212-0038-0047,212,38,47,manzana_rural,90.8,prioritaria_50,10.0,colonia,2101900650004,MORELOS,0,rural,A_MATCH_EXACTO_ELEGIBLE
+212-0077-0002,212,77,2,manzana_rural,88.8,prioritaria_50,11.0,colonia,INE-2354,SOLARES TENEXTEPEC,0,rural,A_MATCH_EXACTO_ELEGIBLE
+213-0038-0002,213,38,2,manzana_rural,91.3,prioritaria_50,9.0,colonia,2101900650003,GUADALUPE VICTORIA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+213-0038-0019,213,38,19,manzana_rural,96.3,prioritaria_50,7.0,colonia,2101900650003,GUADALUPE VICTORIA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+213-0038-0020,213,38,20,manzana_rural,135.9,prioritaria_50,3.0,colonia,2101900650003,GUADALUPE VICTORIA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+213-0038-0021,213,38,21,manzana_rural,115.6,prioritaria_50,5.0,colonia,2101900650003,GUADALUPE VICTORIA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+213-0038-0030,213,38,30,manzana_rural,200.8,prioritaria_50,1.0,colonia,2101900650003,GUADALUPE VICTORIA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+213-0038-0032,213,38,32,manzana_rural,108.5,prioritaria_50,6.0,colonia,2101900650003,GUADALUPE VICTORIA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+213-0038-0041,213,38,41,manzana_rural,118.6,prioritaria_50,4.0,colonia,2101900650003,GUADALUPE VICTORIA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+213-0038-0048,213,38,48,manzana_rural,137.9,prioritaria_50,2.0,colonia,2101900650004,MORELOS,0,rural,A_MATCH_EXACTO_ELEGIBLE
+213-0038-0056,213,38,56,manzana_rural,96.3,prioritaria_50,8.0,colonia,2101900650004,MORELOS,0,rural,A_MATCH_EXACTO_ELEGIBLE
+214-0041-0006,214,41,6,manzana_rural,76.0,prioritaria_50,2.0,localidad,LOC-0041,Localidad 41,1,rural,A_MATCH_EXACTO_ELEGIBLE
+214-0041-0009,214,41,9,manzana_rural,59.8,prioritaria_50,4.0,localidad,LOC-0041,Localidad 41,1,rural,A_MATCH_EXACTO_ELEGIBLE
+214-0041-0012,214,41,12,manzana_rural,58.8,prioritaria_50,5.0,localidad,LOC-0041,Localidad 41,1,rural,A_MATCH_EXACTO_ELEGIBLE
+214-0041-0013,214,41,13,manzana_rural,115.5,prioritaria_50,1.0,localidad,LOC-0041,Localidad 41,1,rural,A_MATCH_EXACTO_ELEGIBLE
+214-0041-0017,214,41,17,manzana_rural,46.6,prioritaria_50,8.0,localidad,LOC-0041,Localidad 41,1,rural,A_MATCH_EXACTO_ELEGIBLE
+214-0041-0018,214,41,18,manzana_rural,52.7,prioritaria_50,6.0,localidad,LOC-0041,Localidad 41,1,rural,A_MATCH_EXACTO_ELEGIBLE
+214-0049-0006,214,49,6,manzana_rural,48.6,prioritaria_50,7.0,localidad,LOC-0049,Localidad 49,1,rural,A_MATCH_EXACTO_ELEGIBLE
+214-0049-0007,214,49,7,manzana_rural,38.5,prioritaria_50,15.0,localidad,LOC-0049,Localidad 49,1,rural,A_MATCH_EXACTO_ELEGIBLE
+214-0049-0011,214,49,11,manzana_rural,38.5,prioritaria_50,16.0,localidad,LOC-0049,Localidad 49,1,rural,A_MATCH_EXACTO_ELEGIBLE
+214-0049-0012,214,49,12,manzana_rural,39.5,prioritaria_50,14.0,localidad,LOC-0049,Localidad 49,1,rural,A_MATCH_EXACTO_ELEGIBLE
+214-0049-0014,214,49,14,manzana_rural,62.8,prioritaria_50,3.0,localidad,LOC-0049,Localidad 49,1,rural,A_MATCH_EXACTO_ELEGIBLE
+214-0049-0018,214,49,18,manzana_rural,45.6,prioritaria_50,9.0,localidad,LOC-0049,Localidad 49,1,rural,A_MATCH_EXACTO_ELEGIBLE
+214-0049-0020,214,49,20,manzana_rural,45.6,prioritaria_50,10.0,localidad,LOC-0049,Localidad 49,1,rural,A_MATCH_EXACTO_ELEGIBLE
+214-0049-0021,214,49,21,manzana_rural,37.5,prioritaria_50,18.0,localidad,LOC-0049,Localidad 49,1,rural,A_MATCH_EXACTO_ELEGIBLE
+214-0049-0023,214,49,23,manzana_rural,44.6,prioritaria_50,11.0,localidad,LOC-0049,Localidad 49,1,rural,A_MATCH_EXACTO_ELEGIBLE
+214-0049-0025,214,49,25,manzana_rural,44.6,prioritaria_50,12.0,localidad,LOC-0049,Localidad 49,1,rural,A_MATCH_EXACTO_ELEGIBLE
+214-0049-0027,214,49,27,manzana_rural,41.5,prioritaria_50,13.0,localidad,LOC-0049,Localidad 49,1,rural,A_MATCH_EXACTO_ELEGIBLE
+214-0049-0054,214,49,54,manzana_rural,38.5,prioritaria_50,17.0,localidad,LOC-0049,Localidad 49,1,rural,A_MATCH_EXACTO_ELEGIBLE
+215-0035-0009,215,35,9,manzana_rural,57.3,prioritaria_50,9.0,localidad,LOC-0035,Localidad 35,1,rural,A_MATCH_EXACTO_ELEGIBLE
+215-0036-0001,215,36,1,manzana_rural,65.5,prioritaria_50,6.0,localidad,LOC-0036,Localidad 36,1,rural,A_MATCH_EXACTO_ELEGIBLE
+215-0036-0004,215,36,4,manzana_rural,68.5,prioritaria_50,5.0,localidad,LOC-0036,Localidad 36,1,rural,A_MATCH_EXACTO_ELEGIBLE
+215-0036-0005,215,36,5,manzana_rural,110.5,prioritaria_50,1.0,localidad,LOC-0036,Localidad 36,1,rural,A_MATCH_EXACTO_ELEGIBLE
+215-0036-0009,215,36,9,manzana_rural,50.1,prioritaria_50,11.0,localidad,LOC-0036,Localidad 36,1,rural,A_MATCH_EXACTO_ELEGIBLE
+215-0036-0010,215,36,10,manzana_rural,62.4,prioritaria_50,8.0,localidad,LOC-0036,Localidad 36,1,rural,A_MATCH_EXACTO_ELEGIBLE
+215-0036-0011,215,36,11,manzana_rural,47.0,prioritaria_50,16.0,localidad,LOC-0036,Localidad 36,1,rural,A_MATCH_EXACTO_ELEGIBLE
+215-0036-0015,215,36,15,manzana_rural,46.0,prioritaria_50,17.0,localidad,LOC-0036,Localidad 36,1,rural,A_MATCH_EXACTO_ELEGIBLE
+215-0036-0016,215,36,16,manzana_rural,44.0,prioritaria_50,19.0,localidad,LOC-0036,Localidad 36,1,rural,A_MATCH_EXACTO_ELEGIBLE
+215-0036-0017,215,36,17,manzana_rural,80.8,prioritaria_50,4.0,localidad,LOC-0036,Localidad 36,1,rural,A_MATCH_EXACTO_ELEGIBLE
+215-0036-0023,215,36,23,manzana_rural,65.5,prioritaria_50,7.0,localidad,LOC-0036,Localidad 36,1,rural,A_MATCH_EXACTO_ELEGIBLE
+215-0036-0027,215,36,27,manzana_rural,45.0,prioritaria_50,18.0,localidad,LOC-0036,Localidad 36,1,rural,A_MATCH_EXACTO_ELEGIBLE
+215-0036-0029,215,36,29,manzana_rural,49.1,prioritaria_50,12.0,localidad,LOC-0036,Localidad 36,1,rural,A_MATCH_EXACTO_ELEGIBLE
+215-0036-0030,215,36,30,manzana_rural,49.1,prioritaria_50,13.0,localidad,LOC-0036,Localidad 36,1,rural,A_MATCH_EXACTO_ELEGIBLE
+215-0036-0034,215,36,34,manzana_rural,43.0,prioritaria_50,20.0,localidad,LOC-0036,Localidad 36,1,rural,A_MATCH_EXACTO_ELEGIBLE
+215-0036-0042,215,36,42,manzana_rural,49.1,prioritaria_50,14.0,localidad,LOC-0036,Localidad 36,1,rural,A_MATCH_EXACTO_ELEGIBLE
+215-0036-0046,215,36,46,manzana_rural,56.2,prioritaria_50,10.0,localidad,LOC-0036,Localidad 36,1,rural,A_MATCH_EXACTO_ELEGIBLE
+215-0036-0060,215,36,60,manzana_rural,49.1,prioritaria_50,15.0,localidad,LOC-0036,Localidad 36,1,rural,A_MATCH_EXACTO_ELEGIBLE
+215-0076-0006,215,76,6,manzana_rural,104.3,prioritaria_50,3.0,localidad,LOC-0076,Localidad 76,1,rural,A_MATCH_EXACTO_ELEGIBLE
+216-0016-0005,216,16,5,manzana_rural,55.0,prioritaria_50,12.0,colonia,INE-2274,IXTAHUIXTLA (SAN AGUSTIN),0,rural,A_MATCH_EXACTO_ELEGIBLE
+216-0016-0006,216,16,6,manzana_rural,47.9,prioritaria_50,18.0,colonia,INE-2274,IXTAHUIXTLA (SAN AGUSTIN),0,rural,A_MATCH_EXACTO_ELEGIBLE
+216-0016-0008,216,16,8,manzana_rural,75.4,prioritaria_50,4.0,colonia,INE-2274,IXTAHUIXTLA (SAN AGUSTIN),0,rural,A_MATCH_EXACTO_ELEGIBLE
+216-0016-0013,216,16,13,manzana_rural,46.9,prioritaria_50,19.0,colonia,INE-2274,IXTAHUIXTLA (SAN AGUSTIN),0,rural,A_MATCH_EXACTO_ELEGIBLE
+216-0016-0014,216,16,14,manzana_rural,81.5,prioritaria_50,3.0,colonia,INE-2274,IXTAHUIXTLA (SAN AGUSTIN),0,rural,A_MATCH_EXACTO_ELEGIBLE
+216-0016-0015,216,16,15,manzana_rural,48.9,prioritaria_50,17.0,colonia,INE-2274,IXTAHUIXTLA (SAN AGUSTIN),0,rural,A_MATCH_EXACTO_ELEGIBLE
+216-0016-0027,216,16,27,manzana_rural,53.0,prioritaria_50,14.0,colonia,INE-2274,IXTAHUIXTLA (SAN AGUSTIN),0,rural,A_MATCH_EXACTO_ELEGIBLE
+216-0016-0029,216,16,29,manzana_rural,66.2,prioritaria_50,8.0,colonia,INE-2274,IXTAHUIXTLA (SAN AGUSTIN),0,rural,A_MATCH_EXACTO_ELEGIBLE
+216-0042-0032,216,42,32,manzana_rural,49.9,prioritaria_50,16.0,colonia,INE-2271,LOMAS DE TEJALUCA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+216-0042-0099,216,42,99,manzana_rural,56.0,prioritaria_50,11.0,colonia,INE-2271,LOMAS DE TEJALUCA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+216-0042-0007,216,42,7,manzana_rural,75.4,prioritaria_50,5.0,colonia,INE-2273,SAN JUAN TEJALUCA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+216-0042-0008,216,42,8,manzana_rural,52.0,prioritaria_50,15.0,colonia,INE-2273,SAN JUAN TEJALUCA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+216-0042-0009,216,42,9,manzana_rural,99.9,prioritaria_50,1.0,colonia,INE-2273,SAN JUAN TEJALUCA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+216-0042-0012,216,42,12,manzana_rural,70.3,prioritaria_50,7.0,colonia,INE-2273,SAN JUAN TEJALUCA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+216-0042-0013,216,42,13,manzana_rural,83.6,prioritaria_50,2.0,colonia,INE-2273,SAN JUAN TEJALUCA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+216-0042-0016,216,42,16,manzana_rural,71.3,prioritaria_50,6.0,colonia,INE-2273,SAN JUAN TEJALUCA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+216-0042-0017,216,42,17,manzana_rural,56.0,prioritaria_50,10.0,colonia,INE-2273,SAN JUAN TEJALUCA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+216-0042-0020,216,42,20,manzana_rural,59.1,prioritaria_50,9.0,colonia,INE-2273,SAN JUAN TEJALUCA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+216-0042-0021,216,42,21,manzana_rural,46.9,prioritaria_50,20.0,colonia,INE-2273,SAN JUAN TEJALUCA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+216-0042-0023,216,42,23,manzana_rural,54.0,prioritaria_50,13.0,colonia,INE-2273,SAN JUAN TEJALUCA,0,rural,A_MATCH_EXACTO_ELEGIBLE
+217-0046-0005,217,46,5,manzana_rural,90.7,prioritaria_50,3.0,localidad,LOC-0046,Localidad 46,1,rural,A_MATCH_EXACTO_ELEGIBLE
+217-0046-0006,217,46,6,manzana_rural,67.3,prioritaria_50,4.0,localidad,LOC-0046,Localidad 46,1,rural,A_MATCH_EXACTO_ELEGIBLE
+217-0046-0007,217,46,7,manzana_rural,147.8,prioritaria_50,1.0,localidad,LOC-0046,Localidad 46,1,rural,A_MATCH_EXACTO_ELEGIBLE
+217-0046-0008,217,46,8,manzana_rural,132.5,prioritaria_50,2.0,localidad,LOC-0046,Localidad 46,1,rural,A_MATCH_EXACTO_ELEGIBLE
+217-0046-0010,217,46,10,manzana_rural,67.3,prioritaria_50,5.0,localidad,LOC-0046,Localidad 46,1,rural,A_MATCH_EXACTO_ELEGIBLE
+217-0046-0011,217,46,11,manzana_rural,61.1,prioritaria_50,9.0,localidad,LOC-0046,Localidad 46,1,rural,A_MATCH_EXACTO_ELEGIBLE
+217-0046-0012,217,46,12,manzana_rural,58.1,prioritaria_50,11.0,localidad,LOC-0046,Localidad 46,1,rural,A_MATCH_EXACTO_ELEGIBLE
+217-0009-0004,217,9,4,manzana_rural,57.1,prioritaria_50,12.0,localidad,LOC-0009,Localidad 9,1,rural,A_MATCH_EXACTO_ELEGIBLE
+217-0009-0008,217,9,8,manzana_rural,65.2,prioritaria_50,6.0,localidad,LOC-0009,Localidad 9,1,rural,A_MATCH_EXACTO_ELEGIBLE
+217-0009-0009,217,9,9,manzana_rural,64.2,prioritaria_50,7.0,localidad,LOC-0009,Localidad 9,1,rural,A_MATCH_EXACTO_ELEGIBLE
+217-0009-0014,217,9,14,manzana_rural,63.2,prioritaria_50,8.0,localidad,LOC-0009,Localidad 9,1,rural,A_MATCH_EXACTO_ELEGIBLE
+217-0009-0017,217,9,17,manzana_rural,59.1,prioritaria_50,10.0,localidad,LOC-0009,Localidad 9,1,rural,A_MATCH_EXACTO_ELEGIBLE
+218-0048-0007,218,48,7,manzana_rural,49.9,prioritaria_50,5.0,localidad,LOC-0048,Localidad 48,1,rural,A_MATCH_EXACTO_ELEGIBLE
+218-0048-0011,218,48,11,manzana_rural,33.6,prioritaria_50,13.0,localidad,LOC-0048,Localidad 48,1,rural,A_MATCH_EXACTO_ELEGIBLE
+218-0048-0017,218,48,17,manzana_rural,36.6,prioritaria_50,10.0,localidad,LOC-0048,Localidad 48,1,rural,A_MATCH_EXACTO_ELEGIBLE
+218-0048-0018,218,48,18,manzana_rural,60.1,prioritaria_50,1.0,localidad,LOC-0048,Localidad 48,1,rural,A_MATCH_EXACTO_ELEGIBLE
+218-0048-0019,218,48,19,manzana_rural,51.9,prioritaria_50,4.0,localidad,LOC-0048,Localidad 48,1,rural,A_MATCH_EXACTO_ELEGIBLE
+218-0048-0023,218,48,23,manzana_rural,34.6,prioritaria_50,11.0,localidad,LOC-0048,Localidad 48,1,rural,A_MATCH_EXACTO_ELEGIBLE
+218-0048-0025,218,48,25,manzana_rural,34.6,prioritaria_50,12.0,localidad,LOC-0048,Localidad 48,1,rural,A_MATCH_EXACTO_ELEGIBLE
+218-0048-0026,218,48,26,manzana_rural,59.0,prioritaria_50,2.0,localidad,LOC-0048,Localidad 48,1,rural,A_MATCH_EXACTO_ELEGIBLE
+218-0048-0027,218,48,27,manzana_rural,30.5,prioritaria_50,14.0,localidad,LOC-0048,Localidad 48,1,rural,A_MATCH_EXACTO_ELEGIBLE
+218-0048-0029,218,48,29,manzana_rural,30.5,prioritaria_50,15.0,localidad,LOC-0048,Localidad 48,1,rural,A_MATCH_EXACTO_ELEGIBLE
+218-0048-0032,218,48,32,manzana_rural,48.9,prioritaria_50,6.0,localidad,LOC-0048,Localidad 48,1,rural,A_MATCH_EXACTO_ELEGIBLE
+218-0048-0040,218,48,40,manzana_rural,39.7,prioritaria_50,9.0,localidad,LOC-0048,Localidad 48,1,rural,A_MATCH_EXACTO_ELEGIBLE
+218-0048-0041,218,48,41,manzana_rural,42.7,prioritaria_50,8.0,localidad,LOC-0048,Localidad 48,1,rural,A_MATCH_EXACTO_ELEGIBLE
+218-0048-0055,218,48,55,manzana_rural,45.8,prioritaria_50,7.0,localidad,LOC-0048,Localidad 48,1,rural,A_MATCH_EXACTO_ELEGIBLE
+218-0048-0059,218,48,59,manzana_rural,59.0,prioritaria_50,3.0,localidad,LOC-0048,Localidad 48,1,rural,A_MATCH_EXACTO_ELEGIBLE
+219-0015-0002,219,15,2,manzana_rural,48.9,prioritaria_50,13.0,localidad,LOC-0015,Localidad 15,1,rural,A_MATCH_EXACTO_ELEGIBLE
+219-0015-0005,219,15,5,manzana_rural,88.6,prioritaria_50,2.0,localidad,LOC-0015,Localidad 15,1,rural,A_MATCH_EXACTO_ELEGIBLE
+219-0015-0006,219,15,6,manzana_rural,64.1,prioritaria_50,6.0,localidad,LOC-0015,Localidad 15,1,rural,A_MATCH_EXACTO_ELEGIBLE
+219-0015-0007,219,15,7,manzana_rural,61.1,prioritaria_50,8.0,localidad,LOC-0015,Localidad 15,1,rural,A_MATCH_EXACTO_ELEGIBLE
+219-0015-0015,219,15,15,manzana_rural,59.0,prioritaria_50,9.0,localidad,LOC-0015,Localidad 15,1,rural,A_MATCH_EXACTO_ELEGIBLE
+219-0015-0020,219,15,20,manzana_rural,77.4,prioritaria_50,4.0,localidad,LOC-0015,Localidad 15,1,rural,A_MATCH_EXACTO_ELEGIBLE
+219-0015-0023,219,15,23,manzana_rural,48.9,prioritaria_50,14.0,localidad,LOC-0015,Localidad 15,1,rural,A_MATCH_EXACTO_ELEGIBLE
+219-0015-0029,219,15,29,manzana_rural,55.0,prioritaria_50,10.0,localidad,LOC-0015,Localidad 15,1,rural,A_MATCH_EXACTO_ELEGIBLE
+219-0015-0037,219,15,37,manzana_rural,51.9,prioritaria_50,11.0,localidad,LOC-0015,Localidad 15,1,rural,A_MATCH_EXACTO_ELEGIBLE
+219-0019-0003,219,19,3,manzana_rural,72.3,prioritaria_50,5.0,localidad,LOC-0019,Localidad 19,1,rural,A_MATCH_EXACTO_ELEGIBLE
+219-0019-0010,219,19,10,manzana_rural,109.9,prioritaria_50,1.0,localidad,LOC-0019,Localidad 19,1,rural,A_MATCH_EXACTO_ELEGIBLE
+219-0019-0013,219,19,13,manzana_rural,49.9,prioritaria_50,12.0,localidad,LOC-0019,Localidad 19,1,rural,A_MATCH_EXACTO_ELEGIBLE
+219-0019-0014,219,19,14,manzana_rural,63.1,prioritaria_50,7.0,localidad,LOC-0019,Localidad 19,1,rural,A_MATCH_EXACTO_ELEGIBLE
+219-0019-0015,219,19,15,manzana_rural,88.6,prioritaria_50,3.0,localidad,LOC-0019,Localidad 19,1,rural,A_MATCH_EXACTO_ELEGIBLE
+220-0017-0003,220,17,3,manzana_rural,27.3,prioritaria_50,10.0,localidad,LOC-0017,Localidad 17,1,rural,A_MATCH_EXACTO_ELEGIBLE
+220-0017-0005,220,17,5,manzana_rural,31.3,prioritaria_50,8.0,localidad,LOC-0017,Localidad 17,1,rural,A_MATCH_EXACTO_ELEGIBLE
+220-0017-0009,220,17,9,manzana_rural,49.5,prioritaria_50,4.0,localidad,LOC-0017,Localidad 17,1,rural,A_MATCH_EXACTO_ELEGIBLE
+220-0017-0012,220,17,12,manzana_rural,58.6,prioritaria_50,2.0,localidad,LOC-0017,Localidad 17,1,rural,A_MATCH_EXACTO_ELEGIBLE
+220-0017-0015,220,17,15,manzana_rural,37.4,prioritaria_50,7.0,localidad,LOC-0017,Localidad 17,1,rural,A_MATCH_EXACTO_ELEGIBLE
+220-0017-0017,220,17,17,manzana_rural,61.6,prioritaria_50,1.0,localidad,LOC-0017,Localidad 17,1,rural,A_MATCH_EXACTO_ELEGIBLE
+220-0017-0018,220,17,18,manzana_rural,29.3,prioritaria_50,9.0,localidad,LOC-0017,Localidad 17,1,rural,A_MATCH_EXACTO_ELEGIBLE
+220-0017-0019,220,17,19,manzana_rural,55.6,prioritaria_50,3.0,localidad,LOC-0017,Localidad 17,1,rural,A_MATCH_EXACTO_ELEGIBLE
+220-0017-0022,220,17,22,manzana_rural,48.5,prioritaria_50,5.0,localidad,LOC-0017,Localidad 17,1,rural,A_MATCH_EXACTO_ELEGIBLE
+220-0025-0004,220,25,4,manzana_rural,39.4,prioritaria_50,6.0,localidad,LOC-0025,Localidad 25,1,rural,A_MATCH_EXACTO_ELEGIBLE
+221-0033-0001,221,33,1,manzana_rural,23.3,prioritaria_50,12.0,localidad,LOC-0033,Localidad 33,1,rural,A_MATCH_EXACTO_ELEGIBLE
+221-0033-0006,221,33,6,manzana_rural,49.6,prioritaria_50,1.0,localidad,LOC-0033,Localidad 33,1,rural,A_MATCH_EXACTO_ELEGIBLE
+221-0033-0009,221,33,9,manzana_rural,23.3,prioritaria_50,13.0,localidad,LOC-0033,Localidad 33,1,rural,A_MATCH_EXACTO_ELEGIBLE
+221-0033-0010,221,33,10,manzana_rural,28.3,prioritaria_50,9.0,localidad,LOC-0033,Localidad 33,1,rural,A_MATCH_EXACTO_ELEGIBLE
+221-0033-0013,221,33,13,manzana_rural,47.6,prioritaria_50,3.0,localidad,LOC-0033,Localidad 33,1,rural,A_MATCH_EXACTO_ELEGIBLE
+221-0033-0019,221,33,19,manzana_rural,43.5,prioritaria_50,6.0,localidad,LOC-0033,Localidad 33,1,rural,A_MATCH_EXACTO_ELEGIBLE
+221-0033-0025,221,33,25,manzana_rural,28.3,prioritaria_50,10.0,localidad,LOC-0033,Localidad 33,1,rural,A_MATCH_EXACTO_ELEGIBLE
+221-0034-0003,221,34,3,manzana_rural,24.3,prioritaria_50,11.0,localidad,LOC-0034,Localidad 34,1,rural,A_MATCH_EXACTO_ELEGIBLE
+221-0037-0001,221,37,1,manzana_rural,48.6,prioritaria_50,2.0,localidad,LOC-0037,Localidad 37,1,rural,A_MATCH_EXACTO_ELEGIBLE
+221-0037-0007,221,37,7,manzana_rural,35.4,prioritaria_50,8.0,localidad,LOC-0037,Localidad 37,1,rural,A_MATCH_EXACTO_ELEGIBLE
+221-0037-0008,221,37,8,manzana_rural,47.6,prioritaria_50,4.0,localidad,LOC-0037,Localidad 37,1,rural,A_MATCH_EXACTO_ELEGIBLE
+221-0037-0010,221,37,10,manzana_rural,36.4,prioritaria_50,7.0,localidad,LOC-0037,Localidad 37,1,rural,A_MATCH_EXACTO_ELEGIBLE
+221-0037-0015,221,37,15,manzana_rural,44.5,prioritaria_50,5.0,localidad,LOC-0037,Localidad 37,1,rural,A_MATCH_EXACTO_ELEGIBLE
+221-0037-0017,221,37,17,manzana_rural,23.3,prioritaria_50,14.0,localidad,LOC-0037,Localidad 37,1,rural,A_MATCH_EXACTO_ELEGIBLE
+221-0037-0021,221,37,21,manzana_rural,21.2,prioritaria_50,15.0,localidad,LOC-0037,Localidad 37,1,rural,A_MATCH_EXACTO_ELEGIBLE
+2874-0001-0028,2874,1,28,manzana_urbana,65.8,prioritaria_50,10.0,colonia,2101900010056,LAS NIEVES,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2874-0001-0030,2874,1,30,manzana_urbana,94.2,prioritaria_50,6.0,colonia,2101900010056,LAS NIEVES,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2874-0001-0001,2874,1,1,manzana_urbana,122.5,prioritaria_50,3.0,colonia,2101900010097,LOS SOLES,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2874-0001-0007,2874,1,7,manzana_urbana,75.9,prioritaria_50,9.0,colonia,2101900010006,LOS ÁNGELES,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2874-0001-0017,2874,1,17,manzana_urbana,96.2,prioritaria_50,4.0,colonia,2101900010006,LOS ÁNGELES,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2874-0001-0018,2874,1,18,manzana_urbana,83.0,prioritaria_50,7.0,colonia,2101900010006,LOS ÁNGELES,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2874-0001-0019,2874,1,19,manzana_urbana,126.6,prioritaria_50,1.0,colonia,2101900010006,LOS ÁNGELES,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2874-0001-0021,2874,1,21,manzana_urbana,83.0,prioritaria_50,8.0,colonia,2101900010006,LOS ÁNGELES,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2874-0001-0023,2874,1,23,manzana_urbana,125.6,prioritaria_50,2.0,colonia,2101900010006,LOS ÁNGELES,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2874-0001-0034,2874,1,34,manzana_urbana,95.2,prioritaria_50,5.0,colonia,2101900010006,LOS ÁNGELES,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2874-0001-0043,2874,1,43,manzana_urbana,59.7,prioritaria_50,11.0,colonia,2101900010006,LOS ÁNGELES,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2875-0001-0035,2875,1,35,manzana_urbana,65.8,prioritaria_50,7.0,colonia,2101900010120,FRACCIONAMIENTO VILLAS HELENA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2875-0001-0009,2875,1,9,manzana_urbana,69.8,prioritaria_50,4.0,colonia,2101900010127,PASEOS DE ATLIXCO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2875-0001-0027,2875,1,27,manzana_urbana,84.0,prioritaria_50,1.0,colonia,2101900010127,PASEOS DE ATLIXCO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2875-0001-0041,2875,1,41,manzana_urbana,48.6,prioritaria_50,16.0,colonia,2101900010127,PASEOS DE ATLIXCO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2875-0001-0042,2875,1,42,manzana_urbana,55.6,prioritaria_50,10.0,colonia,2101900010127,PASEOS DE ATLIXCO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2875-0001-0043,2875,1,43,manzana_urbana,50.6,prioritaria_50,13.0,colonia,2101900010127,PASEOS DE ATLIXCO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2875-0001-0044,2875,1,44,manzana_urbana,57.7,prioritaria_50,9.0,colonia,2101900010127,PASEOS DE ATLIXCO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2875-0001-0046,2875,1,46,manzana_urbana,50.6,prioritaria_50,14.0,colonia,2101900010127,PASEOS DE ATLIXCO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2875-0001-0047,2875,1,47,manzana_urbana,45.5,prioritaria_50,17.0,colonia,2101900010127,PASEOS DE ATLIXCO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2875-0001-0049,2875,1,49,manzana_urbana,55.6,prioritaria_50,11.0,colonia,2101900010127,PASEOS DE ATLIXCO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2875-0001-0011,2875,1,11,manzana_urbana,65.8,prioritaria_50,6.0,colonia,2101900010067,SAN ALFONSO PRIMERA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2875-0001-0012,2875,1,12,manzana_urbana,63.7,prioritaria_50,8.0,colonia,2101900010067,SAN ALFONSO PRIMERA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2875-0001-0013,2875,1,13,manzana_urbana,49.6,prioritaria_50,15.0,colonia,2101900010067,SAN ALFONSO PRIMERA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2875-0001-0016,2875,1,16,manzana_urbana,69.8,prioritaria_50,5.0,colonia,2101900010067,SAN ALFONSO PRIMERA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2875-0001-0017,2875,1,17,manzana_urbana,72.8,prioritaria_50,3.0,colonia,2101900010067,SAN ALFONSO PRIMERA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2875-0001-0018,2875,1,18,manzana_urbana,52.6,prioritaria_50,12.0,colonia,2101900010067,SAN ALFONSO PRIMERA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2875-0001-0019,2875,1,19,manzana_urbana,74.9,prioritaria_50,2.0,colonia,2101900010067,SAN ALFONSO PRIMERA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2876-0001-0012,2876,1,12,manzana_urbana,83.0,prioritaria_50,3.0,colonia,2101900010110,AMPLIACIÓN SAN ALFONSO,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2876-0001-0015,2876,1,15,manzana_urbana,90.1,prioritaria_50,2.0,colonia,2101900010048,LOMAS DE TEMAXCALAPA,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2876-0001-0028,2876,1,28,manzana_urbana,132.1,prioritaria_50,1.0,colonia,2101900010131,RANCHO EL TECOLOCHE,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2876-0001-0017,2876,1,17,manzana_urbana,58.4,prioritaria_50,13.0,colonia,2101900010067,SAN ALFONSO PRIMERA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2876-0001-0021,2876,1,21,manzana_urbana,76.8,prioritaria_50,4.0,colonia,2101900010067,SAN ALFONSO PRIMERA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2876-0001-0025,2876,1,25,manzana_urbana,59.4,prioritaria_50,11.0,colonia,2101900010067,SAN ALFONSO PRIMERA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2876-0001-0026,2876,1,26,manzana_urbana,73.8,prioritaria_50,6.0,colonia,2101900010067,SAN ALFONSO PRIMERA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2876-0001-0032,2876,1,32,manzana_urbana,59.4,prioritaria_50,12.0,colonia,2101900010067,SAN ALFONSO PRIMERA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2876-0001-0037,2876,1,37,manzana_urbana,71.7,prioritaria_50,7.0,colonia,2101900010067,SAN ALFONSO PRIMERA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2876-0001-0004,2876,1,4,manzana_urbana,75.8,prioritaria_50,5.0,colonia,2101900010136,SAN ALFONSO SEGUNDA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2876-0001-0006,2876,1,6,manzana_urbana,56.3,prioritaria_50,15.0,colonia,2101900010136,SAN ALFONSO SEGUNDA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2876-0001-0022,2876,1,22,manzana_urbana,59.4,prioritaria_50,10.0,colonia,2101900010136,SAN ALFONSO SEGUNDA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2876-0001-0023,2876,1,23,manzana_urbana,63.5,prioritaria_50,8.0,colonia,2101900010136,SAN ALFONSO SEGUNDA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2876-0001-0024,2876,1,24,manzana_urbana,57.4,prioritaria_50,14.0,colonia,2101900010136,SAN ALFONSO SEGUNDA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE
+2876-0001-0031,2876,1,31,manzana_urbana,62.5,prioritaria_50,9.0,colonia,2101900010136,SAN ALFONSO SEGUNDA SECCIÓN,0,urbano,A_MATCH_EXACTO_ELEGIBLE

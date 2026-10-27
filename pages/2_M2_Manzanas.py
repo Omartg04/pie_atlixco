@@ -190,14 +190,14 @@ if not vista_general:
             "sin subdivisión interna por manzana.",
             icon="🚶",
         )
-        if st.button("Ver ficha completa en Plan Territorial →", key="m1_link_modob"):
+        if st.button("Ver ficha completa en Planeación Territorial →", key="m1_link_modob"):
             st.session_state["m1_sel_seccion"] = int(sec_sel)
-            st.switch_page("pages/1_M1_Plan_Territorial.py")
+            st.switch_page("pages/1_M1_Planeacion_Territorial.py")
         st.stop()
 
-    if st.button("Ver ficha completa en Plan Territorial →", key="m1_link_modoa"):
+    if st.button("Ver ficha completa en Planeación Territorial →", key="m1_link_modoa"):
         st.session_state["m1_sel_seccion"] = int(sec_sel)
-        st.switch_page("pages/1_M1_Plan_Territorial.py")
+        st.switch_page("pages/1_M1_Planeacion_Territorial.py")
 
 else:
     st.info(

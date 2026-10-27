@@ -273,6 +273,62 @@ def load_priorizacion_secciones() -> pd.DataFrame:
     return df
 
 
+# ── Insumos del marco V2 (octubre 2026) — M1 Planeación Territorial ─────────
+# Cuatro archivos ligeros que SUSTITUYEN al índice SPT como insumo de
+# priorización. El tablero deliberadamente NO carga
+# pie_019_atlixco_unificado_v2.geojson (3.5 MB, 3,282 polígonos de manzana):
+# la geometría de manzana vive en los KML de My Maps, que es donde el
+# brigadista la necesita. Aquí solo entran propiedades y los 70 contornos.
+#
+# Llaves, para no confundirlas:
+#   SECCION       — las 74 secciones vigentes (sin 160, con 3119-3123)
+#   seccion_geom  — la llave de dibujo, 70 polígonos (con 160, sin las nuevas).
+#                   Las 5 del bloque 160R comparten el polígono de la 160.
+
+@st.cache_data
+def load_m1_secciones() -> pd.DataFrame:
+    """74 secciones con IRE, capa de LN, caracterización electoral y de edad,
+    y el agregado de manzanas prioritarias. Ordenado por RANKING_IRE."""
+    path = os.path.join(DATA_DIR, "m1_secciones.csv")
+    df = pd.read_csv(path)
+    df["SECCION"] = df["SECCION"].astype(int)
+    df["seccion_geom"] = df["seccion_geom"].astype(int)
+    return df.sort_values("RANKING_IRE").reset_index(drop=True)
+
+
+@st.cache_data
+def load_m1_manzanas() -> pd.DataFrame:
+    """969 unidades: 692 manzanas del corte al 50% + 277 del bloque 160R
+    (estas últimas sin LN asignada, regla §13.3 del SOP de crosswalk).
+    Sin geometría. La llave 'seccion' es seccion_geom, no la vigente."""
+    path = os.path.join(DATA_DIR, "m1_manzanas_prioritarias.csv")
+    df = pd.read_csv(path)
+    df["seccion"] = df["seccion"].astype(int)
+    df["manzana"] = df["manzana"].astype(int)
+    return df
+
+
+@st.cache_data
+def load_m1_contornos() -> dict:
+    """70 contornos de sección con la capa de LN y el ranking para el
+    coroplético. El polígono de la 160 lleva la mejor capa de sus 5 secciones
+    vigentes y queda marcado con es_bloque=1."""
+    path = os.path.join(DATA_DIR, "m1_contornos.geojson")
+    with open(path, encoding="utf-8") as f:
+        return json.load(f)
+
+
+@st.cache_data
+def load_mapas_catalogo() -> pd.DataFrame:
+    """Catálogo de mapas de campo: una fila por sección vigente con la URL
+    /viewer de My Maps. Sustituye la lista MAPAS_CAMPO hardcodeada — actualizar
+    un mapa es editar un CSV, no el código."""
+    path = os.path.join(DATA_DIR, "mapas_catalogo.csv")
+    df = pd.read_csv(path, dtype={"url_my_maps_viewer": str})
+    df["seccion"] = df["seccion"].astype(int)
+    return df
+
+
 # ════════════════════════════════════════════════════════════════════════════
 # HELPERS DE ESTILO
 # ════════════════════════════════════════════════════════════════════════════
