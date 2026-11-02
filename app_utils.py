@@ -6,6 +6,7 @@ mockup de referencia (index.html) pero con paleta propia ámbar/acero.
 
 import os
 import json
+import re
 
 import pandas as pd
 import streamlit as st
@@ -318,14 +319,43 @@ def load_m1_contornos() -> dict:
         return json.load(f)
 
 
+_RE_MID_MYMAPS = re.compile(r"[?&]mid=([A-Za-z0-9_-]+)")
+
+
+def normaliza_url_mymaps(url: str) -> str:
+    """Devuelve la forma /viewer de un enlace de My Maps.
+
+    El diálogo de compartir de My Maps entrega la URL del dueño, en la forma
+    `/maps/d/u/0/edit?mid=...&usp=sharing`. Esa forma abre el mapa en modo
+    edición y, sobre todo, el tramo `/u/0/` la ancla a la primera cuenta de
+    Google con sesión en el dispositivo: un brigadista con dos cuentas puede
+    toparse con un error al abrirla.
+
+    El `mid` es el mismo identificador en las dos formas, así que la conversión
+    es segura y se hace aquí para que nadie tenga que acordarse de ella al
+    llenar el catálogo. Lo que la conversión NO puede arreglar es el permiso
+    del mapa: eso se verifica en My Maps, una vez por mapa.
+    """
+    # Una celda vacía del CSV llega como NaN, que es un float Y es truthy:
+    # `url or ""` no lo atrapa. Hay que verificar el tipo.
+    if not isinstance(url, str):
+        return ""
+    u = url.strip()
+    if not u or "/maps/d/" not in u:
+        return u
+    m = _RE_MID_MYMAPS.search(u)
+    return f"https://www.google.com/maps/d/viewer?mid={m.group(1)}" if m else u
+
+
 @st.cache_data
 def load_mapas_catalogo() -> pd.DataFrame:
-    """Catálogo de mapas de campo: una fila por sección vigente con la URL
-    /viewer de My Maps. Sustituye la lista MAPAS_CAMPO hardcodeada — actualizar
-    un mapa es editar un CSV, no el código."""
+    """Catálogo de mapas de campo: una fila por sección vigente con la URL de
+    My Maps, normalizada a la forma /viewer. Sustituye la lista MAPAS_CAMPO
+    hardcodeada — actualizar un mapa es editar un CSV, no el código."""
     path = os.path.join(DATA_DIR, "mapas_catalogo.csv")
     df = pd.read_csv(path, dtype={"url_my_maps_viewer": str})
     df["seccion"] = df["seccion"].astype(int)
+    df["url_my_maps_viewer"] = df["url_my_maps_viewer"].map(normaliza_url_mymaps)
     return df
 
 
