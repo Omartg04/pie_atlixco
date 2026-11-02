@@ -143,15 +143,6 @@ VISITAS_TOTALES = sum(a["visitas"] for a in AVANCE_POR_GEOM.values())
 
 URL_POR_SECCION = dict(zip(mapas["seccion"], mapas["url_my_maps_viewer"].fillna("")))
 
-# Los enlaces de My Maps en forma de edición (/edit?mid=...) anclan el mapa a la
-# primera cuenta de Google con sesión en el dispositivo, lo abren en modo
-# edición y permiten mover geometrías a quien los reciba. Se detectan aquí para
-# que no lleguen a campo por descuido al llenar el catálogo.
-URLS_EDICION = sorted(
-    int(sec) for sec, url in URL_POR_SECCION.items()
-    if "/edit" in str(url) or "usp=sharing" in str(url)
-)
-
 # ── Color por capa de LN ──────────────────────────────────────────────────────
 # Tres categorías legibles de un golpe, sobre la rampa de marca del proyecto:
 # ámbar = S1 (mayor prioridad) → oliva = S2 → acero = S3. El IRE manda el
@@ -305,18 +296,6 @@ st.caption(
     "de recorrido: el corte al 50% orienta por dónde empezar dentro de la "
     "sección, no define una meta."
 )
-
-if URLS_EDICION:
-    st.error(
-        "**Enlaces de edición en el catálogo de mapas.** Las secciones "
-        + ", ".join(str(s) for s in URLS_EDICION)
-        + " tienen una URL en forma `/edit?mid=...`. Ese enlace abre el mapa "
-          "en modo edición y cualquiera que lo reciba puede mover geometrías. "
-          "Cámbialas por la forma `/viewer?mid=...` en "
-          "`data/mapas_catalogo.csv` y verifica en My Maps que el mapa esté "
-          "compartido como \"cualquier persona con el enlace puede VER\".",
-        icon="🔒",
-    )
 
 # ════════════════════════════════════════════════════════════════════════════
 # BLOQUE 2 — MAPA DE PRIORIDAD
