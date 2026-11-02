@@ -106,10 +106,10 @@ st.markdown(f"""
     <span class="station-status on"><i></i>EN OPERACIÓN</span>
     <div class="station-tag">03 · ¿Cómo vamos en campo?</div>
     <h3>Seguimiento del operativo de inducción</h3>
-    <p>Avance en vivo del operativo de campo: encuestas de inducción capturadas contra
-    la lista nominal elegible por sección (corte 500), desempeño por encuestador(a),
-    y resultados preliminares de las preguntas clave sobre Arturo Solano. Arrancó el
-    18 de julio, 9:00 AM.</p>
+    <p>Pulso en vivo del operativo de campo: entrevistas acumuladas contra la meta,
+    ritmo diario, productividad por brigadista y dónde está trabajando el equipo hoy.
+    Los datos vienen de Kobo y solo incluyen los registros ya sincronizados. Arrancó
+    el 28 de octubre.</p>
   </article>
 </div>
 """, unsafe_allow_html=True)

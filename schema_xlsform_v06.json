@@ -1,0 +1,804 @@
+{
+  "proyecto": "Atlixco — Registro de visitas, operativo brigadas",
+  "fuente": "Atlixco_Kobo_Visitas_XLSForm_v0_6_Catalogo_Brigadistas.xlsx",
+  "form_id": "atlixco_visitas_20261028_v01",
+  "form_version": "2026110206",
+  "form_title": "Atlixco — Registro de visitas v0.6",
+  "estado": "v0.6: usuario confirmó catálogo actualizado visible en Kobo (02-nov-2026). Prueba offline acreditada en v0.5; v0.6 requiere verificación corta tras publicación.",
+  "no_publicar_numero_whatsapp": true,
+  "catalogo_secciones_n": 70,
+  "campos": [
+    {
+      "type": "start",
+      "name": "inicio",
+      "label": null,
+      "required": null,
+      "relevant": null,
+      "calculation": null
+    },
+    {
+      "type": "end",
+      "name": "fin",
+      "label": null,
+      "required": null,
+      "relevant": null,
+      "calculation": null
+    },
+    {
+      "type": "note",
+      "name": "introduccion",
+      "label": "Brigada de la Defensa de la Transformación y Soberanía del General Arturo Solano. No mencionar candidaturas ni a ningún otro aspirante. Una visita = un registro",
+      "required": null,
+      "relevant": null,
+      "calculation": null
+    },
+    {
+      "type": "select_one brigadistas",
+      "name": "brigadista",
+      "label": "Nombre del brigadista",
+      "required": "yes",
+      "relevant": null,
+      "calculation": null
+    },
+    {
+      "type": "text",
+      "name": "brigadista_otro",
+      "label": "Escribe tu nombre",
+      "required": "yes",
+      "relevant": "${brigadista} = 'B99'",
+      "calculation": null
+    },
+    {
+      "type": "calculate",
+      "name": "brigadista_nombre",
+      "label": null,
+      "required": null,
+      "relevant": null,
+      "calculation": "if(${brigadista} = 'B99', ${brigadista_otro}, jr:choice-name(${brigadista}, '${brigadista}'))"
+    },
+    {
+      "type": "select_one secciones",
+      "name": "seccion_declarada",
+      "label": "Sección electoral operativa",
+      "required": "yes",
+      "relevant": null,
+      "calculation": null
+    },
+    {
+      "type": "calculate",
+      "name": "seccion_electoral",
+      "label": null,
+      "required": null,
+      "relevant": null,
+      "calculation": "number(${seccion_declarada})"
+    },
+    {
+      "type": "geopoint",
+      "name": "gps",
+      "label": "Ubicación GPS de la visita",
+      "required": null,
+      "relevant": null,
+      "calculation": null
+    },
+    {
+      "type": "note",
+      "name": "saludo",
+      "label": "Buenas tardes. Soy __________, vecino de Atlixco y brigadista para los COMITÉS DE DEFENSA DE LA TRANSFORMACIÓN Y LA SOBERANÍA NACIONAL en ATLIXCO. Venimos a platicarle sobre los logros de la Cuarta Transformación y la organización de Morena en su colonia. ¿Me regala dos minutos?",
+      "required": null,
+      "relevant": null,
+      "calculation": null
+    },
+    {
+      "type": "select_one contacto",
+      "name": "contacto_inicial",
+      "label": "Resultado del contacto en la visita",
+      "required": "yes",
+      "relevant": null,
+      "calculation": null
+    },
+    {
+      "type": "begin_group",
+      "name": "entrevista",
+      "label": "Preguntas y registro",
+      "required": null,
+      "relevant": "${contacto_inicial} = 'acepta'",
+      "calculation": null
+    },
+    {
+      "type": "select_one sinor",
+      "name": "q01_reconocimiento",
+      "label": "¿Ha escuchado hablar de Arturo Solano, «El General»?",
+      "required": null,
+      "relevant": null,
+      "calculation": null
+    },
+    {
+      "type": "select_one sinor",
+      "name": "q02_bienestar",
+      "label": "¿Sabía que la Cuarta Transformación ha llevado los programas de Bienestar a millones de familias y defiende que México decida su propio destino, sin presiones de otros países?",
+      "required": null,
+      "relevant": null,
+      "calculation": null
+    },
+    {
+      "type": "select_one sinor",
+      "name": "q03_comites_120",
+      "label": "¿Sabía que el General Arturo Solano ha trabajado con los vecinos de Atlixco organizando más de 120 comités comunitarios en colonias y comunidades del municipio?",
+      "required": null,
+      "relevant": null,
+      "calculation": null
+    },
+    {
+      "type": "select_one sinosabe",
+      "name": "q04_honestidad",
+      "label": "Por su trayectoria al servicio del país como General, ¿considera que es una persona honesta y comprometida con el pueblo de Atlixco?",
+      "required": null,
+      "relevant": null,
+      "calculation": null
+    },
+    {
+      "type": "select_one sinosabe",
+      "name": "q05_coordinacion",
+      "label": "Morena integrará en Atlixco los Comités de Defensa de la Transformación y la Soberanía Nacional. ¿Le gustaría que el General Arturo Solano los coordine?",
+      "required": null,
+      "relevant": null,
+      "calculation": null
+    },
+    {
+      "type": "select_one problemas",
+      "name": "q06_problema",
+      "label": "En Atlixco el pueblo manda porque es soberano. Para usted, ¿cuál es el problema más importante de su colonia?",
+      "required": null,
+      "relevant": null,
+      "calculation": null
+    },
+    {
+      "type": "select_one participacion",
+      "name": "q07_participacion",
+      "label": "¿Le gustaría participar en el Comité de Defensa de la Transformación de su colonia?",
+      "required": null,
+      "relevant": null,
+      "calculation": null
+    },
+    {
+      "type": "begin_group",
+      "name": "datos_contacto",
+      "label": "Contacto voluntario",
+      "required": null,
+      "relevant": "${q07_participacion} = 'si' or ${q07_participacion} = 'mas_adelante'",
+      "calculation": null
+    },
+    {
+      "type": "note",
+      "name": "avisopriv",
+      "label": "¿Me da un WhatsApp para invitarle a las reuniones de su colonia? Solo para eso, y lo borramos cuando nos pida. El aviso de privacidad está en este volante.\nAntes de continuar, entregar el aviso de privacidad y verificar que identifique al responsable y el mecanismo para retirar el consentimiento.",
+      "required": null,
+      "relevant": null,
+      "calculation": null
+    },
+    {
+      "type": "select_one sino",
+      "name": "autoriza_avisos",
+      "label": "¿Autoriza recibir avisos por WhatsApp para las reuniones de su colonia?",
+      "required": "yes",
+      "relevant": null,
+      "calculation": null
+    },
+    {
+      "type": "text",
+      "name": "whatsapp",
+      "label": "Número de WhatsApp (10 dígitos)",
+      "required": "yes",
+      "relevant": "${autoriza_avisos} = 'si'",
+      "calculation": null
+    },
+    {
+      "type": "end_group",
+      "name": null,
+      "label": null,
+      "required": null,
+      "relevant": null,
+      "calculation": null
+    },
+    {
+      "type": "select_one edad",
+      "name": "q08_rango_edad",
+      "label": "¿En qué rango de edad está?",
+      "required": null,
+      "relevant": null,
+      "calculation": null
+    },
+    {
+      "type": "note",
+      "name": "despedida",
+      "label": "Muchas gracias. Le dejo esta información sobre los Comités de Defensa de la Transformación.",
+      "required": null,
+      "relevant": null,
+      "calculation": null
+    },
+    {
+      "type": "end_group",
+      "name": null,
+      "label": null,
+      "required": null,
+      "relevant": null,
+      "calculation": null
+    },
+    {
+      "type": "select_one sexo",
+      "name": "sexo_observado",
+      "label": "Sexo (apreciación del brigadista; no preguntar)",
+      "required": null,
+      "relevant": "${contacto_inicial} = 'acepta'",
+      "calculation": null
+    },
+    {
+      "type": "select_one estado",
+      "name": "estado_entrevista",
+      "label": "Resultado de la entrevista",
+      "required": "yes",
+      "relevant": "${contacto_inicial} = 'acepta'",
+      "calculation": null
+    },
+    {
+      "type": "calculate",
+      "name": "resultado",
+      "label": null,
+      "required": null,
+      "relevant": null,
+      "calculation": "if(${contacto_inicial} = 'casa_sola', 'casa_sola', if(${contacto_inicial} = 'rechazo', 'rechazo', ${estado_entrevista}))"
+    },
+    {
+      "type": "select_one volante",
+      "name": "entrega_volante",
+      "label": "¿Se entregó volante?",
+      "required": "yes",
+      "relevant": null,
+      "calculation": null
+    },
+    {
+      "type": "note",
+      "name": "cierre_form",
+      "label": "Fin del registro. Comprueba sección operativa, GPS y resultado. Guarda la visita y verifica el envío cuando tengas conexión.",
+      "required": null,
+      "relevant": null,
+      "calculation": null
+    }
+  ],
+  "choices": {
+    "secciones": [
+      {
+        "code": "154",
+        "label": "154"
+      },
+      {
+        "code": "155",
+        "label": "155"
+      },
+      {
+        "code": "156",
+        "label": "156"
+      },
+      {
+        "code": "157",
+        "label": "157"
+      },
+      {
+        "code": "158",
+        "label": "158"
+      },
+      {
+        "code": "159",
+        "label": "159"
+      },
+      {
+        "code": "160",
+        "label": "160 (incluye secciones nuevas)"
+      },
+      {
+        "code": "161",
+        "label": "161"
+      },
+      {
+        "code": "162",
+        "label": "162"
+      },
+      {
+        "code": "164",
+        "label": "164"
+      },
+      {
+        "code": "165",
+        "label": "165"
+      },
+      {
+        "code": "166",
+        "label": "166"
+      },
+      {
+        "code": "167",
+        "label": "167"
+      },
+      {
+        "code": "168",
+        "label": "168"
+      },
+      {
+        "code": "169",
+        "label": "169"
+      },
+      {
+        "code": "170",
+        "label": "170"
+      },
+      {
+        "code": "171",
+        "label": "171"
+      },
+      {
+        "code": "172",
+        "label": "172"
+      },
+      {
+        "code": "173",
+        "label": "173"
+      },
+      {
+        "code": "174",
+        "label": "174"
+      },
+      {
+        "code": "175",
+        "label": "175"
+      },
+      {
+        "code": "176",
+        "label": "176"
+      },
+      {
+        "code": "177",
+        "label": "177"
+      },
+      {
+        "code": "178",
+        "label": "178"
+      },
+      {
+        "code": "179",
+        "label": "179"
+      },
+      {
+        "code": "180",
+        "label": "180"
+      },
+      {
+        "code": "181",
+        "label": "181"
+      },
+      {
+        "code": "182",
+        "label": "182"
+      },
+      {
+        "code": "183",
+        "label": "183"
+      },
+      {
+        "code": "184",
+        "label": "184"
+      },
+      {
+        "code": "185",
+        "label": "185"
+      },
+      {
+        "code": "186",
+        "label": "186"
+      },
+      {
+        "code": "187",
+        "label": "187"
+      },
+      {
+        "code": "188",
+        "label": "188"
+      },
+      {
+        "code": "189",
+        "label": "189"
+      },
+      {
+        "code": "190",
+        "label": "190"
+      },
+      {
+        "code": "191",
+        "label": "191"
+      },
+      {
+        "code": "192",
+        "label": "192"
+      },
+      {
+        "code": "193",
+        "label": "193"
+      },
+      {
+        "code": "194",
+        "label": "194"
+      },
+      {
+        "code": "195",
+        "label": "195"
+      },
+      {
+        "code": "196",
+        "label": "196"
+      },
+      {
+        "code": "197",
+        "label": "197"
+      },
+      {
+        "code": "198",
+        "label": "198"
+      },
+      {
+        "code": "199",
+        "label": "199"
+      },
+      {
+        "code": "200",
+        "label": "200"
+      },
+      {
+        "code": "201",
+        "label": "201"
+      },
+      {
+        "code": "202",
+        "label": "202"
+      },
+      {
+        "code": "203",
+        "label": "203"
+      },
+      {
+        "code": "204",
+        "label": "204"
+      },
+      {
+        "code": "205",
+        "label": "205"
+      },
+      {
+        "code": "206",
+        "label": "206"
+      },
+      {
+        "code": "207",
+        "label": "207"
+      },
+      {
+        "code": "208",
+        "label": "208"
+      },
+      {
+        "code": "209",
+        "label": "209"
+      },
+      {
+        "code": "210",
+        "label": "210"
+      },
+      {
+        "code": "211",
+        "label": "211"
+      },
+      {
+        "code": "212",
+        "label": "212"
+      },
+      {
+        "code": "213",
+        "label": "213"
+      },
+      {
+        "code": "214",
+        "label": "214"
+      },
+      {
+        "code": "215",
+        "label": "215"
+      },
+      {
+        "code": "216",
+        "label": "216"
+      },
+      {
+        "code": "217",
+        "label": "217"
+      },
+      {
+        "code": "218",
+        "label": "218"
+      },
+      {
+        "code": "219",
+        "label": "219"
+      },
+      {
+        "code": "220",
+        "label": "220"
+      },
+      {
+        "code": "221",
+        "label": "221"
+      },
+      {
+        "code": "2874",
+        "label": "2874"
+      },
+      {
+        "code": "2875",
+        "label": "2875"
+      },
+      {
+        "code": "2876",
+        "label": "2876"
+      }
+    ],
+    "contacto": [
+      {
+        "code": "acepta",
+        "label": "Acepta conversar"
+      },
+      {
+        "code": "rechazo",
+        "label": "Rechazo"
+      },
+      {
+        "code": "casa_sola",
+        "label": "Casa sola / sin contacto"
+      }
+    ],
+    "sinor": [
+      {
+        "code": "si",
+        "label": "Sí"
+      },
+      {
+        "code": "no",
+        "label": "No"
+      },
+      {
+        "code": "pno",
+        "label": "Prefiero no responder"
+      }
+    ],
+    "sinosabe": [
+      {
+        "code": "si",
+        "label": "Sí"
+      },
+      {
+        "code": "no",
+        "label": "No"
+      },
+      {
+        "code": "ns",
+        "label": "No sabe"
+      },
+      {
+        "code": "pno",
+        "label": "Prefiero no responder"
+      }
+    ],
+    "sino": [
+      {
+        "code": "si",
+        "label": "Sí"
+      },
+      {
+        "code": "no",
+        "label": "No"
+      }
+    ],
+    "problemas": [
+      {
+        "code": "inseguridad",
+        "label": "Inseguridad y delincuencia"
+      },
+      {
+        "code": "agua",
+        "label": "Agua potable"
+      },
+      {
+        "code": "drenaje",
+        "label": "Drenaje y alcantarillado"
+      },
+      {
+        "code": "calles",
+        "label": "Pavimentación, calles y baches"
+      },
+      {
+        "code": "alumbrado",
+        "label": "Alumbrado público"
+      },
+      {
+        "code": "basura",
+        "label": "Recolección de basura y limpieza"
+      },
+      {
+        "code": "salud",
+        "label": "Servicios de salud"
+      },
+      {
+        "code": "empleo",
+        "label": "Empleo e ingresos"
+      },
+      {
+        "code": "transporte",
+        "label": "Transporte y movilidad"
+      },
+      {
+        "code": "espacios",
+        "label": "Parques y espacios públicos"
+      },
+      {
+        "code": "otro",
+        "label": "Otro problema"
+      },
+      {
+        "code": "ninguno",
+        "label": "Ninguno"
+      },
+      {
+        "code": "ns",
+        "label": "No sabe"
+      },
+      {
+        "code": "pno",
+        "label": "Prefiere no responder"
+      }
+    ],
+    "participacion": [
+      {
+        "code": "si",
+        "label": "Sí"
+      },
+      {
+        "code": "mas_adelante",
+        "label": "Más adelante"
+      },
+      {
+        "code": "no",
+        "label": "No"
+      },
+      {
+        "code": "pno",
+        "label": "Prefiero no responder"
+      }
+    ],
+    "edad": [
+      {
+        "code": "18_29",
+        "label": "18–29"
+      },
+      {
+        "code": "30_44",
+        "label": "30–44"
+      },
+      {
+        "code": "45_59",
+        "label": "45–59"
+      },
+      {
+        "code": "60_mas",
+        "label": "60+"
+      },
+      {
+        "code": "pno",
+        "label": "Prefiere no responder"
+      }
+    ],
+    "sexo": [
+      {
+        "code": "mujer",
+        "label": "Mujer"
+      },
+      {
+        "code": "hombre",
+        "label": "Hombre"
+      },
+      {
+        "code": "no_registrar",
+        "label": "No registrar"
+      }
+    ],
+    "estado": [
+      {
+        "code": "completa",
+        "label": "Completa"
+      },
+      {
+        "code": "parcial",
+        "label": "Parcial"
+      }
+    ],
+    "brigadistas": [
+      {
+        "code": "B01",
+        "label": "María Magdalena"
+      },
+      {
+        "code": "B02",
+        "label": "Eduardo"
+      },
+      {
+        "code": "B03",
+        "label": "Danae"
+      },
+      {
+        "code": "B04",
+        "label": "Ángela"
+      },
+      {
+        "code": "B05",
+        "label": "Juan"
+      },
+      {
+        "code": "B06",
+        "label": "Ricardo"
+      },
+      {
+        "code": "B07",
+        "label": "Luz"
+      },
+      {
+        "code": "B08",
+        "label": "Alejandra Salazar"
+      },
+      {
+        "code": "B09",
+        "label": "Nayelli"
+      },
+      {
+        "code": "B10",
+        "label": "Marco Antonio"
+      },
+      {
+        "code": "B11",
+        "label": "David Alejandro"
+      },
+      {
+        "code": "B12",
+        "label": "Levy"
+      },
+      {
+        "code": "B13",
+        "label": "Dulce"
+      },
+      {
+        "code": "B14",
+        "label": "Alejandra Morales"
+      },
+      {
+        "code": "B99",
+        "label": "Otro brigadista"
+      }
+    ],
+    "volante": [
+      {
+        "code": "entrego",
+        "label": "Entregó volante"
+      },
+      {
+        "code": "no_entrego",
+        "label": "No entregó volante"
+      }
+    ]
+  },
+  "nota": "Catálogo actualizado. B08 usa etiqueta Alejandra Salazar para v0.5 y v0.6. Campos y preguntas iguales a v0.5; 70 secciones. Los campos de API pueden llevar prefijos de grupo.",
+  "catalogo_brigadistas_n": 14
+}

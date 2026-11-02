@@ -28,6 +28,8 @@ from app_utils import (
     GLOBAL_CSS, COLOR, check_password, carto_tiles, CARTO_ATTR,
     fmt_num, fmt_pct,
     load_m1_secciones, load_m1_manzanas, load_m1_contornos, load_mapas_catalogo,
+    load_cobertura, load_kobo, limpiar_cache_kobo, meta_de_seccion,
+    META_ENTREVISTAS_SECCION, BRIGADISTAS_ESPERADOS, META_POR_BRIGADISTA,
 )
 
 st.set_page_config(
@@ -50,6 +52,94 @@ df = load_m1_secciones()
 mz = load_m1_manzanas()
 geo = load_m1_contornos()
 mapas = load_mapas_catalogo()
+cobertura, origen_cobertura, error_cobertura, estados_raros = load_cobertura()
+kobo, kobo_estado, error_kobo = load_kobo()
+
+MARCA_ESTADO = {"cubierta": "🟢", "en_proceso": "🟡", "sin_iniciar": "⚪"}
+ETIQUETA_ESTADO = {"cubierta": "Cubierta", "en_proceso": "En proceso",
+                   "sin_iniciar": "Sin iniciar"}
+
+# ── Avance por sección OPERATIVA (70) ────────────────────────────────────────
+# Kobo entrega la llave de 70, con la 160 agrupando a 3119-3123. La meta es por
+# sección operativa, no por sección vigente: el bloque 160R se trabaja como una
+# sola unidad, así que su meta es 275, no 5 x 275.
+LN_POR_GEOM = df.groupby("seccion_geom")["LN_SECCION"].sum().to_dict()
+META_POR_GEOM = {int(g): meta_de_seccion(ln) for g, ln in LN_POR_GEOM.items()}
+
+AVANCE_POR_GEOM = {int(g): {"entrevistas": 0, "visitas": 0, "completas": 0,
+                            "parciales": 0, "rechazos": 0, "casas_solas": 0}
+                   for g in LN_POR_GEOM}
+_kobo_fuera = []
+for _, _f in kobo.iterrows():
+    _g = int(_f["seccion_operativa"])
+    if _g in AVANCE_POR_GEOM:
+        AVANCE_POR_GEOM[_g] = {k: int(_f[k]) for k in
+                               ("entrevistas", "visitas", "completas",
+                                "parciales", "rechazos", "casas_solas")}
+    else:
+        _kobo_fuera.append(_g)
+
+HAY_KOBO = not error_kobo and not kobo.empty
+
+
+def _estado_por_avance(geom: int) -> str:
+    if not HAY_KOBO:
+        return "sin_iniciar"
+    n = AVANCE_POR_GEOM.get(geom, {}).get("entrevistas", 0)
+    if n <= 0:
+        return "sin_iniciar"
+    return "cubierta" if n >= META_POR_GEOM.get(geom, META_ENTREVISTAS_SECCION) \
+        else "en_proceso"
+
+
+# ── Declaración manual, que anula el cálculo ─────────────────────────────────
+# La declaración gana sobre Kobo. Es lo que permite reabrir una sección que el
+# conteo da por cubierta, y cerrar una que se abandonó por seguridad sin haber
+# llegado a la meta. Una persona sabe cosas que las capturas no contienen.
+DECLARADO = {}
+_fuera_del_marco = []
+_secciones_validas = set(int(x) for x in df["SECCION"])
+for _, _fila in cobertura.iterrows():
+    _sec = int(_fila["seccion"])
+    if _sec in _secciones_validas:
+        DECLARADO[_sec] = _fila["estado"]
+    else:
+        _fuera_del_marco.append(_sec)
+
+HAY_DECLARACION = not error_cobertura and origen_cobertura != "ninguna"
+HAY_COBERTURA = HAY_KOBO or HAY_DECLARACION
+
+# Una declaración sobre cualquier sección vigente del bloque 160R aplica al
+# bloque: es la unidad que las brigadas trabajan.
+DECLARADO_POR_GEOM = {}
+for _sec, _est in DECLARADO.items():
+    _g = int(df.loc[df["SECCION"] == _sec, "seccion_geom"].iloc[0])
+    previo = DECLARADO_POR_GEOM.get(_g)
+    orden = {"sin_iniciar": 0, "en_proceso": 1, "cubierta": 2}
+    if previo is None or orden[_est] > orden[previo]:
+        DECLARADO_POR_GEOM[_g] = _est
+
+ESTADO_POR_GEOM = {g: DECLARADO_POR_GEOM.get(g) or _estado_por_avance(g)
+                   for g in LN_POR_GEOM}
+ORIGEN_POR_GEOM = {g: ("declarado" if g in DECLARADO_POR_GEOM else "kobo")
+                   for g in LN_POR_GEOM}
+
+df["estado_cobertura"] = df["seccion_geom"].map(ESTADO_POR_GEOM)
+df["entrevistas"] = df["seccion_geom"].map(
+    lambda g: AVANCE_POR_GEOM.get(int(g), {}).get("entrevistas", 0))
+df["meta_entrevistas"] = df["seccion_geom"].map(
+    lambda g: META_POR_GEOM.get(int(g), META_ENTREVISTAS_SECCION))
+ESTADO_POR_SECCION = dict(zip(df["SECCION"].astype(int), df["estado_cobertura"]))
+
+# Los conteos del semáforo van por sección OPERATIVA: son 70 unidades de
+# trabajo, no 74. Contar las 74 inflaría el bloque 160R cinco veces.
+_estados_geom = list(ESTADO_POR_GEOM.values())
+N_CUBIERTAS = _estados_geom.count("cubierta")
+N_PROCESO = _estados_geom.count("en_proceso")
+N_SIN_INICIAR = _estados_geom.count("sin_iniciar")
+N_UNIDADES = len(_estados_geom)
+ENTREVISTAS_TOTALES = sum(a["entrevistas"] for a in AVANCE_POR_GEOM.values())
+VISITAS_TOTALES = sum(a["visitas"] for a in AVANCE_POR_GEOM.values())
 
 URL_POR_SECCION = dict(zip(mapas["seccion"], mapas["url_my_maps_viewer"].fillna("")))
 
@@ -116,13 +206,37 @@ with st.sidebar:
         if _pendiente in set(df["SECCION"]):
             st.session_state["m1_recorrido"] = [_pendiente]
 
+    # Quitar las cubiertas del selector evita volver a asignarlas por descuido.
+    # Apagado por default: una sección cubierta puede reabrirse, y si no está
+    # en la lista nadie puede volver a mandarle brigada.
+    ocultar_cubiertas = False
+    if HAY_COBERTURA and N_CUBIERTAS:
+        ocultar_cubiertas = st.checkbox(
+            f"Quitar las cubiertas del selector ({N_CUBIERTAS})",
+            value=False, key="m1_ocultar_cubiertas",
+            help="Apagado por default: una sección cubierta puede reabrirse, y "
+                 "si no aparece en la lista nadie puede volver a asignarla.",
+        )
+        if ocultar_cubiertas:
+            # Una sección cubierta que YA está en el recorrido se queda en la
+            # lista: si el coordinador la eligió, la va a reabrir, y quitarla
+            # de las opciones la borraría de su selección sin avisar.
+            _ya_elegidas = set(st.session_state.get("m1_recorrido", []))
+            opciones = [s for s in opciones
+                        if ESTADO_POR_SECCION.get(s) != "cubierta"
+                        or s in _ya_elegidas]
+
     secciones_foco = st.multiselect(
         "Secciones asignadas",
         opciones,
         key="m1_recorrido",
         format_func=lambda s: (
+            f"{MARCA_ESTADO[ESTADO_POR_SECCION.get(s, 'sin_iniciar')] + ' ' if HAY_COBERTURA else ''}"
             f"#{int(df.loc[df['SECCION'] == s, 'RANKING_IRE'].iloc[0])} · "
             f"Sección {s} · {df.loc[df['SECCION'] == s, 'CAPA_LN'].iloc[0]}"
+            + (f" · {int(df.loc[df['SECCION'] == s, 'entrevistas'].iloc[0])}"
+               f"/{int(df.loc[df['SECCION'] == s, 'meta_entrevistas'].iloc[0])}"
+               if HAY_KOBO else "")
         ),
         help="En orden de prioridad. Puedes elegir una sección (mensaje para "
              "un brigadista) o varias (planeación del día).",
@@ -133,6 +247,12 @@ with st.sidebar:
     f_capa = st.selectbox("Capa de LN", ["(todas)"] + sorted(df["CAPA_LN"].unique()))
     f_nivel = st.selectbox("Nivel de IRE", ["(todos)"] + sorted(df["NIVEL_IRE"].unique()))
     f_tipo = st.selectbox("Tipo INE", ["(todos)"] + sorted(df["TIPO_INE"].dropna().unique()))
+    f_estado = "(todos)"
+    if HAY_COBERTURA:
+        f_estado = st.selectbox(
+            "Estado de cobertura",
+            ["(todos)", "Sin iniciar", "En proceso", "Cubierta"],
+        )
     solo_con_mapa = st.checkbox(
         "Solo secciones con mapa publicado", value=False,
         help="Las secciones cuyo mapa de My Maps ya tiene URL en "
@@ -146,6 +266,9 @@ if f_nivel != "(todos)":
     df_tabla = df_tabla[df_tabla["NIVEL_IRE"] == f_nivel]
 if f_tipo != "(todos)":
     df_tabla = df_tabla[df_tabla["TIPO_INE"] == f_tipo]
+if f_estado != "(todos)":
+    _inv = {v: k for k, v in ETIQUETA_ESTADO.items()}
+    df_tabla = df_tabla[df_tabla["estado_cobertura"] == _inv[f_estado]]
 if solo_con_mapa:
     con_mapa = {s for s, u in URL_POR_SECCION.items() if str(u).strip()}
     df_tabla = df_tabla[df_tabla["SECCION"].isin(con_mapa)]
@@ -201,6 +324,89 @@ if URLS_EDICION:
 
 st.markdown("## Mapa de prioridad")
 
+# Vista de cobertura. El mapa se va "apagando" conforme las brigadas cubren
+# secciones, para que el coordinador vea de un golpe lo que falta.
+vista_cobertura = "Todas"
+if error_kobo:
+    st.warning(
+        "**No se pudo leer el avance de Kobo.** "
+        + ("Se usa solo la declaración manual. " if HAY_DECLARACION
+           else "El filtro queda desactivado y se muestran las 74 secciones. ")
+        + "Esto NO significa que no haya avance en campo. "
+        + f"Detalle: {error_kobo}",
+        icon="⚠️",
+    )
+if error_cobertura:
+    st.warning(
+        "**No se pudo leer la cobertura.** El filtro queda desactivado y se "
+        "muestran las 74 secciones. Esto NO significa que no haya secciones "
+        f"cubiertas. Detalle: {error_cobertura}",
+        icon="⚠️",
+    )
+elif not HAY_COBERTURA:
+    st.info(
+        "Sin fuente de avance configurada. Para encender el seguimiento, agrega "
+        "las credenciales de Kobo en los secrets bajo `[kobo]`. Opcionalmente, "
+        "una hoja de declaración manual bajo `[cobertura] url`. "
+        "Ver PLANTILLA_COBERTURA.md."
+    )
+else:
+    v1, v2 = st.columns([2, 3])
+    with v1:
+        vista_cobertura = st.radio(
+            "Qué mostrar en el mapa",
+            ["Pendientes", "Cubiertas", "Todas"],
+            horizontal=True,
+            help="Pendientes atenúa lo ya cubierto. Las secciones nunca se "
+                 "ocultan: sin ellas se pierde la referencia de qué hay "
+                 "alrededor.",
+        )
+    with v2:
+        st.markdown(
+            f"<div style='padding-top:30px;font-size:.84rem;"
+            f"color:{COLOR['text_secondary']}'>"
+            f"🟢 {N_CUBIERTAS} cubiertas · 🟡 {N_PROCESO} en proceso · "
+            f"⚪ {N_SIN_INICIAR} sin iniciar &nbsp;<span style='color:"
+            f"{COLOR['text_muted']}'>de {N_UNIDADES} secciones operativas</span>"
+            f"<br><span style='color:{COLOR['text_muted']}'>"
+            + (f"{ENTREVISTAS_TOTALES:,} entrevistas de {VISITAS_TOTALES:,} "
+               f"visitas · meta {META_ENTREVISTAS_SECCION} por sección "
+               f"({BRIGADISTAS_ESPERADOS} brigadistas × {META_POR_BRIGADISTA})"
+               if HAY_KOBO else "avance declarado a mano, sin datos de Kobo")
+            + f"</span></div>",
+            unsafe_allow_html=True,
+        )
+        if st.button("Actualizar avance",
+                     help="Vuelve a consultar Kobo y la hoja de declaración."):
+            limpiar_cache_kobo()
+            load_cobertura.clear()
+            st.rerun()
+    if estados_raros:
+        st.warning(
+            "Valores de estado que no se reconocieron: "
+            + ", ".join(f"`{x}`" for x in estados_raros)
+            + ". Esas filas se ignoran, no se marcan. Usa `cubierta` o "
+              "`en proceso` (también valen `si`, `x`, `listo`).",
+            icon="⚠️",
+        )
+    _perdidas = int(kobo_estado.get("visitas_sin_seccion_valida", 0) or 0)
+    if _perdidas:
+        st.warning(
+            f"**{_perdidas} visita(s) no aparecen en ninguna sección.** Kobo las "
+            f"registró, pero con una sección fuera del catálogo de 70, así que "
+            f"no suman al avance de ninguna. Revisa en Kobo los registros con "
+            f"la incidencia `seccion_fuera_catalogo`: suele ser una sección mal "
+            f"elegida por el brigadista.",
+            icon="⚠️",
+        )
+    if _fuera_del_marco:
+        st.warning(
+            "La hoja trae secciones que no están en el marco de 74: "
+            + ", ".join(str(x) for x in sorted(set(_fuera_del_marco)))
+            + ". Se ignoran. Revisa que no sea un número mal tecleado.",
+            icon="⚠️",
+        )
+
 # Las 5 secciones vigentes del bloque 160R comparten el polígono de la 160 como
 # proxy (decisión D2 del log V2): si el coordinador selecciona cualquiera de
 # ellas, se resalta ese polígono.
@@ -212,13 +418,29 @@ def estilo_seccion(feature):
     p = feature["properties"]
     capa = p.get("capa_ln") or ""
     base = COLOR_CAPA.get(capa, COLOR["text_muted"])
-    en_foco = p.get("seccion_geom") in geoms_foco
-    return {
-        "fillColor": base,
-        "color": "#ffffff" if en_foco else COLOR["border_strong"],
-        "weight": 3 if en_foco else 1,
-        "fillOpacity": 0.78 if en_foco else (0.42 if geoms_foco else 0.58),
-    }
+    sec_geom = p.get("seccion_geom")
+    en_foco = sec_geom in geoms_foco
+    estado = ESTADO_POR_GEOM.get(sec_geom, "sin_iniciar")
+
+    # Una sección elegida para el recorrido se ve siempre, aunque esté
+    # cubierta: si el coordinador la seleccionó, es que la va a reabrir.
+    apagada = False
+    if not en_foco and HAY_COBERTURA:
+        if vista_cobertura == "Pendientes":
+            apagada = estado == "cubierta"
+        elif vista_cobertura == "Cubiertas":
+            apagada = estado != "cubierta"
+
+    if en_foco:
+        return {"fillColor": base, "color": "#ffffff", "weight": 3,
+                "fillOpacity": 0.80}
+    if apagada:
+        # Atenuada, no oculta: sin ella se pierde la referencia de qué hay
+        # alrededor y dónde está parado uno. Mismo criterio que en L3.
+        return {"fillColor": base, "color": COLOR["text_muted"], "weight": 0.5,
+                "fillOpacity": 0.07}
+    return {"fillColor": base, "color": COLOR["border_strong"], "weight": 1,
+            "fillOpacity": 0.42 if geoms_foco else 0.58}
 
 
 def resaltar_seccion(feature):
@@ -229,16 +451,47 @@ mapa = folium.Map(
     location=[18.9010, -98.4506], zoom_start=12,
     tiles=carto_tiles(), attr=CARTO_ATTR,
 )
+# El estado se inyecta en copias de los features: el geojson viene de un loader
+# cacheado y no se muta.
+geo_vista = {
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": f["geometry"],
+            "properties": {
+                **f["properties"],
+                "estado_cobertura": ETIQUETA_ESTADO.get(
+                    ESTADO_POR_GEOM.get(f["properties"].get("seccion_geom"),
+                                        "sin_iniciar"),
+                    "Sin iniciar",
+                ),
+                "avance": (
+                    f"{AVANCE_POR_GEOM.get(f['properties'].get('seccion_geom'), {}).get('entrevistas', 0)}"
+                    f" / {META_POR_GEOM.get(f['properties'].get('seccion_geom'), META_ENTREVISTAS_SECCION)}"
+                    + (" (declarado)" if ORIGEN_POR_GEOM.get(
+                        f["properties"].get("seccion_geom")) == "declarado" else "")
+                ) if HAY_COBERTURA else "—",
+                "visitas_totales": AVANCE_POR_GEOM.get(
+                    f["properties"].get("seccion_geom"), {}).get("visitas", 0),
+            },
+        }
+        for f in geo["features"]
+    ],
+}
+
 folium.GeoJson(
-    geo,
+    geo_vista,
     name="Secciones",
     style_function=estilo_seccion,
     highlight_function=resaltar_seccion,
     tooltip=folium.GeoJsonTooltip(
-        fields=["secciones_vigentes", "capa_ln", "ranking_ire", "nivel_ire",
+        fields=["secciones_vigentes", "estado_cobertura", "avance",
+                "visitas_totales", "capa_ln", "ranking_ire", "nivel_ire",
                 "tipo_ine", "ln_seccion", "n_mz_prioritarias", "ln_prioritaria"],
-        aliases=["Sección(es):", "Capa de LN:", "Prioridad #:", "Nivel IRE:",
-                 "Tipo:", "LN:", "Manzanas prioritarias:", "LN prioritaria:"],
+        aliases=["Sección(es):", "Estado:", "Entrevistas:", "Visitas:",
+                 "Capa de LN:", "Prioridad #:", "Nivel IRE:", "Tipo:", "LN:",
+                 "Manzanas prioritarias:", "LN prioritaria:"],
         localize=True, sticky=False,
     ),
 ).add_to(mapa)
@@ -248,7 +501,8 @@ with col_mapa:
     st_folium(
         mapa, height=560, use_container_width=True,
         returned_objects=[],
-        key=f"m1_mapa_{'-'.join(str(s) for s in sorted(secciones_foco))}",
+        key=(f"m1_mapa_{vista_cobertura}_{N_CUBIERTAS}_{N_PROCESO}_"
+             f"{'-'.join(str(s) for s in sorted(secciones_foco))}"),
     )
 with col_leyenda:
     st.markdown("**Capa de lista nominal**")
@@ -281,12 +535,22 @@ with col_leyenda:
 st.markdown("## Ranking de secciones prioritarias")
 
 COLS_VISTA = {
-    "RANKING_IRE": "#", "SECCION": "Sección", "TIPO_INE": "Tipo",
+    "RANKING_IRE": "#", "SECCION": "Sección", "estado": "Estado",
+    "avance": "Entrevistas", "TIPO_INE": "Tipo",
     "CAPA_LN": "Capa LN", "NIVEL_IRE": "Nivel IRE", "IRE": "IRE",
     "LN_SECCION": "LN", "PCT_LN_ACUM": "% LN acum.",
     "n_mz_prioritarias": "Mz prior.", "ln_prioritaria": "LN prior.",
     "n_navs": "Colonias/loc.",
 }
+df_tabla = df_tabla.assign(
+    estado=df_tabla["estado_cobertura"].map(
+        lambda e: f"{MARCA_ESTADO[e]} {ETIQUETA_ESTADO[e]}" if HAY_COBERTURA else "—"
+    ),
+    avance=[
+        (f"{int(e)} / {int(m)}" if HAY_KOBO else "—")
+        for e, m in zip(df_tabla["entrevistas"], df_tabla["meta_entrevistas"])
+    ],
+)
 vista = df_tabla[list(COLS_VISTA)].rename(columns=COLS_VISTA)
 
 
@@ -403,6 +667,24 @@ else:
                     )
             with c2:
                 st.markdown("**Indicadores de la sección**")
+                if HAY_COBERTURA:
+                    _e, _m = int(row["entrevistas"]), int(row["meta_entrevistas"])
+                    _est = row["estado_cobertura"]
+                    _org = ORIGEN_POR_GEOM.get(int(row["seccion_geom"]), "kobo")
+                    st.markdown(
+                        f"{MARCA_ESTADO[_est]} **{ETIQUETA_ESTADO[_est]}**"
+                        + (" · declarado por coordinación" if _org == "declarado"
+                           else f" · {_e} de {_m} entrevistas")
+                    )
+                    if HAY_KOBO and _m:
+                        st.progress(min(1.0, _e / _m))
+                    if _m < META_ENTREVISTAS_SECCION:
+                        st.caption(
+                            f"Meta ajustada a {_m}: la sección tiene "
+                            f"{fmt_num(row['LN_SECCION'])} electores en toda su "
+                            f"lista nominal, menos que la meta general de "
+                            f"{META_ENTREVISTAS_SECCION}."
+                        )
                 st.markdown(
                     f"- IRE **{row['IRE']:.4f}** · nivel **{row['NIVEL_IRE']}**\n"
                     f"- Ranking por LN: **#{int(row['RANKING_LN'])}** de 74\n"

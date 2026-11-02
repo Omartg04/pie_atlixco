@@ -329,6 +329,263 @@ def load_mapas_catalogo() -> pd.DataFrame:
     return df
 
 
+def ahora_mexico() -> "datetime":
+    """Hora local de Ciudad de México. Streamlit Cloud corre en UTC, así que
+    datetime.now() a secas adelanta el día seis horas."""
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+    return datetime.now(ZoneInfo("America/Mexico_City"))
+
+
+# ── Avance de campo desde Kobo ──────────────────────────────────────────────
+# El operativo de inducción captura en KoboToolbox con el XLSForm v0.6
+# (form_id=atlixco_visitas_20261028_v01). El conector del paquete v1.2 se usa
+# como librería: fetch_all() trae los envíos y transform() los agrega. No se
+# escriben ni se leen CSV — la tabla vive en memoria el tiempo del cacheo.
+#
+# El token NUNCA va en el repo. Vive en st.secrets["kobo"]["api_token"].
+#
+# Estados, decididos con el coordinador:
+#   sin_iniciar  0 entrevistas
+#   en_proceso   1 .. meta-1
+#   cubierta     >= meta
+#
+# La meta son 11 brigadistas x 25 entrevistas = 275 por sección. Dos secciones
+# tienen menos electores que eso en toda su lista nominal (156 con 186 y 172
+# con 271): ahí la meta es su propia LN, porque no se puede entrevistar a más
+# gente de la que vive en la sección. Sin ese ajuste quedarían en "en proceso"
+# para siempre.
+#
+# "Entrevista" = visita con contacto real: completas + parciales. Un rechazo o
+# una casa sola son visitas, no entrevistas.
+
+META_ENTREVISTAS_SECCION = 275
+BRIGADISTAS_ESPERADOS = 11
+META_POR_BRIGADISTA = 25
+RESULTADOS_QUE_CUENTAN = ("completas", "parciales")
+
+# Polling recomendado por el paquete del conector.
+KOBO_TTL_SEG = 300
+
+# ── Umbrales de calidad (M3) ────────────────────────────────────────────────
+# Racha de capturas rápidas: N entrevistas seguidas del mismo brigadista el
+# mismo día por debajo del umbral. Solo cuentan completas y parciales — un
+# rechazo o una casa sola de 30 segundos es lo normal, no una señal.
+UMBRAL_DURACION_RAPIDA_MIN = 2.0
+MIN_RACHA_RAPIDA = 3
+
+
+def meta_de_seccion(ln_seccion: float | int | None) -> int:
+    """Meta de entrevistas de una sección, acotada por su lista nominal."""
+    try:
+        ln = int(ln_seccion)
+    except (TypeError, ValueError):
+        return META_ENTREVISTAS_SECCION
+    return min(META_ENTREVISTAS_SECCION, ln) if ln > 0 else META_ENTREVISTAS_SECCION
+
+
+TABLAS_KOBO = ("visitas_operativas", "resumen_diario",
+               "productividad_brigadista", "cobertura_seccion",
+               "respuestas_agregadas")
+
+
+@st.cache_data(ttl=KOBO_TTL_SEG, show_spinner=False)
+def load_kobo_tablas() -> tuple[dict, dict, str]:
+    """Una sola consulta a Kobo, compartida por M1 y M3.
+
+    Devuelve ({nombre: DataFrame}, estado, error). M1 usa cobertura_seccion;
+    M3 usa el resto. Al estar cacheada aquí, abrir los dos módulos no dispara
+    dos llamadas a la API.
+    """
+    vacias = {t: pd.DataFrame() for t in TABLAS_KOBO}
+    cfg = st.secrets.get("kobo", {})
+    base = str(cfg.get("base_url", "") or "").strip()
+    uid = str(cfg.get("asset_uid", "") or "").strip()
+    token = str(cfg.get("api_token", "") or "").strip()
+    if not (base and uid and token):
+        return vacias, {}, ""
+
+    try:
+        import json as _json
+        import kobo_connector as kc
+
+        with open(os.path.join(BASE_DIR, "schema_xlsform_v06.json"),
+                  encoding="utf-8") as fh:
+            schema = _json.load(fh)
+        envios = kc.fetch_all(base, uid, token)
+        datos = kc.transform(envios, schema)
+    except Exception as exc:
+        return vacias, {}, f"{type(exc).__name__}: {exc}"
+
+    tablas = {t: pd.DataFrame(datos.get(t, [])) for t in TABLAS_KOBO}
+
+    # El conector conserva las visitas con seccion_fuera_catalogo en
+    # visitas_operativas, pero arma cobertura_seccion solo sobre las 70 del
+    # catálogo: esas visitas no suman a ninguna sección. Se cuadra el total
+    # contra estado.json para que no se pierdan en silencio. Va aquí y no en la
+    # vista de M1 porque es una propiedad del extracto: M3 la necesita igual.
+    estado = dict(datos.get("estado", {}))
+    unicos = int(estado.get("registros_unicos", 0) or 0)
+    cob = tablas.get("cobertura_seccion", pd.DataFrame())
+    en_cobertura = int(pd.to_numeric(cob.get("visitas"), errors="coerce").fillna(0).sum()) \
+        if not cob.empty else 0
+    estado["visitas_en_cobertura"] = en_cobertura
+    estado["visitas_sin_seccion_valida"] = max(0, unicos - en_cobertura)
+    return tablas, estado, ""
+
+
+def limpiar_cache_kobo() -> None:
+    """Fuerza la relectura de Kobo desde cualquier módulo."""
+    load_kobo_tablas.clear()
+    load_kobo.clear()
+
+
+@st.cache_data(ttl=KOBO_TTL_SEG, show_spinner=False)
+def load_kobo() -> tuple[pd.DataFrame, dict, str]:
+    """Avance por sección desde Kobo. Devuelve (df, estado, error).
+
+    df: una fila por seccion_operativa (la llave de 70, con la 160 agrupando
+    3119-3123) con entrevistas/visitas/resultados. estado: el bloque de
+    integridad del conector. Si error no está vacío, df viene vacío y la capa
+    debe desactivarse — NO significa que no haya avance.
+    """
+    vacio = pd.DataFrame(columns=["seccion_operativa", "entrevistas", "visitas",
+                                  "completas", "parciales", "rechazos",
+                                  "casas_solas"])
+    tablas, estado_raw, error = load_kobo_tablas()
+    if error:
+        return vacio, {}, error
+
+    df = tablas.get("cobertura_seccion", pd.DataFrame()).copy()
+    if df.empty:
+        return vacio, estado_raw, ""
+    datos = {"estado": estado_raw}
+
+    df["seccion_operativa"] = pd.to_numeric(df["seccion_operativa"], errors="coerce")
+    df = df[df["seccion_operativa"].notna()].copy()
+    df["seccion_operativa"] = df["seccion_operativa"].astype(int)
+    for col in ("visitas", "completas", "parciales", "rechazos", "casas_solas"):
+        df[col] = pd.to_numeric(df.get(col), errors="coerce").fillna(0).astype(int)
+    df["entrevistas"] = sum(df[c] for c in RESULTADOS_QUE_CUENTAN)
+    return df, datos["estado"], ""
+
+
+# ── Cobertura declarada por el coordinador ──────────────────────────────────
+# "Cubierta" = una brigada ya trabajó esa sección. Es una declaración, no un
+# dato derivado: no hay meta por sección contra la cual calcular avance, y el
+# conector de Kobo todavía no existe. Puede reabrirse: basta cambiar o borrar
+# la fila en la hoja.
+#
+# Fuente, en orden de preferencia:
+#   1. st.secrets["cobertura"]["url"] — Google Sheet publicada como CSV. La URL
+#      vive en secrets y no en el repo.
+#   2. data/cobertura_secciones.csv — respaldo local, para desarrollo o si se
+#      decide dejar de usar la hoja.
+#   3. Nada — la capa de cobertura se desactiva y el mapa muestra todo. NUNCA
+#      se esconde una sección por un fallo de lectura: eso haría que un día sin
+#      conexión se leyera como "ya cubrimos todo". Mismo criterio que L3.
+#
+# El cacheo es corto a propósito: el coordinador marca en su teléfono y espera
+# ver el cambio al recargar, no en media hora.
+
+ESTADOS_COBERTURA = ("cubierta", "en_proceso")
+
+_ALIAS_COLUMNAS = {
+    "seccion": {"seccion", "sección", "seccion_electoral", "sec", "section"},
+    "estado": {"estado", "status", "cobertura", "estatus"},
+    "fecha": {"fecha", "date", "dia", "día"},
+    "nota": {"nota", "notas", "comentario", "comentarios", "observaciones"},
+}
+
+
+def _normaliza_columna(nombre: str) -> str | None:
+    limpio = str(nombre).strip().lower().replace(" ", "_")
+    for canonico, alias in _ALIAS_COLUMNAS.items():
+        if limpio in alias:
+            return canonico
+    return None
+
+
+# Lo que cuenta como marca afirmativa en la columna de estado. La hoja la llena
+# una persona en su teléfono: hay que aceptar lo que escribiría de verdad, no
+# solo la palabra canónica.
+_MARCAS_CUBIERTA = {"cubierta", "cubierto", "si", "sí", "x", "1", "true",
+                    "listo", "ok", "hecho", "terminada", "terminado"}
+_MARCAS_PROCESO = {"en_proceso", "proceso", "en_curso", "curso", "parcial",
+                   "trabajando", "2"}
+
+
+@st.cache_data(ttl=120, show_spinner=False)
+def load_cobertura() -> tuple[pd.DataFrame, str, str, list[str]]:
+    """Lee la cobertura declarada. Devuelve (df, origen, error, no_reconocidos).
+
+    df trae columnas seccion/estado/fecha/nota, con estado ya normalizado a
+    uno de ESTADOS_COBERTURA. Una sección ausente de la hoja, o con la celda
+    de estado VACÍA, es 'sin_iniciar': la hoja se reparte prellenada con las
+    74 secciones y la celda vacía es el estado de arranque.
+
+    no_reconocidos lista los valores de estado que no se pudieron interpretar.
+    No se adivinan: una celda con un typo se reporta en vez de marcarse, para
+    que nadie dé por cubierta una sección por una palabra mal escrita.
+
+    Si error no está vacío, la capa de cobertura debe desactivarse y mostrarse
+    el aviso: df viene vacío y NO significa que nada esté cubierto.
+    """
+    vacio = pd.DataFrame(columns=["seccion", "estado", "fecha", "nota"])
+
+    url = str(st.secrets.get("cobertura", {}).get("url", "") or "").strip()
+    local = os.path.join(DATA_DIR, "cobertura_secciones.csv")
+
+    if url:
+        origen, fuente = "hoja", url
+    elif os.path.exists(local):
+        origen, fuente = "archivo", local
+    else:
+        return vacio, "ninguna", "", []
+
+    try:
+        df = pd.read_csv(fuente, dtype=str)
+    except Exception as exc:  # red caída, hoja despublicada, permisos, HTML
+        return vacio, origen, f"{type(exc).__name__}: {exc}", []
+
+    renombres = {c: _normaliza_columna(c) for c in df.columns}
+    df = df.rename(columns={k: v for k, v in renombres.items() if v})
+    if "seccion" not in df.columns:
+        return vacio, origen, (
+            "La hoja no tiene una columna de sección. Columnas encontradas: "
+            + ", ".join(str(c) for c in df.columns)
+        ), []
+
+    for col in ("estado", "fecha", "nota"):
+        if col not in df.columns:
+            df[col] = ""
+    df = df[["seccion", "estado", "fecha", "nota"]].fillna("")
+
+    df["seccion"] = pd.to_numeric(df["seccion"], errors="coerce")
+    df = df[df["seccion"].notna()].copy()
+    df["seccion"] = df["seccion"].astype(int)
+
+    est = df["estado"].astype(str).str.strip().str.lower().str.replace(" ", "_")
+
+    # Celda vacía = sin iniciar. La hoja va prellenada con las 74 secciones, así
+    # que el estado de arranque de cada fila es el vacío. Interpretarlo como
+    # cubierta daría el municipio entero por trabajado desde el día uno.
+    df = df[est != ""].copy()
+    est = est[est != ""]
+
+    no_reconocidos = sorted(set(est[~est.isin(_MARCAS_CUBIERTA | _MARCAS_PROCESO)]))
+    df["estado"] = est.map(
+        lambda v: "cubierta" if v in _MARCAS_CUBIERTA
+        else ("en_proceso" if v in _MARCAS_PROCESO else None)
+    )
+    df = df[df["estado"].notna()].copy()
+
+    # Si una sección aparece dos veces, manda la última fila de la hoja: es la
+    # más reciente desde el punto de vista de quien la escribió.
+    df = df.drop_duplicates(subset=["seccion"], keep="last").reset_index(drop=True)
+    return df, origen, "", no_reconocidos
+
+
 # ════════════════════════════════════════════════════════════════════════════
 # HELPERS DE ESTILO
 # ════════════════════════════════════════════════════════════════════════════
