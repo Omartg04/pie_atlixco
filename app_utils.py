@@ -414,6 +414,19 @@ def meta_de_seccion(ln_seccion: float | int | None) -> int:
     return min(META_ENTREVISTAS_SECCION, ln) if ln > 0 else META_ENTREVISTAS_SECCION
 
 
+CLAVES_KOBO = ("base_url", "asset_uid", "api_token")
+
+
+def faltantes_kobo() -> list[str]:
+    """Qué llaves de [kobo] faltan o están vacías en los secrets.
+
+    Existe para que el aviso de "sin fuente de avance" pueda decir QUÉ falta.
+    Un bloque [kobo] a medias produce exactamente el mismo síntoma que no tener
+    ninguno, y sin esto hay que adivinar cuál de las tres es."""
+    cfg = st.secrets.get("kobo", {})
+    return [k for k in CLAVES_KOBO if not str(cfg.get(k, "") or "").strip()]
+
+
 TABLAS_KOBO = ("visitas_operativas", "resumen_diario",
                "productividad_brigadista", "cobertura_seccion",
                "respuestas_agregadas")

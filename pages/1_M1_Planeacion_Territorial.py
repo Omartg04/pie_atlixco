@@ -28,7 +28,7 @@ from app_utils import (
     GLOBAL_CSS, COLOR, check_password, carto_tiles, CARTO_ATTR,
     fmt_num, fmt_pct,
     load_m1_secciones, load_m1_manzanas, load_m1_contornos, load_mapas_catalogo,
-    load_cobertura, load_kobo, limpiar_cache_kobo, meta_de_seccion,
+    load_cobertura, load_kobo, limpiar_cache_kobo, meta_de_seccion, faltantes_kobo,
     META_ENTREVISTAS_SECCION, BRIGADISTAS_ESPERADOS, META_POR_BRIGADISTA,
 )
 
@@ -323,11 +323,22 @@ if error_cobertura:
         icon="⚠️",
     )
 elif not HAY_COBERTURA:
+    _faltan = faltantes_kobo()
+    if len(_faltan) == len(("base_url", "asset_uid", "api_token")):
+        _detalle = ("No hay bloque `[kobo]` en los secrets, o está vacío.")
+    else:
+        _detalle = ("El bloque `[kobo]` existe pero le falta: "
+                    + ", ".join(f"`{k}`" for k in _faltan) + ".")
     st.info(
-        "Sin fuente de avance configurada. Para encender el seguimiento, agrega "
-        "las credenciales de Kobo en los secrets bajo `[kobo]`. Opcionalmente, "
-        "una hoja de declaración manual bajo `[cobertura] url`. "
-        "Ver PLANTILLA_COBERTURA.md."
+        f"**Sin fuente de avance configurada.** {_detalle}\n\n"
+        "En Streamlit Cloud se agrega en **Manage app → Settings → Secrets**:\n\n"
+        "```toml\n[kobo]\nbase_url  = \"https://kf.kobotoolbox.org\"\n"
+        "asset_uid = \"TU_UID\"\napi_token = \"TU_TOKEN\"\n```\n\n"
+        "El servidor es `kf.kobotoolbox.org` o `eu.kobotoolbox.org` según dónde "
+        "esté la cuenta — conviene confirmarlo, no deducirlo de la URL de "
+        "Enketo. Guardar los secrets reinicia la app sola.\n\n"
+        "Mientras tanto el módulo funciona: lo único que falta es el avance de "
+        "campo."
     )
 else:
     v1, v2 = st.columns([2, 3])
