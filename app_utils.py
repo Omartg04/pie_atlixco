@@ -347,13 +347,40 @@ def normaliza_url_mymaps(url: str) -> str:
     return f"https://www.google.com/maps/d/viewer?mid={m.group(1)}" if m else u
 
 
+_ALIAS_CATALOGO = {
+    "seccion": {"seccion", "sección", "seccion_electoral", "sec"},
+    "url_my_maps_viewer": {"url_my_maps_viewer", "url", "url_mapa", "enlace",
+                           "link", "mapa", "url_viewer", "url_my_maps"},
+}
+
+
 @st.cache_data
 def load_mapas_catalogo() -> pd.DataFrame:
     """Catálogo de mapas de campo: una fila por sección vigente con la URL de
     My Maps, normalizada a la forma /viewer. Sustituye la lista MAPAS_CAMPO
-    hardcodeada — actualizar un mapa es editar un CSV, no el código."""
+    hardcodeada — actualizar un mapa es editar un CSV, no el código.
+
+    Tolerante con lo que le hace Excel a un CSV: lee con utf-8-sig para que un
+    BOM no convierta la primera columna en '\ufeffseccion', y acepta variantes
+    razonables de los nombres de columna. Este archivo se llena a mano, así que
+    un KeyError aquí tira el módulo completo por una edición de hoja de cálculo.
+    """
     path = os.path.join(DATA_DIR, "mapas_catalogo.csv")
-    df = pd.read_csv(path, dtype={"url_my_maps_viewer": str})
+    df = pd.read_csv(path, dtype=str, encoding="utf-8-sig")
+    renombres = {}
+    for col in df.columns:
+        limpio = str(col).strip().lower().replace(" ", "_").lstrip("\ufeff")
+        for canonico, alias in _ALIAS_CATALOGO.items():
+            if limpio in alias:
+                renombres[col] = canonico
+    df = df.rename(columns=renombres)
+
+    for col in ("seccion", "url_my_maps_viewer"):
+        if col not in df.columns:
+            df[col] = pd.NA
+
+    df["seccion"] = pd.to_numeric(df["seccion"], errors="coerce")
+    df = df[df["seccion"].notna()].copy()
     df["seccion"] = df["seccion"].astype(int)
     df["url_my_maps_viewer"] = df["url_my_maps_viewer"].map(normaliza_url_mymaps)
     return df
@@ -397,6 +424,34 @@ RESULTADOS_QUE_CUENTAN = ("completas", "parciales")
 # Polling recomendado por el paquete del conector.
 KOBO_TTL_SEG = 300
 
+# ── Resultado de la visita: color para el mapa de puntos (M3) ───────────────
+# Tres categorías, no cuatro: la pregunta que el mapa contesta es dónde se
+# trabaja y dónde se rechaza. Completa contra parcial va en el tooltip.
+#
+# Paleta validada contra el fondo oscuro del mapa con el validador de la guía
+# de visualización: pasa banda de luminosidad, piso de croma, separación CVD
+# (deuteranopía ΔE 12.2), piso de visión normal y contraste. El verde se corrió
+# a teal respecto de la marca justamente para separarlo del terracota bajo
+# deuteranopía, que es la confusión rojo-verde clásica. El color NUNCA va solo:
+# cada categoría lleva además forma y etiqueta en la leyenda.
+RESULTADO_MAPA = {
+    "entrevista": {"etiqueta": "Entrevista", "color": "#2a9d8f", "relleno": True},
+    "rechazo":    {"etiqueta": "Rechazo",    "color": "#c4552e", "relleno": True},
+    "casa_sola":  {"etiqueta": "Casa sola",  "color": "#4a8fd0", "relleno": False},
+}
+
+
+def categoria_resultado(resultado: str) -> str:
+    r = str(resultado or "").strip().lower()
+    if r in ("completa", "parcial"):
+        return "entrevista"
+    if r == "rechazo":
+        return "rechazo"
+    if r == "casa_sola":
+        return "casa_sola"
+    return "casa_sola"
+
+
 # ── Umbrales de calidad (M3) ────────────────────────────────────────────────
 # Racha de capturas rápidas: N entrevistas seguidas del mismo brigadista el
 # mismo día por debajo del umbral. Solo cuentan completas y parciales — un
@@ -414,6 +469,81 @@ def meta_de_seccion(ln_seccion: float | int | None) -> int:
     return min(META_ENTREVISTAS_SECCION, ln) if ln > 0 else META_ENTREVISTAS_SECCION
 
 
+# ── Correcciones de sección ─────────────────────────────────────────────────
+# Las brigadas reportan una sección del catálogo del instrumento y a veces esa
+# elección no corresponde al territorio trabajado. El 3 de noviembre de 2026,
+# primer día del operativo, el equipo trabajó la 160 pero capturó 208 por un
+# problema en el catálogo de Kobo, y se decidió no detener el día.
+#
+# La corrección se aplica a los ENVÍOS CRUDOS, antes de transform(). Si se
+# corrigiera después, cobertura_seccion, resumen_diario y
+# productividad_brigadista ya vendrían agregados con la sección equivocada y
+# habría que recalcularlos a mano, duplicando la lógica del conector.
+#
+# Formato de data/correcciones_seccion.csv:
+#   fecha,seccion_declarada,seccion_corregida,brigadista_codigo,nota
+# `fecha` y `brigadista_codigo` pueden ir vacíos para no acotar por esos
+# campos. Una fila sin fecha aplica a todo el operativo: úsese con cuidado.
+
+ARCHIVO_CORRECCIONES = "correcciones_seccion.csv"
+
+
+@st.cache_data
+def load_correcciones_seccion() -> pd.DataFrame:
+    """Reglas de reasignación de sección. Vacío si el archivo no existe."""
+    cols = ["fecha", "seccion_declarada", "seccion_corregida",
+            "brigadista_codigo", "nota"]
+    path = os.path.join(DATA_DIR, ARCHIVO_CORRECCIONES)
+    if not os.path.exists(path):
+        return pd.DataFrame(columns=cols)
+    df = pd.read_csv(path, dtype=str, encoding="utf-8-sig").fillna("")
+    df.columns = [str(c).strip().lower().lstrip("\ufeff") for c in df.columns]
+    for c in cols:
+        if c not in df.columns:
+            df[c] = ""
+    df = df[cols]
+    for c in ("seccion_declarada", "seccion_corregida"):
+        df[c] = pd.to_numeric(df[c], errors="coerce")
+    return df[df["seccion_declarada"].notna() & df["seccion_corregida"].notna()]
+
+
+def _fecha_local_envio(raw: dict) -> str:
+    """Fecha de la visita, en hora local. Se deriva de `inicio`, que trae el
+    offset; `_submission_time` es UTC y es la hora de RECEPCIÓN, que para una
+    captura offline puede caer otro día."""
+    txt = str(raw.get("inicio") or raw.get("_submission_time") or "")
+    return txt[:10]
+
+
+def aplicar_correcciones(envios: list, reglas: pd.DataFrame) -> tuple[list, int]:
+    """Reescribe la sección en los envíos crudos. Devuelve (envíos, n_corregidos)."""
+    if reglas.empty or not envios:
+        return envios, 0
+    corregidos = 0
+    for raw in envios:
+        try:
+            declarada = int(float(str(raw.get("seccion_electoral")
+                                      or raw.get("seccion_declarada") or "")))
+        except (TypeError, ValueError):
+            continue
+        fecha = _fecha_local_envio(raw)
+        brig = str(raw.get("brigadista") or "").strip()
+        for _, r in reglas.iterrows():
+            if int(r["seccion_declarada"]) != declarada:
+                continue
+            if str(r["fecha"]).strip() and str(r["fecha"]).strip() != fecha:
+                continue
+            if str(r["brigadista_codigo"]).strip() and \
+                    str(r["brigadista_codigo"]).strip() != brig:
+                continue
+            nueva = int(r["seccion_corregida"])
+            raw["seccion_declarada"] = str(nueva)
+            raw["seccion_electoral"] = nueva
+            corregidos += 1
+            break
+    return envios, corregidos
+
+
 CLAVES_KOBO = ("base_url", "asset_uid", "api_token")
 
 
@@ -427,9 +557,16 @@ def faltantes_kobo() -> list[str]:
     return [k for k in CLAVES_KOBO if not str(cfg.get(k, "") or "").strip()]
 
 
+# `supervision_gps_privado` entra aquí por decisión explícita del 3/11/2026:
+# el monitoreo necesita verificar recorridos y ubicar zonas de rechazo. OJO: el
+# candado del paquete (ALLOW_PRIVATE_GPS, --include-private-gps) solo aplica a
+# run(), que escribe CSV. Usando transform() como librería la tabla siempre
+# estuvo en memoria; lo que cambia es que ahora SÍ se lee. Son ubicaciones de
+# domicilios visitados: no se exportan a disco, no salen del tablero, y el
+# tablero está tras contraseña.
 TABLAS_KOBO = ("visitas_operativas", "resumen_diario",
                "productividad_brigadista", "cobertura_seccion",
-               "respuestas_agregadas")
+               "respuestas_agregadas", "supervision_gps_privado")
 
 
 @st.cache_data(ttl=KOBO_TTL_SEG, show_spinner=False)
@@ -456,6 +593,7 @@ def load_kobo_tablas() -> tuple[dict, dict, str]:
                   encoding="utf-8") as fh:
             schema = _json.load(fh)
         envios = kc.fetch_all(base, uid, token)
+        envios, n_corregidos = aplicar_correcciones(envios, load_correcciones_seccion())
         datos = kc.transform(envios, schema)
     except Exception as exc:
         return vacias, {}, f"{type(exc).__name__}: {exc}"
@@ -474,6 +612,7 @@ def load_kobo_tablas() -> tuple[dict, dict, str]:
         if not cob.empty else 0
     estado["visitas_en_cobertura"] = en_cobertura
     estado["visitas_sin_seccion_valida"] = max(0, unicos - en_cobertura)
+    estado["visitas_con_seccion_corregida"] = n_corregidos
     return tablas, estado, ""
 
 
