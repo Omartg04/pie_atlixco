@@ -24,13 +24,29 @@ import streamlit as st
 import folium
 from streamlit_folium import st_folium
 
-from app_utils import (
+# El despliegue es de varios archivos y app_utils.py es el que más fácil se
+# queda atrás: un ImportError aquí llega al usuario como un stack trace
+# redactado que no dice qué falta. Se atrapa para decirlo en claro.
+try:
+    from app_utils import (  # noqa: E402
     GLOBAL_CSS, COLOR, check_password, carto_tiles, CARTO_ATTR,
     fmt_num, fmt_pct,
     load_m1_secciones, load_m1_manzanas, load_m1_contornos, load_mapas_catalogo,
     load_cobertura, load_kobo, limpiar_cache_kobo, meta_de_seccion, faltantes_kobo,
-    META_ENTREVISTAS_SECCION, BRIGADISTAS_ESPERADOS, META_POR_BRIGADISTA,
-)
+    personas_impactadas, HABITANTES_PROMEDIO_VIVIENDA, PCT_IMPACTO_META,
+    )
+except ImportError as _exc:  # pragma: no cover
+    import streamlit as _st
+    _st.set_page_config(page_title="M1 · error de versión", page_icon="⚠️", layout="wide")
+    _st.error(
+        f"**`app_utils.py` está desactualizado.** Esta página necesita algo que "
+        f"la versión desplegada no tiene:\n\n`{_exc}`\n\n"
+        "Copia `app_utils.py` de la misma entrega que esta página, commitéalo y "
+        "haz push. Suele pasar cuando se actualiza una página y no el módulo "
+        "compartido.",
+        icon="🧩",
+    )
+    _st.stop()
 
 st.set_page_config(
     page_title="M1 · Planeación Territorial · PIE Atlixco",
@@ -88,8 +104,7 @@ def _estado_por_avance(geom: int) -> str:
     n = AVANCE_POR_GEOM.get(geom, {}).get("entrevistas", 0)
     if n <= 0:
         return "sin_iniciar"
-    return "cubierta" if n >= META_POR_GEOM.get(geom, META_ENTREVISTAS_SECCION) \
-        else "en_proceso"
+    return "cubierta" if n >= META_POR_GEOM.get(geom, 0) else "en_proceso"
 
 
 # ── Declaración manual, que anula el cálculo ─────────────────────────────────
@@ -128,7 +143,7 @@ df["estado_cobertura"] = df["seccion_geom"].map(ESTADO_POR_GEOM)
 df["entrevistas"] = df["seccion_geom"].map(
     lambda g: AVANCE_POR_GEOM.get(int(g), {}).get("entrevistas", 0))
 df["meta_entrevistas"] = df["seccion_geom"].map(
-    lambda g: META_POR_GEOM.get(int(g), META_ENTREVISTAS_SECCION))
+    lambda g: META_POR_GEOM.get(int(g), 0))
 ESTADO_POR_SECCION = dict(zip(df["SECCION"].astype(int), df["estado_cobertura"]))
 
 # Los conteos del semáforo van por sección OPERATIVA: son 70 unidades de
@@ -180,6 +195,10 @@ st.markdown("""
 # ════════════════════════════════════════════════════════════════════════════
 # SIDEBAR — filtros y recorrido
 # ════════════════════════════════════════════════════════════════════════════
+
+# Se calculan antes de la barra lateral porque el filtro de colonia los usa.
+ln_total = int(df["LN_SECCION"].sum())
+mz_prior = mz[mz["capa_prioridad_v2"] == "prioritaria_50"]
 
 with st.sidebar:
     st.markdown("### Recorrido del día")
@@ -249,6 +268,16 @@ with st.sidebar:
     f_capa = st.selectbox("Capa de LN", ["(todas)"] + sorted(df["CAPA_LN"].unique()))
     f_nivel = st.selectbox("Nivel de IRE", ["(todos)"] + sorted(df["NIVEL_IRE"].unique()))
     f_tipo = st.selectbox("Tipo INE", ["(todos)"] + sorted(df["TIPO_INE"].dropna().unique()))
+    # El coordinador se guía por colonia, no por número de sección. El filtro
+    # NO particiona: una colonia abarca varias secciones (CENTRO toca 12) y una
+    # sección varias colonias (41 de 69). Narrowing, no agrupación.
+    navs = sorted(mz_prior["nav_nombre"].dropna().unique())
+    f_colonia = st.selectbox(
+        "Colonia o localidad", ["(todas)"] + list(navs),
+        help="Muestra las secciones que tienen manzanas prioritarias en esa "
+             "colonia. Una colonia puede abarcar varias secciones.",
+    )
+
     f_estado = "(todos)"
     if HAY_COBERTURA:
         f_estado = st.selectbox(
@@ -271,6 +300,9 @@ if f_tipo != "(todos)":
 if f_estado != "(todos)":
     _inv = {v: k for k, v in ETIQUETA_ESTADO.items()}
     df_tabla = df_tabla[df_tabla["estado_cobertura"] == _inv[f_estado]]
+if f_colonia != "(todas)":
+    _geoms_col = set(mz_prior.loc[mz_prior["nav_nombre"] == f_colonia, "seccion"])
+    df_tabla = df_tabla[df_tabla["seccion_geom"].isin(_geoms_col)]
 if solo_con_mapa:
     con_mapa = {s for s, u in URL_POR_SECCION.items() if str(u).strip()}
     df_tabla = df_tabla[df_tabla["SECCION"].isin(con_mapa)]
@@ -279,8 +311,6 @@ if solo_con_mapa:
 # BLOQUE 1 — UNIVERSO DEL OPERATIVO
 # ════════════════════════════════════════════════════════════════════════════
 
-ln_total = int(df["LN_SECCION"].sum())
-mz_prior = mz[mz["capa_prioridad_v2"] == "prioritaria_50"]
 ln_prior = int(mz_prior["LN_manzana"].sum())
 
 k1, k2, k3, k4 = st.columns(4)
@@ -303,9 +333,12 @@ for col, val, lab, ctx in [
     )
 
 st.caption(
-    "La sección es la unidad de asignación operativa. La manzana es referencia "
-    "de recorrido: el corte al 50% orienta por dónde empezar dentro de la "
-    "sección, no define una meta."
+    f"La sección es la unidad de asignación operativa; la manzana orienta el "
+    f"recorrido dentro de ella. La meta de cada sección sale de su propia lista "
+    f"nominal: una visita es a una vivienda e impacta a "
+    f"{HABITANTES_PROMEDIO_VIVIENDA} personas en promedio, así que la meta son "
+    f"las entrevistas necesarias para alcanzar al "
+    f"{int(PCT_IMPACTO_META*100)}% de los electores de la sección."
 )
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -370,8 +403,8 @@ else:
             f"{COLOR['text_muted']}'>de {N_UNIDADES} secciones operativas</span>"
             f"<br><span style='color:{COLOR['text_muted']}'>"
             + (f"{ENTREVISTAS_TOTALES:,} entrevistas de {VISITAS_TOTALES:,} "
-               f"visitas · meta {META_ENTREVISTAS_SECCION} por sección "
-               f"({BRIGADISTAS_ESPERADOS} brigadistas × {META_POR_BRIGADISTA})"
+               f"visitas · {personas_impactadas(ENTREVISTAS_TOTALES):,} personas "
+               f"impactadas · meta {int(PCT_IMPACTO_META*100)}% de la LN"
                if HAY_KOBO else "avance declarado a mano, sin datos de Kobo")
             + f"</span></div>",
             unsafe_allow_html=True,
@@ -479,7 +512,7 @@ geo_vista = {
                 ),
                 "avance": (
                     f"{AVANCE_POR_GEOM.get(f['properties'].get('seccion_geom'), {}).get('entrevistas', 0)}"
-                    f" / {META_POR_GEOM.get(f['properties'].get('seccion_geom'), META_ENTREVISTAS_SECCION)}"
+                    f" / {META_POR_GEOM.get(f['properties'].get('seccion_geom'), 0)}"
                     + (" (declarado)" if ORIGEN_POR_GEOM.get(
                         f["properties"].get("seccion_geom")) == "declarado" else "")
                 ) if HAY_COBERTURA else "—",
@@ -689,13 +722,13 @@ else:
                     )
                     if HAY_KOBO and _m:
                         st.progress(min(1.0, _e / _m))
-                    if _m < META_ENTREVISTAS_SECCION:
-                        st.caption(
-                            f"Meta ajustada a {_m}: la sección tiene "
-                            f"{fmt_num(row['LN_SECCION'])} electores en toda su "
-                            f"lista nominal, menos que la meta general de "
-                            f"{META_ENTREVISTAS_SECCION}."
-                        )
+                    st.caption(
+                        f"Meta: {_m} entrevistas = {personas_impactadas(_m):,} "
+                        f"personas, el {int(PCT_IMPACTO_META*100)}% de los "
+                        f"{fmt_num(row['LN_SECCION'])} electores de la sección. "
+                        f"Cada visita es a una vivienda e impacta a "
+                        f"{HABITANTES_PROMEDIO_VIVIENDA} personas en promedio."
+                    )
                 st.markdown(
                     f"- IRE **{row['IRE']:.4f}** · nivel **{row['NIVEL_IRE']}**\n"
                     f"- Ranking por LN: **#{int(row['RANKING_LN'])}** de 74\n"

@@ -28,17 +28,34 @@ import pandas as pd
 import streamlit as st
 import altair as alt
 import folium
-from folium.plugins import HeatMap
+from folium.plugins import Fullscreen, HeatMap
 from streamlit_folium import st_folium
 
-from app_utils import (
+# El despliegue es de varios archivos y app_utils.py es el que más fácil se
+# queda atrás: un ImportError aquí llega al usuario como un stack trace
+# redactado que no dice qué falta. Se atrapa para decirlo en claro.
+try:
+    from app_utils import (  # noqa: E402
     GLOBAL_CSS, COLOR, check_password, fmt_num, fmt_pct,
     load_kobo_tablas, limpiar_cache_kobo, load_m1_secciones, meta_de_seccion,
-    ahora_mexico, META_ENTREVISTAS_SECCION, META_POR_BRIGADISTA,
-    BRIGADISTAS_ESPERADOS, RESULTADOS_QUE_CUENTAN,
+    ahora_mexico, META_POR_BRIGADISTA, META_DIARIA_EQUIPO,
+    BRIGADISTAS_ESPERADOS, RESULTADOS_QUE_CUENTAN, personas_impactadas,
+    HABITANTES_PROMEDIO_VIVIENDA, PCT_IMPACTO_META, load_m1_contornos,
     UMBRAL_DURACION_RAPIDA_MIN, MIN_RACHA_RAPIDA,
     RESULTADO_MAPA, categoria_resultado, carto_tiles, CARTO_ATTR,
-)
+    )
+except ImportError as _exc:  # pragma: no cover
+    import streamlit as _st
+    _st.set_page_config(page_title="M3 · error de versión", page_icon="⚠️", layout="wide")
+    _st.error(
+        f"**`app_utils.py` está desactualizado.** Esta página necesita algo que "
+        f"la versión desplegada no tiene:\n\n`{_exc}`\n\n"
+        "Copia `app_utils.py` de la misma entrega que esta página, commitéalo y "
+        "haz push. Suele pasar cuando se actualiza una página y no el módulo "
+        "compartido.",
+        icon="🧩",
+    )
+    _st.stop()
 
 st.set_page_config(
     page_title="M3 · ¿Cómo vamos en campo? · PIE Atlixco",
@@ -136,7 +153,8 @@ for col, val, lab, ctx in [
     (k[0], fmt_num(ENTREVISTAS), "Entrevistas acumuladas",
      f"{ENTREVISTAS / META_TOTAL * 100:.1f}% de la meta de {fmt_num(META_TOTAL)}"
      if META_TOTAL else ""),
-    (k[1], fmt_num(VISITAS), "Visitas realizadas",
+    (k[1], fmt_num(personas_impactadas(ENTREVISTAS)), "Personas impactadas",
+     f"{fmt_num(VISITAS)} visitas · "
      f"{ENTREVISTAS / VISITAS * 100:.0f}% terminó en entrevista" if VISITAS else ""),
     (k[2], f"{ritmo:,.0f}", "Entrevistas por día",
      f"{DIAS} días de campo · hoy van {ENTREVISTAS_HOY}"),
@@ -150,16 +168,236 @@ for col, val, lab, ctx in [
     )
 
 st.caption(
-    f"La meta total son {fmt_num(META_TOTAL)} entrevistas: "
-    f"{META_ENTREVISTAS_SECCION} por sección operativa "
-    f"({BRIGADISTAS_ESPERADOS} brigadistas × {META_POR_BRIGADISTA}), ajustada en "
-    f"las secciones cuya lista nominal es menor que la meta. "
+    f"La meta de cada sección sale de su propia lista nominal: una visita es a "
+    f"una vivienda e impacta a {HABITANTES_PROMEDIO_VIVIENDA} personas en "
+    f"promedio, así que la meta son las entrevistas necesarias para alcanzar al "
+    f"{int(PCT_IMPACTO_META*100)}% de sus electores. Suma "
+    f"{fmt_num(META_TOTAL)} entrevistas en las 70 secciones operativas. "
     f"Entrevista = visita con contacto real (completa o parcial); un rechazo o "
     f"una casa sola cuentan como visita, no como entrevista."
 )
 
 # ════════════════════════════════════════════════════════════════════════════
-# BLOQUE 2 — SERIE DIARIA
+# BLOQUE 2 — GEORREFERENCIA
+# ════════════════════════════════════════════════════════════════════════════
+# Dos niveles, como en Zacatlán: primero densidad del municipio, que no
+# identifica domicilios; luego, al elegir una sección, los puntos individuales
+# para verificar el recorrido. El detalle exige un acto deliberado.
+
+st.markdown("## Dónde se trabajó")
+
+if gps.empty:
+    st.info(
+        "**No hay visitas con GPS registrado.** El campo de ubicación es "
+        "opcional en el instrumento: si los brigadistas lo omiten o el teléfono "
+        "no fija posición, la visita se captura igual pero sin coordenadas.\n\n"
+        "Para confirmar si es eso o si las coordenadas se están perdiendo en el "
+        "camino, corre `python3 diagnostico_gps.py` desde la raíz del repo: "
+        "dice en qué forma manda Kobo la ubicación y cuántas visitas la traen."
+    )
+else:
+    gps = gps.copy()
+    for c in ("latitud", "longitud"):
+        gps[c] = pd.to_numeric(gps[c], errors="coerce")
+    gps = gps[gps["latitud"].notna() & gps["longitud"].notna()]
+
+    # El resultado y el volante viven en visitas_operativas: se unen por
+    # registro_id, que es la llave estable del conector.
+    gps = gps.merge(
+        visitas[["registro_id", "resultado", "entrega_volante",
+                 "inicio", "gps_precision_m"]],
+        on="registro_id", how="left",
+    )
+    gps["categoria"] = gps["resultado"].map(categoria_resultado)
+
+    fechas = sorted(gps["fecha_visita"].dropna().unique(), reverse=True)
+    g1, g2 = st.columns([2, 3])
+    with g1:
+        f_sel = st.selectbox(
+            "Día", ["Todo el operativo"] + list(fechas),
+            help="Todo el operativo para ver zonas de trabajo y de rechazo; "
+                 "un día concreto para verificar el recorrido de esa jornada.",
+        )
+    gps_v = gps if f_sel == "Todo el operativo" else gps[gps["fecha_visita"] == f_sel]
+    with g2:
+        st.markdown(
+            f"<div style='padding-top:30px;font-size:.84rem;color:"
+            f"{COLOR['text_secondary']}'>{len(gps_v):,} visitas con ubicación "
+            f"de {len(visitas):,} capturadas"
+            f"<span style='color:{COLOR['text_muted']}'> &nbsp;·&nbsp; "
+            f"{len(visitas) - len(gps):,} sin GPS</span></div>",
+            unsafe_allow_html=True,
+        )
+
+    if gps_v.empty:
+        st.caption("Sin visitas georreferenciadas en ese día.")
+    else:
+        centro = [gps_v["latitud"].mean(), gps_v["longitud"].mean()]
+        secciones_gps = sorted(gps_v["seccion_operativa"].astype(str).unique(),
+                               key=lambda x: int(x) if str(x).isdigit() else 0)
+        sec_sel = st.selectbox(
+            "Ver los puntos de una sección",
+            ["(solo el mapa de calor)"] + secciones_gps,
+            help="El mapa de calor muestra densidad sin identificar domicilios. "
+                 "Al elegir una sección se dibujan los puntos individuales.",
+        )
+
+        mapa = folium.Map(location=centro, zoom_start=13,
+                          tiles=carto_tiles(), attr=CARTO_ATTR)
+        Fullscreen(position="topleft", title="Pantalla completa",
+                   title_cancel="Salir").add_to(mapa)
+
+        # Contorno de las secciones como referencia: sin él, el mapa de calor
+        # es una mancha sin saber a qué territorio corresponde. Va debajo de
+        # los datos, sin relleno y en línea delgada, para no competir.
+        folium.GeoJson(
+            load_m1_contornos(),
+            name="Secciones",
+            style_function=lambda f: {
+                "fillOpacity": 0, "color": COLOR["border_strong"], "weight": 1,
+            },
+            highlight_function=lambda f: {
+                "color": "#ffffff", "weight": 2, "fillOpacity": 0.05,
+            },
+            tooltip=folium.GeoJsonTooltip(
+                fields=["secciones_vigentes", "capa_ln", "ranking_ire"],
+                aliases=["Sección(es):", "Capa de LN:", "Prioridad #:"],
+            ),
+        ).add_to(mapa)
+
+        if sec_sel == "(solo el mapa de calor)":
+            HeatMap(
+                gps_v[["latitud", "longitud"]].values.tolist(),
+                radius=18, blur=22, min_opacity=0.35,
+            ).add_to(mapa)
+            leyenda = None
+        else:
+            pts = gps_v[gps_v["seccion_operativa"].astype(str) == sec_sel].copy()
+            pts = pts.sort_values("inicio")
+            # Forma además de color: el color nunca carga la identidad solo.
+            for _, r in pts.iterrows():
+                cfg = RESULTADO_MAPA[r["categoria"]]
+                hora = str(r.get("inicio") or "")[11:16]
+                folium.CircleMarker(
+                    location=[r["latitud"], r["longitud"]],
+                    radius=6 if cfg["relleno"] else 7,
+                    color=cfg["color"],
+                    weight=2 if cfg["relleno"] else 2.5,
+                    fill=cfg["relleno"],
+                    fill_color=cfg["color"],
+                    fill_opacity=0.75 if cfg["relleno"] else 0,
+                    tooltip=folium.Tooltip(
+                        f"<b>{cfg['etiqueta']}</b><br>"
+                        f"Resultado: {r.get('resultado', '—')}<br>"
+                        f"Volante: {r.get('entrega_volante', '—')}<br>"
+                        f"Brigadista: {r.get('brigadista', '—')}<br>"
+                        f"{r.get('fecha_visita', '')} {hora}<br>"
+                        f"Precisión: {r.get('gps_precision_m', '—')} m"
+                    ),
+                ).add_to(mapa)
+            leyenda = pts["categoria"].value_counts().to_dict()
+
+        m1c, m2c = st.columns([4, 1])
+        with m1c:
+            st_folium(mapa, height=620, use_container_width=True,
+                      returned_objects=[],
+                      key=f"m3_gps_{f_sel}_{sec_sel}_{len(gps_v)}")
+        with m2c:
+            if leyenda is None:
+                st.markdown("**Mapa de calor**")
+                st.caption(
+                    "Densidad de visitas sobre el contorno de las secciones. "
+                    "No identifica domicilios: sirve para ver dónde se "
+                    "concentró el trabajo. Elige una sección arriba para ver "
+                    "los puntos, y el botón de la esquina superior izquierda "
+                    "para pantalla completa."
+                )
+            else:
+                st.markdown("**Resultado de la visita**")
+                for clave, cfg in RESULTADO_MAPA.items():
+                    n = leyenda.get(clave, 0)
+                    marca = ("●" if cfg["relleno"] else "○")
+                    st.markdown(
+                        f"<div style='font-size:.82rem;margin-bottom:6px'>"
+                        f"<span style='color:{cfg['color']};font-size:1.1rem'>"
+                        f"{marca}</span> {cfg['etiqueta']} · "
+                        f"<b>{n}</b></div>", unsafe_allow_html=True)
+                st.caption(
+                    f"Sección {sec_sel}, {len(pts)} puntos. El relleno distingue "
+                    f"las categorías además del color. Pasa el cursor sobre un "
+                    f"punto para ver resultado, volante, brigadista y hora."
+                )
+
+    st.caption(
+        "Estas son ubicaciones de domicilios visitados. No se exportan a "
+        "archivo ni salen del tablero, que está restringido al equipo de "
+        "coordinación."
+    )
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# BLOQUE 3 — SEÑAL DE CAMPO (q01)
+# ════════════════════════════════════════════════════════════════════════════
+
+st.markdown("## Señal de campo · reconocimiento")
+
+q01 = respuestas[respuestas["variable"] == "q01_reconocimiento"] if not respuestas.empty else pd.DataFrame()
+if q01.empty:
+    st.caption("Todavía no hay respuestas de la pregunta de reconocimiento.")
+else:
+    total = int(q01["n"].sum())
+    q1, q2 = st.columns([2, 3])
+    with q1:
+        for _, r in q01.sort_values("n", ascending=False).iterrows():
+            pct = r["n"] / total * 100 if total else 0
+            st.markdown(f"**{str(r['codigo']).replace('_', ' ').capitalize()}** · "
+                        f"{int(r['n'])} ({pct:.1f}%)")
+            st.progress(min(1.0, pct / 100))
+    with q2:
+        st.warning(
+            "**Esto no es una medición de opinión pública.** Es lo que reportan "
+            "las personas que abrieron la puerta a una brigada, sin ponderar y "
+            "sin diseño muestral. Sirve para ver si el reconocimiento se mueve "
+            "conforme avanza el recorrido; no sirve para estimar nada a nivel "
+            "municipio, ni para comparar con una encuesta. Las demás preguntas "
+            "del cuestionario no se exponen aquí por la misma razón.",
+            icon="⚠️",
+        )
+
+# ════════════════════════════════════════════════════════════════════════════
+# BLOQUE 4 — PRODUCTIVIDAD POR BRIGADISTA
+# ════════════════════════════════════════════════════════════════════════════
+
+st.markdown("## Productividad por brigadista")
+
+por_brig = (
+    brigadistas.groupby(["brigadista_codigo", "brigadista"], as_index=False)
+    .agg(dias=("fecha_visita", "nunique"), visitas=("visitas", "sum"),
+         entrevistas=("entrevistas", "sum"), rechazos=("rechazos", "sum"),
+         casas_solas=("casas_solas", "sum"),
+         volantes=("volantes_entregados", "sum"))
+    .sort_values("entrevistas", ascending=False)
+)
+por_brig["por_dia"] = (por_brig["entrevistas"] / por_brig["dias"]).round(1)
+por_brig["vs_meta"] = (por_brig["por_dia"] / META_POR_BRIGADISTA * 100).round(0)
+
+st.dataframe(
+        por_brig.rename(columns={
+        "brigadista_codigo": "Código", "brigadista": "Brigadista",
+        "dias": "Días", "visitas": "Visitas", "entrevistas": "Entrevistas",
+        "rechazos": "Rechazos", "casas_solas": "Casas solas",
+        "volantes": "Volantes", "por_dia": "Por día", "vs_meta": "% de meta",
+    }),
+    use_container_width=True, hide_index=True, height=420,
+)
+st.caption(
+    f"Referencia: {META_POR_BRIGADISTA} entrevistas por brigadista al día. Es "
+    f"una referencia de planeación, no un umbral de evaluación: un día en "
+    f"sección rural dispersa rinde menos que uno en el centro."
+)
+
+# ════════════════════════════════════════════════════════════════════════════
+# BLOQUE 5 — PRODUCCIÓN POR DÍA
 # ════════════════════════════════════════════════════════════════════════════
 
 st.markdown("## Producción por día")
@@ -168,7 +406,7 @@ st.markdown("## Producción por día")
 # pregunta que este gráfico contesta es "¿vamos al ritmo?", y eso se lee de un
 # vistazo con una barra y una línea. El desglose por resultado vive en la tabla
 # de abajo, que es donde se consulta cuando hace falta.
-META_DIARIA = BRIGADISTAS_ESPERADOS * META_POR_BRIGADISTA
+META_DIARIA = META_DIARIA_EQUIPO
 
 serie = diario.sort_values("fecha_visita").copy()
 serie["fecha"] = pd.to_datetime(serie["fecha_visita"], errors="coerce")
@@ -233,52 +471,7 @@ with st.expander("Ver la tabla por día", expanded=False):
     st.dataframe(serie[cols_dia], use_container_width=True, hide_index=True)
 
 # ════════════════════════════════════════════════════════════════════════════
-# BLOQUE 3 — PRODUCTIVIDAD POR BRIGADISTA
-# ════════════════════════════════════════════════════════════════════════════
-
-st.markdown("## Productividad por brigadista")
-
-por_brig = (
-    brigadistas.groupby(["brigadista_codigo", "brigadista"], as_index=False)
-    .agg(dias=("fecha_visita", "nunique"), visitas=("visitas", "sum"),
-         entrevistas=("entrevistas", "sum"), rechazos=("rechazos", "sum"),
-         casas_solas=("casas_solas", "sum"),
-         volantes=("volantes_entregados", "sum"))
-    .sort_values("entrevistas", ascending=False)
-)
-por_brig["por_dia"] = (por_brig["entrevistas"] / por_brig["dias"]).round(1)
-por_brig["vs_meta"] = (por_brig["por_dia"] / META_POR_BRIGADISTA * 100).round(0)
-
-b1, b2 = st.columns([3, 2])
-with b1:
-    st.dataframe(
-        por_brig.rename(columns={
-            "brigadista_codigo": "Código", "brigadista": "Brigadista",
-            "dias": "Días", "visitas": "Visitas", "entrevistas": "Entrevistas",
-            "rechazos": "Rechazos", "casas_solas": "Casas solas",
-            "volantes": "Volantes", "por_dia": "Por día", "vs_meta": "% de meta",
-        }),
-        use_container_width=True, hide_index=True, height=380,
-    )
-with b2:
-    activos_hoy = brigadistas[brigadistas["fecha_visita"] == HOY]
-    st.markdown(f"**Trabajando hoy ({HOY})**")
-    if activos_hoy.empty:
-        st.caption("Sin registros sincronizados con fecha de hoy.")
-    else:
-        for _, r in activos_hoy.sort_values("entrevistas", ascending=False).iterrows():
-            pct = r["entrevistas"] / META_POR_BRIGADISTA if META_POR_BRIGADISTA else 0
-            st.markdown(f"{r['brigadista']} · **{int(r['entrevistas'])}** de "
-                        f"{META_POR_BRIGADISTA}")
-            st.progress(min(1.0, pct))
-    st.caption(
-        f"Referencia: {META_POR_BRIGADISTA} entrevistas por brigadista al día. "
-        f"Es una referencia de planeación, no un umbral de evaluación: un día "
-        f"en sección rural dispersa rinde menos que uno en el centro."
-    )
-
-# ════════════════════════════════════════════════════════════════════════════
-# BLOQUE 4 — DÓNDE ESTÁ EL EQUIPO HOY
+# BLOQUE 6 — DÓNDE SE TRABAJA HOY
 # ════════════════════════════════════════════════════════════════════════════
 
 st.markdown("## Dónde está el equipo hoy")
@@ -315,168 +508,6 @@ else:
         st.caption(
             "El avance acumulado por sección y el mapa de prioridad están en el "
             "Módulo 1. Aquí solo se muestra la actividad del día."
-        )
-
-# ════════════════════════════════════════════════════════════════════════════
-# BLOQUE 5 — GEORREFERENCIA
-# ════════════════════════════════════════════════════════════════════════════
-# Dos niveles, como en Zacatlán: primero densidad del municipio, que no
-# identifica domicilios; luego, al elegir una sección, los puntos individuales
-# para verificar el recorrido. El detalle exige un acto deliberado.
-
-st.markdown("## Dónde se trabajó")
-
-if gps.empty:
-    st.info(
-        "No hay visitas con GPS registrado. El campo de ubicación es opcional "
-        "en el instrumento: si los brigadistas lo omiten o el teléfono no fija "
-        "posición, la visita se captura igual pero sin coordenadas."
-    )
-else:
-    gps = gps.copy()
-    for c in ("latitud", "longitud"):
-        gps[c] = pd.to_numeric(gps[c], errors="coerce")
-    gps = gps[gps["latitud"].notna() & gps["longitud"].notna()]
-
-    # El resultado y el volante viven en visitas_operativas: se unen por
-    # registro_id, que es la llave estable del conector.
-    gps = gps.merge(
-        visitas[["registro_id", "resultado", "entrega_volante",
-                 "inicio", "gps_precision_m"]],
-        on="registro_id", how="left",
-    )
-    gps["categoria"] = gps["resultado"].map(categoria_resultado)
-
-    fechas = sorted(gps["fecha_visita"].dropna().unique(), reverse=True)
-    g1, g2 = st.columns([2, 3])
-    with g1:
-        f_sel = st.selectbox(
-            "Día", ["Todo el operativo"] + list(fechas),
-            help="Todo el operativo para ver zonas de trabajo y de rechazo; "
-                 "un día concreto para verificar el recorrido de esa jornada.",
-        )
-    gps_v = gps if f_sel == "Todo el operativo" else gps[gps["fecha_visita"] == f_sel]
-    with g2:
-        st.markdown(
-            f"<div style='padding-top:30px;font-size:.84rem;color:"
-            f"{COLOR['text_secondary']}'>{len(gps_v):,} visitas con ubicación "
-            f"de {len(visitas):,} capturadas"
-            f"<span style='color:{COLOR['text_muted']}'> &nbsp;·&nbsp; "
-            f"{len(visitas) - len(gps):,} sin GPS</span></div>",
-            unsafe_allow_html=True,
-        )
-
-    if gps_v.empty:
-        st.caption("Sin visitas georreferenciadas en ese día.")
-    else:
-        centro = [gps_v["latitud"].mean(), gps_v["longitud"].mean()]
-        secciones_gps = sorted(gps_v["seccion_operativa"].astype(str).unique(),
-                               key=lambda x: int(x) if str(x).isdigit() else 0)
-        sec_sel = st.selectbox(
-            "Ver los puntos de una sección",
-            ["(solo el mapa de calor)"] + secciones_gps,
-            help="El mapa de calor muestra densidad sin identificar domicilios. "
-                 "Al elegir una sección se dibujan los puntos individuales.",
-        )
-
-        mapa = folium.Map(location=centro, zoom_start=13,
-                          tiles=carto_tiles(), attr=CARTO_ATTR)
-
-        if sec_sel == "(solo el mapa de calor)":
-            HeatMap(
-                gps_v[["latitud", "longitud"]].values.tolist(),
-                radius=18, blur=22, min_opacity=0.35,
-            ).add_to(mapa)
-            leyenda = None
-        else:
-            pts = gps_v[gps_v["seccion_operativa"].astype(str) == sec_sel].copy()
-            pts = pts.sort_values("inicio")
-            # Forma además de color: el color nunca carga la identidad solo.
-            for _, r in pts.iterrows():
-                cfg = RESULTADO_MAPA[r["categoria"]]
-                hora = str(r.get("inicio") or "")[11:16]
-                folium.CircleMarker(
-                    location=[r["latitud"], r["longitud"]],
-                    radius=6 if cfg["relleno"] else 7,
-                    color=cfg["color"],
-                    weight=2 if cfg["relleno"] else 2.5,
-                    fill=cfg["relleno"],
-                    fill_color=cfg["color"],
-                    fill_opacity=0.75 if cfg["relleno"] else 0,
-                    tooltip=folium.Tooltip(
-                        f"<b>{cfg['etiqueta']}</b><br>"
-                        f"Resultado: {r.get('resultado', '—')}<br>"
-                        f"Volante: {r.get('entrega_volante', '—')}<br>"
-                        f"Brigadista: {r.get('brigadista', '—')}<br>"
-                        f"{r.get('fecha_visita', '')} {hora}<br>"
-                        f"Precisión: {r.get('gps_precision_m', '—')} m"
-                    ),
-                ).add_to(mapa)
-            leyenda = pts["categoria"].value_counts().to_dict()
-
-        m1c, m2c = st.columns([4, 1])
-        with m1c:
-            st_folium(mapa, height=520, use_container_width=True,
-                      returned_objects=[],
-                      key=f"m3_gps_{f_sel}_{sec_sel}_{len(gps_v)}")
-        with m2c:
-            if leyenda is None:
-                st.markdown("**Mapa de calor**")
-                st.caption(
-                    "Densidad de visitas. No identifica domicilios: sirve para "
-                    "ver dónde se concentró el trabajo. Elige una sección "
-                    "arriba para ver los puntos."
-                )
-            else:
-                st.markdown("**Resultado de la visita**")
-                for clave, cfg in RESULTADO_MAPA.items():
-                    n = leyenda.get(clave, 0)
-                    marca = ("●" if cfg["relleno"] else "○")
-                    st.markdown(
-                        f"<div style='font-size:.82rem;margin-bottom:6px'>"
-                        f"<span style='color:{cfg['color']};font-size:1.1rem'>"
-                        f"{marca}</span> {cfg['etiqueta']} · "
-                        f"<b>{n}</b></div>", unsafe_allow_html=True)
-                st.caption(
-                    f"Sección {sec_sel}, {len(pts)} puntos. El relleno distingue "
-                    f"las categorías además del color. Pasa el cursor sobre un "
-                    f"punto para ver resultado, volante, brigadista y hora."
-                )
-
-    st.caption(
-        "Estas son ubicaciones de domicilios visitados. No se exportan a "
-        "archivo ni salen del tablero, que está restringido al equipo de "
-        "coordinación."
-    )
-
-
-# ════════════════════════════════════════════════════════════════════════════
-# BLOQUE 6 — TENDENCIA DE CAMPO (q01)
-# ════════════════════════════════════════════════════════════════════════════
-
-st.markdown("## Señal de campo · reconocimiento")
-
-q01 = respuestas[respuestas["variable"] == "q01_reconocimiento"] if not respuestas.empty else pd.DataFrame()
-if q01.empty:
-    st.caption("Todavía no hay respuestas de la pregunta de reconocimiento.")
-else:
-    total = int(q01["n"].sum())
-    q1, q2 = st.columns([2, 3])
-    with q1:
-        for _, r in q01.sort_values("n", ascending=False).iterrows():
-            pct = r["n"] / total * 100 if total else 0
-            st.markdown(f"**{str(r['codigo']).replace('_', ' ').capitalize()}** · "
-                        f"{int(r['n'])} ({pct:.1f}%)")
-            st.progress(min(1.0, pct / 100))
-    with q2:
-        st.warning(
-            "**Esto no es una medición de opinión pública.** Es lo que reportan "
-            "las personas que abrieron la puerta a una brigada, sin ponderar y "
-            "sin diseño muestral. Sirve para ver si el reconocimiento se mueve "
-            "conforme avanza el recorrido; no sirve para estimar nada a nivel "
-            "municipio, ni para comparar con una encuesta. Las demás preguntas "
-            "del cuestionario no se exponen aquí por la misma razón.",
-            icon="⚠️",
         )
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -518,6 +549,7 @@ c1, c2 = st.columns(2)
 with c1:
     st.markdown("**Integridad del extracto**")
     corregidas = int(estado.get("visitas_con_seccion_corregida", 0) or 0)
+    rescatado = int(estado.get("gps_rescatado_de_geolocation", 0) or 0)
     sin_seccion = int(estado.get("visitas_sin_seccion_valida", 0) or 0)
     filas = [
         ("Registros únicos", fmt_num(estado.get("registros_unicos", 0))),
@@ -526,6 +558,7 @@ with c1:
         ("Resultados sin clasificar", fmt_num(estado.get("registros_sin_clasificar", 0))),
         ("Visitas sin sección válida", fmt_num(sin_seccion)),
         ("Visitas con sección reasignada", fmt_num(corregidas)),
+        ("GPS recuperado de _geolocation", fmt_num(rescatado)),
     ]
     st.dataframe(pd.DataFrame(filas, columns=["Indicador", "n"]),
                  use_container_width=True, hide_index=True)
