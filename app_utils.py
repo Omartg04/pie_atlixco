@@ -416,9 +416,25 @@ def ahora_mexico() -> "datetime":
 # "Entrevista" = visita con contacto real: completas + parciales. Un rechazo o
 # una casa sola son visitas, no entrevistas.
 
-META_ENTREVISTAS_SECCION = 275
+# Una visita es a una VIVIENDA, y el impacto alcanza a quienes viven ahí: no es
+# viable tocar a cada integrante de la lista nominal. Así que la meta de una
+# sección se deriva de su propia LN, no de un número plano:
+#
+#     meta_entrevistas = LN_sección ÷ 3.86 × 50%
+#
+# 3.86 es la constante censal de habitantes por vivienda en Atlixco, la misma
+# que usaba el operativo anterior. El 50% es la meta operable acordada el
+# 3/11/2026: con 50 días hábiles al 31 de diciembre y 275 entrevistas diarias
+# caben 13,750, suficiente para S1+S2 (12,335) pero no para las 70 (15,143).
+# Que no alcance para todo es el sentido de tener un ranking.
+#
+# Esto sustituye la meta plana de 275 por sección. El 275 sigue vivo como
+# META_DIARIA del equipo (11 brigadistas × 25), que es otra cosa.
+HABITANTES_PROMEDIO_VIVIENDA = 3.86
+PCT_IMPACTO_META = 0.50
 BRIGADISTAS_ESPERADOS = 11
 META_POR_BRIGADISTA = 25
+META_DIARIA_EQUIPO = BRIGADISTAS_ESPERADOS * META_POR_BRIGADISTA
 RESULTADOS_QUE_CUENTAN = ("completas", "parciales")
 
 # Polling recomendado por el paquete del conector.
@@ -461,12 +477,22 @@ MIN_RACHA_RAPIDA = 3
 
 
 def meta_de_seccion(ln_seccion: float | int | None) -> int:
-    """Meta de entrevistas de una sección, acotada por su lista nominal."""
+    """Entrevistas necesarias para impactar PCT_IMPACTO_META de la LN."""
     try:
         ln = int(ln_seccion)
     except (TypeError, ValueError):
-        return META_ENTREVISTAS_SECCION
-    return min(META_ENTREVISTAS_SECCION, ln) if ln > 0 else META_ENTREVISTAS_SECCION
+        return 0
+    if ln <= 0:
+        return 0
+    return max(1, round(ln / HABITANTES_PROMEDIO_VIVIENDA * PCT_IMPACTO_META))
+
+
+def personas_impactadas(entrevistas: float | int | None) -> int:
+    """Personas alcanzadas por n entrevistas, a razón de una vivienda cada una."""
+    try:
+        return round(float(entrevistas) * HABITANTES_PROMEDIO_VIVIENDA)
+    except (TypeError, ValueError):
+        return 0
 
 
 # ── Correcciones de sección ─────────────────────────────────────────────────
@@ -513,6 +539,44 @@ def _fecha_local_envio(raw: dict) -> str:
     captura offline puede caer otro día."""
     txt = str(raw.get("inicio") or raw.get("_submission_time") or "")
     return txt[:10]
+
+
+def rescatar_gps(envios: list) -> int:
+    """Rellena `gps` desde `_geolocation` cuando el primero llega vacío.
+
+    El conector tiene un respaldo a `_geolocation`, pero su condición es
+    `elif isinstance(value, (tuple, list))` sobre el valor de `gps`: solo entra
+    cuando `gps` está AUSENTE del JSON. Si Kobo lo manda como cadena vacía, la
+    primera rama (`isinstance(value, str)`) gana, `"".split()` da lista vacía y
+    la coordenada se descarta aunque `_geolocation` la tenga.
+
+    Se arregla aquí y no en kobo_connector.py a propósito: el paquete v1.2 se
+    usa sin modificar para que sus hashes SHA256 sigan verificando. Mismo
+    patrón que la corrección de sección — se preparan los envíos crudos antes
+    de entregárselos al conector.
+
+    Devuelve cuántas coordenadas se rescataron.
+    """
+    rescatadas = 0
+    for raw in envios:
+        actual = raw.get("gps")
+        if actual is not None and str(actual).strip():
+            continue
+        geo = raw.get("_geolocation")
+        if not isinstance(geo, (list, tuple)) or len(geo) < 2:
+            continue
+        lat, lon = geo[0], geo[1]
+        if lat is None or lon is None:
+            continue
+        try:
+            lat, lon = float(lat), float(lon)
+        except (TypeError, ValueError):
+            continue
+        if not (-90 <= lat <= 90 and -180 <= lon <= 180):
+            continue
+        raw["gps"] = f"{lat} {lon}"
+        rescatadas += 1
+    return rescatadas
 
 
 def aplicar_correcciones(envios: list, reglas: pd.DataFrame) -> tuple[list, int]:
@@ -593,6 +657,7 @@ def load_kobo_tablas() -> tuple[dict, dict, str]:
                   encoding="utf-8") as fh:
             schema = _json.load(fh)
         envios = kc.fetch_all(base, uid, token)
+        n_gps_rescatado = rescatar_gps(envios)
         envios, n_corregidos = aplicar_correcciones(envios, load_correcciones_seccion())
         datos = kc.transform(envios, schema)
     except Exception as exc:
@@ -613,6 +678,7 @@ def load_kobo_tablas() -> tuple[dict, dict, str]:
     estado["visitas_en_cobertura"] = en_cobertura
     estado["visitas_sin_seccion_valida"] = max(0, unicos - en_cobertura)
     estado["visitas_con_seccion_corregida"] = n_corregidos
+    estado["gps_rescatado_de_geolocation"] = n_gps_rescatado
     return tablas, estado, ""
 
 
