@@ -27,6 +27,9 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import pandas as pd
 import streamlit as st
 import altair as alt
+import folium
+from folium.plugins import HeatMap
+from streamlit_folium import st_folium
 
 from app_utils import (
     GLOBAL_CSS, COLOR, check_password, fmt_num, fmt_pct,
@@ -34,6 +37,7 @@ from app_utils import (
     ahora_mexico, META_ENTREVISTAS_SECCION, META_POR_BRIGADISTA,
     BRIGADISTAS_ESPERADOS, RESULTADOS_QUE_CUENTAN,
     UMBRAL_DURACION_RAPIDA_MIN, MIN_RACHA_RAPIDA,
+    RESULTADO_MAPA, categoria_resultado, carto_tiles, CARTO_ATTR,
 )
 
 st.set_page_config(
@@ -87,6 +91,7 @@ diario = tablas.get("resumen_diario", pd.DataFrame())
 brigadistas = tablas.get("productividad_brigadista", pd.DataFrame())
 cobertura = tablas.get("cobertura_seccion", pd.DataFrame())
 respuestas = tablas.get("respuestas_agregadas", pd.DataFrame())
+gps = tablas.get("supervision_gps_privado", pd.DataFrame())
 
 if visitas.empty:
     st.info(
@@ -313,7 +318,140 @@ else:
         )
 
 # ════════════════════════════════════════════════════════════════════════════
-# BLOQUE 5 — TENDENCIA DE CAMPO (q01)
+# BLOQUE 5 — GEORREFERENCIA
+# ════════════════════════════════════════════════════════════════════════════
+# Dos niveles, como en Zacatlán: primero densidad del municipio, que no
+# identifica domicilios; luego, al elegir una sección, los puntos individuales
+# para verificar el recorrido. El detalle exige un acto deliberado.
+
+st.markdown("## Dónde se trabajó")
+
+if gps.empty:
+    st.info(
+        "No hay visitas con GPS registrado. El campo de ubicación es opcional "
+        "en el instrumento: si los brigadistas lo omiten o el teléfono no fija "
+        "posición, la visita se captura igual pero sin coordenadas."
+    )
+else:
+    gps = gps.copy()
+    for c in ("latitud", "longitud"):
+        gps[c] = pd.to_numeric(gps[c], errors="coerce")
+    gps = gps[gps["latitud"].notna() & gps["longitud"].notna()]
+
+    # El resultado y el volante viven en visitas_operativas: se unen por
+    # registro_id, que es la llave estable del conector.
+    gps = gps.merge(
+        visitas[["registro_id", "resultado", "entrega_volante",
+                 "inicio", "gps_precision_m"]],
+        on="registro_id", how="left",
+    )
+    gps["categoria"] = gps["resultado"].map(categoria_resultado)
+
+    fechas = sorted(gps["fecha_visita"].dropna().unique(), reverse=True)
+    g1, g2 = st.columns([2, 3])
+    with g1:
+        f_sel = st.selectbox(
+            "Día", ["Todo el operativo"] + list(fechas),
+            help="Todo el operativo para ver zonas de trabajo y de rechazo; "
+                 "un día concreto para verificar el recorrido de esa jornada.",
+        )
+    gps_v = gps if f_sel == "Todo el operativo" else gps[gps["fecha_visita"] == f_sel]
+    with g2:
+        st.markdown(
+            f"<div style='padding-top:30px;font-size:.84rem;color:"
+            f"{COLOR['text_secondary']}'>{len(gps_v):,} visitas con ubicación "
+            f"de {len(visitas):,} capturadas"
+            f"<span style='color:{COLOR['text_muted']}'> &nbsp;·&nbsp; "
+            f"{len(visitas) - len(gps):,} sin GPS</span></div>",
+            unsafe_allow_html=True,
+        )
+
+    if gps_v.empty:
+        st.caption("Sin visitas georreferenciadas en ese día.")
+    else:
+        centro = [gps_v["latitud"].mean(), gps_v["longitud"].mean()]
+        secciones_gps = sorted(gps_v["seccion_operativa"].astype(str).unique(),
+                               key=lambda x: int(x) if str(x).isdigit() else 0)
+        sec_sel = st.selectbox(
+            "Ver los puntos de una sección",
+            ["(solo el mapa de calor)"] + secciones_gps,
+            help="El mapa de calor muestra densidad sin identificar domicilios. "
+                 "Al elegir una sección se dibujan los puntos individuales.",
+        )
+
+        mapa = folium.Map(location=centro, zoom_start=13,
+                          tiles=carto_tiles(), attr=CARTO_ATTR)
+
+        if sec_sel == "(solo el mapa de calor)":
+            HeatMap(
+                gps_v[["latitud", "longitud"]].values.tolist(),
+                radius=18, blur=22, min_opacity=0.35,
+            ).add_to(mapa)
+            leyenda = None
+        else:
+            pts = gps_v[gps_v["seccion_operativa"].astype(str) == sec_sel].copy()
+            pts = pts.sort_values("inicio")
+            # Forma además de color: el color nunca carga la identidad solo.
+            for _, r in pts.iterrows():
+                cfg = RESULTADO_MAPA[r["categoria"]]
+                hora = str(r.get("inicio") or "")[11:16]
+                folium.CircleMarker(
+                    location=[r["latitud"], r["longitud"]],
+                    radius=6 if cfg["relleno"] else 7,
+                    color=cfg["color"],
+                    weight=2 if cfg["relleno"] else 2.5,
+                    fill=cfg["relleno"],
+                    fill_color=cfg["color"],
+                    fill_opacity=0.75 if cfg["relleno"] else 0,
+                    tooltip=folium.Tooltip(
+                        f"<b>{cfg['etiqueta']}</b><br>"
+                        f"Resultado: {r.get('resultado', '—')}<br>"
+                        f"Volante: {r.get('entrega_volante', '—')}<br>"
+                        f"Brigadista: {r.get('brigadista', '—')}<br>"
+                        f"{r.get('fecha_visita', '')} {hora}<br>"
+                        f"Precisión: {r.get('gps_precision_m', '—')} m"
+                    ),
+                ).add_to(mapa)
+            leyenda = pts["categoria"].value_counts().to_dict()
+
+        m1c, m2c = st.columns([4, 1])
+        with m1c:
+            st_folium(mapa, height=520, use_container_width=True,
+                      returned_objects=[],
+                      key=f"m3_gps_{f_sel}_{sec_sel}_{len(gps_v)}")
+        with m2c:
+            if leyenda is None:
+                st.markdown("**Mapa de calor**")
+                st.caption(
+                    "Densidad de visitas. No identifica domicilios: sirve para "
+                    "ver dónde se concentró el trabajo. Elige una sección "
+                    "arriba para ver los puntos."
+                )
+            else:
+                st.markdown("**Resultado de la visita**")
+                for clave, cfg in RESULTADO_MAPA.items():
+                    n = leyenda.get(clave, 0)
+                    marca = ("●" if cfg["relleno"] else "○")
+                    st.markdown(
+                        f"<div style='font-size:.82rem;margin-bottom:6px'>"
+                        f"<span style='color:{cfg['color']};font-size:1.1rem'>"
+                        f"{marca}</span> {cfg['etiqueta']} · "
+                        f"<b>{n}</b></div>", unsafe_allow_html=True)
+                st.caption(
+                    f"Sección {sec_sel}, {len(pts)} puntos. El relleno distingue "
+                    f"las categorías además del color. Pasa el cursor sobre un "
+                    f"punto para ver resultado, volante, brigadista y hora."
+                )
+
+    st.caption(
+        "Estas son ubicaciones de domicilios visitados. No se exportan a "
+        "archivo ni salen del tablero, que está restringido al equipo de "
+        "coordinación."
+    )
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# BLOQUE 6 — TENDENCIA DE CAMPO (q01)
 # ════════════════════════════════════════════════════════════════════════════
 
 st.markdown("## Señal de campo · reconocimiento")
@@ -342,7 +480,7 @@ else:
         )
 
 # ════════════════════════════════════════════════════════════════════════════
-# BLOQUE 6 — CALIDAD E INTEGRIDAD
+# BLOQUE 7 — CALIDAD E INTEGRIDAD
 # ════════════════════════════════════════════════════════════════════════════
 
 st.markdown("## Calidad e integridad")
@@ -379,6 +517,7 @@ incid = (visitas["incidencias"].fillna("").str.split(";").explode()
 c1, c2 = st.columns(2)
 with c1:
     st.markdown("**Integridad del extracto**")
+    corregidas = int(estado.get("visitas_con_seccion_corregida", 0) or 0)
     sin_seccion = int(estado.get("visitas_sin_seccion_valida", 0) or 0)
     filas = [
         ("Registros únicos", fmt_num(estado.get("registros_unicos", 0))),
@@ -386,6 +525,7 @@ with c1:
         ("Visitas sin GPS", fmt_num(estado.get("visitas_sin_gps", 0))),
         ("Resultados sin clasificar", fmt_num(estado.get("registros_sin_clasificar", 0))),
         ("Visitas sin sección válida", fmt_num(sin_seccion)),
+        ("Visitas con sección reasignada", fmt_num(corregidas)),
     ]
     st.dataframe(pd.DataFrame(filas, columns=["Indicador", "n"]),
                  use_container_width=True, hide_index=True)

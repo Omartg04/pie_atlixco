@@ -217,18 +217,29 @@ with st.sidebar:
                         if ESTADO_POR_SECCION.get(s) != "cubierta"
                         or s in _ya_elegidas]
 
+    def _etiqueta_seccion(sec) -> str:
+        """Etiqueta de una sección en el selector.
+
+        Si la sección no está en el marco, devuelve una etiqueta neutra en vez
+        de reventar: un .iloc[0] sobre una selección vacía tira la página
+        entera, y basta con una sesión vieja tras un cambio de marco para que
+        llegue un número que ya no existe."""
+        fila = df.loc[df["SECCION"] == sec]
+        if fila.empty:
+            return f"Sección {sec} (fuera del marco)"
+        fila = fila.iloc[0]
+        marca = (MARCA_ESTADO[ESTADO_POR_SECCION.get(sec, "sin_iniciar")] + " "
+                 if HAY_COBERTURA else "")
+        avance = (f" · {int(fila['entrevistas'])}/{int(fila['meta_entrevistas'])}"
+                  if HAY_KOBO else "")
+        return (f"{marca}#{int(fila['RANKING_IRE'])} · Sección {sec} · "
+                f"{fila['CAPA_LN']}{avance}")
+
     secciones_foco = st.multiselect(
         "Secciones asignadas",
         opciones,
         key="m1_recorrido",
-        format_func=lambda s: (
-            f"{MARCA_ESTADO[ESTADO_POR_SECCION.get(s, 'sin_iniciar')] + ' ' if HAY_COBERTURA else ''}"
-            f"#{int(df.loc[df['SECCION'] == s, 'RANKING_IRE'].iloc[0])} · "
-            f"Sección {s} · {df.loc[df['SECCION'] == s, 'CAPA_LN'].iloc[0]}"
-            + (f" · {int(df.loc[df['SECCION'] == s, 'entrevistas'].iloc[0])}"
-               f"/{int(df.loc[df['SECCION'] == s, 'meta_entrevistas'].iloc[0])}"
-               if HAY_KOBO else "")
-        ),
+        format_func=lambda s: _etiqueta_seccion(s),
         help="En orden de prioridad. Puedes elegir una sección (mensaje para "
              "un brigadista) o varias (planeación del día).",
     )
@@ -345,11 +356,10 @@ else:
     with v1:
         vista_cobertura = st.radio(
             "Qué mostrar en el mapa",
-            ["Pendientes", "Cubiertas", "Todas"],
+            ["Pendientes", "En proceso", "Cubiertas", "Todas"],
             horizontal=True,
-            help="Pendientes atenúa lo ya cubierto. Las secciones nunca se "
-                 "ocultan: sin ellas se pierde la referencia de qué hay "
-                 "alrededor.",
+            help="Cada vista atenúa lo demás. Las secciones nunca se ocultan: "
+                 "sin ellas se pierde la referencia de qué hay alrededor.",
         )
     with v2:
         st.markdown(
@@ -370,6 +380,7 @@ else:
                      help="Vuelve a consultar Kobo y la hoja de declaración."):
             limpiar_cache_kobo()
             load_cobertura.clear()
+            load_mapas_catalogo.clear()   # por si se actualizó un enlace
             st.rerun()
     if estados_raros:
         st.warning(
@@ -378,6 +389,14 @@ else:
             + ". Esas filas se ignoran, no se marcan. Usa `cubierta` o "
               "`en proceso` (también valen `si`, `x`, `listo`).",
             icon="⚠️",
+        )
+    _corregidas = int(kobo_estado.get("visitas_con_seccion_corregida", 0) or 0)
+    if _corregidas:
+        st.info(
+            f"**{_corregidas} visita(s) con sección reasignada** según "
+            f"`data/correcciones_seccion.csv`. La corrección se aplica a los "
+            f"envíos antes de agregarlos, así que el avance, el mapa y M3 "
+            f"muestran la sección corregida."
         )
     _perdidas = int(kobo_estado.get("visitas_sin_seccion_valida", 0) or 0)
     if _perdidas:
@@ -418,6 +437,8 @@ def estilo_seccion(feature):
     if not en_foco and HAY_COBERTURA:
         if vista_cobertura == "Pendientes":
             apagada = estado == "cubierta"
+        elif vista_cobertura == "En proceso":
+            apagada = estado != "en_proceso"
         elif vista_cobertura == "Cubiertas":
             apagada = estado != "cubierta"
 
