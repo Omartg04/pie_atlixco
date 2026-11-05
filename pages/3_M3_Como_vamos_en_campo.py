@@ -550,6 +550,10 @@ with c1:
     st.markdown("**Integridad del extracto**")
     corregidas = int(estado.get("visitas_con_seccion_corregida", 0) or 0)
     rescatado = int(estado.get("gps_rescatado_de_geolocation", 0) or 0)
+    por_gps = int(estado.get("seccion_corregida_por_gps", 0) or 0)
+    sin_coord = int(estado.get("gps_sin_coordenada_para_corregir", 0) or 0)
+    fuera_poli = int(estado.get("gps_fuera_de_todo_poligono", 0) or 0)
+    no_permitido = int(estado.get("gps_destino_no_permitido", 0) or 0)
     sin_seccion = int(estado.get("visitas_sin_seccion_valida", 0) or 0)
     filas = [
         ("Registros únicos", fmt_num(estado.get("registros_unicos", 0))),
@@ -558,10 +562,21 @@ with c1:
         ("Resultados sin clasificar", fmt_num(estado.get("registros_sin_clasificar", 0))),
         ("Visitas sin sección válida", fmt_num(sin_seccion)),
         ("Visitas con sección reasignada", fmt_num(corregidas)),
+        ("  de ellas, por ubicación real", fmt_num(por_gps)),
+        ("Sin GPS para verificar sección", fmt_num(sin_coord)),
+        ("GPS fuera de todo polígono", fmt_num(fuera_poli)),
+        ("Destino descartado por la regla", fmt_num(no_permitido)),
         ("GPS recuperado de _geolocation", fmt_num(rescatado)),
     ]
     st.dataframe(pd.DataFrame(filas, columns=["Indicador", "n"]),
                  use_container_width=True, hide_index=True)
+    if sin_coord:
+        st.warning(
+            f"{sin_coord} visita(s) bajo una regla de corrección por GPS no "
+            f"traen coordenada, así que se quedaron con la sección que declaró "
+            f"el brigadista. No se adivinan.",
+            icon="⚠️",
+        )
     if sin_seccion:
         st.warning(
             f"{sin_seccion} visita(s) no suman a ninguna sección: se capturaron "

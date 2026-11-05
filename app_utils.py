@@ -528,9 +528,33 @@ def load_correcciones_seccion() -> pd.DataFrame:
         if c not in df.columns:
             df[c] = ""
     df = df[cols]
-    for c in ("seccion_declarada", "seccion_corregida"):
-        df[c] = pd.to_numeric(df[c], errors="coerce")
-    return df[df["seccion_declarada"].notna() & df["seccion_corregida"].notna()]
+    df["seccion_declarada"] = pd.to_numeric(df["seccion_declarada"], errors="coerce")
+    # seccion_corregida admite un número o la palabra clave "gps", que reasigna
+    # cada visita al polígono que realmente la contiene.
+    df["seccion_corregida"] = df["seccion_corregida"].astype(str).str.strip().str.lower()
+    # Formatos válidos: un número, `gps`, o `gps:161` / `gps:161;163` para
+    # aceptar solo ciertos destinos. El filtro de destino existe porque un
+    # polígono grande y vecino —la 160, que contiene a la 161 y la 162— recoge
+    # puntos que son ruido de GPS sobre la frontera, no visitas reales.
+    valida = df["seccion_corregida"].str.fullmatch(
+        r"\d+|gps(:\d+(;\d+)*)?").fillna(False)
+    return df[df["seccion_declarada"].notna() & valida]
+
+
+def _coordenada_de(raw: dict) -> tuple:
+    """(lat, lon, precisión) de un envío crudo, con el respaldo a _geolocation
+    ya resuelto por rescatar_gps()."""
+    txt = str(raw.get("gps") or "").strip()
+    partes = txt.replace(",", " ").split()
+    if len(partes) >= 2:
+        try:
+            lat, lon = float(partes[0]), float(partes[1])
+            if -90 <= lat <= 90 and -180 <= lon <= 180:
+                prec = float(partes[3]) if len(partes) > 3 and partes[3] else None
+                return lat, lon, prec
+        except (TypeError, ValueError):
+            pass
+    return None, None, None
 
 
 def _fecha_local_envio(raw: dict) -> str:
@@ -579,10 +603,34 @@ def rescatar_gps(envios: list) -> int:
     return rescatadas
 
 
-def aplicar_correcciones(envios: list, reglas: pd.DataFrame) -> tuple[list, int]:
-    """Reescribe la sección en los envíos crudos. Devuelve (envíos, n_corregidos)."""
+@st.cache_data
+def load_poligonos_seccion() -> dict:
+    """Contornos indexados para la regla de corrección por GPS."""
+    import geo_secciones as geo
+    return geo.cargar_poligonos(os.path.join(DATA_DIR, "m1_contornos.geojson"))
+
+
+def aplicar_correcciones(envios: list, reglas: pd.DataFrame) -> tuple[list, dict]:
+    """Reescribe la sección en los envíos crudos.
+
+    Devuelve (envíos, resumen) con el conteo por método. La regla `gps` solo
+    puede corregir visitas georreferenciadas: las que no traen coordenada se
+    dejan como fueron declaradas y se cuentan aparte, porque adivinarlas sería
+    peor que no tocarlas.
+    """
+    resumen = {"corregidas": 0, "por_gps": 0, "gps_sin_coordenada": 0,
+               "gps_fuera_de_todo": 0, "gps_destino_no_permitido": 0}
     if reglas.empty or not envios:
-        return envios, 0
+        return envios, resumen
+
+    polis = None
+    if reglas["seccion_corregida"].astype(str).str.startswith("gps").any():
+        try:
+            polis = load_poligonos_seccion()
+        except Exception:
+            polis = None
+
+    import geo_secciones as geo
     corregidos = 0
     for raw in envios:
         try:
@@ -600,12 +648,35 @@ def aplicar_correcciones(envios: list, reglas: pd.DataFrame) -> tuple[list, int]
             if str(r["brigadista_codigo"]).strip() and \
                     str(r["brigadista_codigo"]).strip() != brig:
                 continue
-            nueva = int(r["seccion_corregida"])
+            destino = str(r["seccion_corregida"])
+            if destino.startswith("gps"):
+                permitidos = None
+                if ":" in destino:
+                    permitidos = {int(x) for x in destino.split(":", 1)[1].split(";")}
+                if polis is None:
+                    break
+                lat, lon, _p = _coordenada_de(raw)
+                if lat is None:
+                    resumen["gps_sin_coordenada"] += 1
+                    break
+                nueva = geo.seccion_de_punto(lat, lon, polis)
+                if nueva is None:
+                    resumen["gps_fuera_de_todo"] += 1
+                    break
+                if nueva == declarada:
+                    break          # ya estaba bien: no cuenta como corrección
+                if permitidos is not None and nueva not in permitidos:
+                    resumen["gps_destino_no_permitido"] += 1
+                    break
+                resumen["por_gps"] += 1
+            else:
+                nueva = int(destino)
             raw["seccion_declarada"] = str(nueva)
             raw["seccion_electoral"] = nueva
             corregidos += 1
             break
-    return envios, corregidos
+    resumen["corregidas"] = corregidos
+    return envios, resumen
 
 
 CLAVES_KOBO = ("base_url", "asset_uid", "api_token")
@@ -658,7 +729,7 @@ def load_kobo_tablas() -> tuple[dict, dict, str]:
             schema = _json.load(fh)
         envios = kc.fetch_all(base, uid, token)
         n_gps_rescatado = rescatar_gps(envios)
-        envios, n_corregidos = aplicar_correcciones(envios, load_correcciones_seccion())
+        envios, res_corr = aplicar_correcciones(envios, load_correcciones_seccion())
         datos = kc.transform(envios, schema)
     except Exception as exc:
         return vacias, {}, f"{type(exc).__name__}: {exc}"
@@ -677,7 +748,11 @@ def load_kobo_tablas() -> tuple[dict, dict, str]:
         if not cob.empty else 0
     estado["visitas_en_cobertura"] = en_cobertura
     estado["visitas_sin_seccion_valida"] = max(0, unicos - en_cobertura)
-    estado["visitas_con_seccion_corregida"] = n_corregidos
+    estado["visitas_con_seccion_corregida"] = res_corr["corregidas"]
+    estado["seccion_corregida_por_gps"] = res_corr["por_gps"]
+    estado["gps_sin_coordenada_para_corregir"] = res_corr["gps_sin_coordenada"]
+    estado["gps_fuera_de_todo_poligono"] = res_corr["gps_fuera_de_todo"]
+    estado["gps_destino_no_permitido"] = res_corr["gps_destino_no_permitido"]
     estado["gps_rescatado_de_geolocation"] = n_gps_rescatado
     return tablas, estado, ""
 
