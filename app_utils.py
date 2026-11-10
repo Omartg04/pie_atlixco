@@ -565,6 +565,49 @@ def _fecha_local_envio(raw: dict) -> str:
     return txt[:10]
 
 
+# Campos de tiempo renombrados entre versiones del XLSForm.
+# La versión vjftHhg3w34XT7s3SgyMKA (4 nov 2026) rearmó el formulario y dejó
+# los metadatos con su nombre de fábrica de ODK: `inicio` pasó a `start` y
+# `fin` a `end`. El conector solo busca los nombres originales, así que esos
+# envíos llegan sin fecha de visita y desaparecen del filtro por día, de la
+# tabla diaria y del cálculo de duración — aunque el dato sí viene.
+ALIAS_CAMPOS = {"inicio": ("start",), "fin": ("end",)}
+
+
+def normalizar_campos_tiempo(envios: list) -> dict:
+    """Copia `start`/`end` a `inicio`/`fin` cuando estos faltan.
+
+    No sobrescribe nada: si el envío ya trae `inicio`, se respeta. Se hace
+    sobre los envíos crudos, antes de transform(), por la misma razón que
+    rescatar_gps(): el paquete v1.2 se usa sin modificar para que sus hashes
+    SHA256 sigan verificando.
+
+    Devuelve {campo: cuántos se recuperaron}.
+    """
+    recuperados = {c: 0 for c in ALIAS_CAMPOS}
+    for raw in envios:
+        if not isinstance(raw, dict):
+            continue
+        for destino, origenes in ALIAS_CAMPOS.items():
+            actual = raw.get(destino)
+            if actual is not None and str(actual).strip():
+                continue
+            for origen in origenes:
+                # El campo puede venir plano o bajo un grupo del formulario.
+                valor = raw.get(origen)
+                if valor is None or not str(valor).strip():
+                    for clave, v in raw.items():
+                        if clave.rsplit("/", 1)[-1] == origen and v is not None \
+                                and str(v).strip():
+                            valor = v
+                            break
+                if valor is not None and str(valor).strip():
+                    raw[destino] = valor
+                    recuperados[destino] += 1
+                    break
+    return recuperados
+
+
 def rescatar_gps(envios: list) -> int:
     """Rellena `gps` desde `_geolocation` cuando el primero llega vacío.
 
@@ -728,6 +771,7 @@ def load_kobo_tablas() -> tuple[dict, dict, str]:
                   encoding="utf-8") as fh:
             schema = _json.load(fh)
         envios = kc.fetch_all(base, uid, token)
+        n_tiempo = normalizar_campos_tiempo(envios)
         n_gps_rescatado = rescatar_gps(envios)
         envios, res_corr = aplicar_correcciones(envios, load_correcciones_seccion())
         datos = kc.transform(envios, schema)
@@ -748,6 +792,8 @@ def load_kobo_tablas() -> tuple[dict, dict, str]:
         if not cob.empty else 0
     estado["visitas_en_cobertura"] = en_cobertura
     estado["visitas_sin_seccion_valida"] = max(0, unicos - en_cobertura)
+    estado["fecha_recuperada_de_start"] = n_tiempo.get("inicio", 0)
+    estado["fin_recuperado_de_end"] = n_tiempo.get("fin", 0)
     estado["visitas_con_seccion_corregida"] = res_corr["corregidas"]
     estado["seccion_corregida_por_gps"] = res_corr["por_gps"]
     estado["gps_sin_coordenada_para_corregir"] = res_corr["gps_sin_coordenada"]

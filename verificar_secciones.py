@@ -69,7 +69,8 @@ def main() -> None:
 
     filas = []
     for raw in envios:
-        fecha = str(raw.get("inicio") or raw.get("_submission_time") or "")[:10]
+        fecha = str(raw.get("inicio") or raw.get("start")
+                    or raw.get("_submission_time") or "")[:10]
         if args.fecha and fecha != args.fecha:
             continue
         try:

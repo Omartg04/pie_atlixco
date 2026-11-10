@@ -1,3 +1,4 @@
 fecha,seccion_declarada,seccion_corregida,brigadista_codigo,nota
 2026-11-03,208,160,,Dia 1: el equipo trabajo la 160; el catalogo de Kobo no permitio elegirla.
 2026-11-04,162,gps:161,,Dia 2: brigadas que cruzaron a la 161. Solo destino 161: las que resuelven a 160 son ruido de GPS sobre la frontera (mediana 3 m del borde).
+2026-11-09,201,gps:200,,Dia 5: brigadas que cruzaron a la 200 sin saberlo; la frontera 200/201 no es legible en calle. Mediana 110 m del borde contra 23 m de precision del GPS: desplazamiento real. Solo destino 200.

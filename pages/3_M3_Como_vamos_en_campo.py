@@ -139,7 +139,8 @@ META_TOTAL = sum(meta_de_seccion(ln) for ln in _ln_geom.values())
 
 ENTREVISTAS = int(diario["entrevistas"].sum())
 VISITAS = int(diario["visitas"].sum())
-DIAS = int(diario["fecha_visita"].nunique())
+_dias_validos = diario["fecha_visita"].astype(str).str.strip()
+DIAS = int(_dias_validos[_dias_validos != ""].nunique())
 HOY = ahora_mexico().date().isoformat()
 hoy_fila = diario[diario["fecha_visita"] == HOY]
 ENTREVISTAS_HOY = int(hoy_fila["entrevistas"].sum()) if not hoy_fila.empty else 0
@@ -370,31 +371,192 @@ else:
 
 st.markdown("## Productividad por brigadista")
 
-por_brig = (
-    brigadistas.groupby(["brigadista_codigo", "brigadista"], as_index=False)
-    .agg(dias=("fecha_visita", "nunique"), visitas=("visitas", "sum"),
-         entrevistas=("entrevistas", "sum"), rechazos=("rechazos", "sum"),
-         casas_solas=("casas_solas", "sum"),
-         volantes=("volantes_entregados", "sum"))
-    .sort_values("entrevistas", ascending=False)
-)
-por_brig["por_dia"] = (por_brig["entrevistas"] / por_brig["dias"]).round(1)
-por_brig["vs_meta"] = (por_brig["por_dia"] / META_POR_BRIGADISTA * 100).round(0)
+# Una fila de productividad_brigadista es un brigadista en un día. La vista de
+# equipo colapsa la fecha; la vista individual la conserva. Solo cuentan
+# fechas reales: una fecha vacía no es una jornada (ver nota de DIAS arriba).
+for col in ("volantes_entregados",):
+    if col in brigadistas.columns:
+        brigadistas[col] = pd.to_numeric(brigadistas[col], errors="coerce").fillna(0).astype(int)
+brigadistas["fecha_visita"] = brigadistas["fecha_visita"].astype(str).str.strip()
+brig_fechadas = brigadistas[brigadistas["fecha_visita"] != ""].copy()
 
-st.dataframe(
+# Jornadas del equipo: los días en que alguien capturó. Es la misma secuencia
+# que numera la gráfica de producción por día, así que "jornada 3" significa
+# lo mismo en los dos bloques.
+_f_equipo = pd.to_datetime(
+    diario["fecha_visita"].astype(str).str.strip(), errors="coerce").dropna()
+JORNADAS = sorted(_f_equipo.dt.date.unique())
+
+_claves = (brig_fechadas[["brigadista_codigo", "brigadista"]]
+           .drop_duplicates().astype(str)
+           .sort_values(["brigadista_codigo", "brigadista"]))
+
+
+def _etiqueta_brig(codigo: str, nombre: str) -> str:
+    codigo, nombre = codigo.strip(), nombre.strip()
+    if codigo and nombre and nombre != codigo:
+        return f"{codigo} · {nombre}"
+    return codigo or nombre or "(sin código)"
+
+
+_opciones = {_etiqueta_brig(c, n): (c, n)
+             for c, n in _claves.itertuples(index=False)}
+TODO_EQUIPO = "Todo el equipo"
+b_sel = st.selectbox(
+    "Brigadista", [TODO_EQUIPO] + list(_opciones),
+    key="m3_brigadista",
+    help="Todo el equipo muestra el acumulado por brigadista. Elige a uno "
+         "para ver su producción jornada por jornada.",
+)
+
+if b_sel == TODO_EQUIPO:
+    por_brig = (
+        brig_fechadas.groupby(["brigadista_codigo", "brigadista"], as_index=False)
+        .agg(dias=("fecha_visita", "nunique"), visitas=("visitas", "sum"),
+             entrevistas=("entrevistas", "sum"), rechazos=("rechazos", "sum"),
+             casas_solas=("casas_solas", "sum"),
+             volantes=("volantes_entregados", "sum"))
+        .sort_values("entrevistas", ascending=False)
+    )
+    por_brig["por_dia"] = (por_brig["entrevistas"] / por_brig["dias"]).round(1)
+    por_brig["vs_meta"] = (por_brig["por_dia"] / META_POR_BRIGADISTA * 100).round(0)
+
+    st.dataframe(
         por_brig.rename(columns={
-        "brigadista_codigo": "Código", "brigadista": "Brigadista",
-        "dias": "Días", "visitas": "Visitas", "entrevistas": "Entrevistas",
-        "rechazos": "Rechazos", "casas_solas": "Casas solas",
-        "volantes": "Volantes", "por_dia": "Por día", "vs_meta": "% de meta",
-    }),
-    use_container_width=True, hide_index=True, height=420,
-)
-st.caption(
-    f"Referencia: {META_POR_BRIGADISTA} entrevistas por brigadista al día. Es "
-    f"una referencia de planeación, no un umbral de evaluación: un día en "
-    f"sección rural dispersa rinde menos que uno en el centro."
-)
+            "brigadista_codigo": "Código", "brigadista": "Brigadista",
+            "dias": "Días con captura", "visitas": "Visitas",
+            "entrevistas": "Entrevistas", "rechazos": "Rechazos",
+            "casas_solas": "Casas solas", "volantes": "Volantes",
+            "por_dia": "Por día", "vs_meta": "% de meta",
+        }),
+        use_container_width=True, hide_index=True, height=420,
+    )
+    st.caption(
+        f"Referencia: {META_POR_BRIGADISTA} entrevistas por brigadista al día. Es "
+        f"una referencia de planeación, no un umbral de evaluación: un día en "
+        f"sección rural dispersa rinde menos que uno en el centro. «Por día» "
+        f"divide entre los días en que ese brigadista capturó, no entre las "
+        f"{len(JORNADAS)} jornadas del equipo: un día sin captura no le baja "
+        f"el promedio. Elige un brigadista arriba para ver sus jornadas."
+    )
+else:
+    cod, nom = _opciones[b_sel]
+    suyo = brig_fechadas[(brig_fechadas["brigadista_codigo"].astype(str) == cod)
+                         & (brig_fechadas["brigadista"].astype(str) == nom)].copy()
+    suyo["fecha"] = pd.to_datetime(suyo["fecha_visita"], errors="coerce").dt.date
+    cols_num = [c for c in ("visitas", "entrevistas", "completas", "parciales",
+                            "rechazos", "casas_solas", "volantes_entregados")
+                if c in suyo.columns]
+    suyo = suyo.groupby("fecha", as_index=False)[cols_num].sum()
+
+    # Todas las jornadas del equipo, aunque este brigadista no haya capturado:
+    # faltar un día no es lo mismo que trabajarlo sin lograr entrevistas, así
+    # que la jornada vacía se marca "sin captura" y no se rellena con cero.
+    jd = pd.DataFrame({"fecha": JORNADAS})
+    jd["jornada"] = range(1, len(jd) + 1)
+    jd = jd.merge(suyo, on="fecha", how="left")
+    jd["con_captura"] = jd["visitas"].notna()
+    jd["dia"] = pd.to_datetime(jd["fecha"]).dt.strftime("%d/%m")
+    jd["fecha_txt"] = pd.to_datetime(jd["fecha"]).dt.strftime("%d/%m/%Y")
+    jd["pct_meta"] = (jd["entrevistas"] / META_POR_BRIGADISTA * 100).round(0)
+    orden_dias_b = jd["dia"].tolist()
+
+    trabajadas = jd[jd["con_captura"]]
+    n_trab = len(trabajadas)
+    tot_ent = int(trabajadas["entrevistas"].sum()) if n_trab else 0
+    prom = tot_ent / n_trab if n_trab else 0
+    st.markdown(
+        f"**{fmt_num(tot_ent)} entrevistas** en {n_trab} de {len(jd)} jornadas "
+        f"· promedio {prom:.1f} por jornada con captura "
+        f"({prom / META_POR_BRIGADISTA * 100:.0f}% de la referencia de "
+        f"{META_POR_BRIGADISTA})"
+    )
+
+    _eje_b = dict(grid=True, gridColor=COLOR["border_subtle"], gridOpacity=0.5,
+                  domainColor=COLOR["border_subtle"], tickColor=COLOR["border_subtle"],
+                  labelColor=COLOR["text_secondary"], titleColor=COLOR["text_muted"],
+                  labelFontSize=11, titleFontSize=11)
+    _x_b = alt.X("dia:O", title=None, sort=orden_dias_b,
+                 scale=alt.Scale(domain=orden_dias_b, paddingInner=0.25,
+                                 paddingOuter=0.15),
+                 axis=alt.Axis(labelAngle=0 if len(jd) <= 14 else -45, **_eje_b))
+    _ymax = max(META_POR_BRIGADISTA * 1.25,
+                float(trabajadas["entrevistas"].max() or 0) * 1.1 if n_trab else 0)
+    _y_b = alt.Y("entrevistas:Q", title="Entrevistas",
+                 scale=alt.Scale(domain=[0, _ymax]), axis=alt.Axis(**_eje_b))
+
+    barras_b = (
+        alt.Chart(trabajadas)
+        .mark_bar(color=COLOR["amber"], cornerRadiusEnd=4)
+        .encode(
+            x=_x_b, y=_y_b,
+            tooltip=[
+                alt.Tooltip("jornada:Q", title="Jornada"),
+                alt.Tooltip("fecha_txt:N", title="Día"),
+                alt.Tooltip("entrevistas:Q", title="Entrevistas"),
+                alt.Tooltip("pct_meta:Q", title=f"% de la referencia ({META_POR_BRIGADISTA})"),
+                alt.Tooltip("visitas:Q", title="Visitas"),
+                alt.Tooltip("completas:Q", title="Completas"),
+                alt.Tooltip("parciales:Q", title="Parciales"),
+                alt.Tooltip("rechazos:Q", title="Rechazos"),
+                alt.Tooltip("casas_solas:Q", title="Casas solas"),
+                alt.Tooltip("volantes_entregados:Q", title="Volantes"),
+            ],
+        )
+    )
+    # La jornada sin captura conserva su lugar en el eje y lo dice en texto:
+    # un hueco mudo se confunde con un día de cero entrevistas.
+    sin_cap = jd[~jd["con_captura"]].assign(entrevistas=0, t="sin captura")
+    texto_sin = (
+        alt.Chart(sin_cap)
+        .mark_text(angle=270, align="left", baseline="middle", dx=6,
+                   color=COLOR["text_muted"], fontSize=11)
+        .encode(x=_x_b, y=alt.Y("entrevistas:Q", scale=alt.Scale(domain=[0, _ymax])),
+                text="t:N",
+                tooltip=[alt.Tooltip("jornada:Q", title="Jornada"),
+                         alt.Tooltip("fecha_txt:N", title="Día"),
+                         alt.Tooltip("t:N", title="Estado")])
+    )
+    meta_b = (
+        alt.Chart(pd.DataFrame({"y": [META_POR_BRIGADISTA]}))
+        .mark_rule(color=COLOR["text_secondary"], strokeDash=[5, 4], size=1.5)
+        .encode(y="y:Q")
+    )
+    meta_b_txt = (
+        alt.Chart(pd.DataFrame({"y": [META_POR_BRIGADISTA],
+                                "t": [f"referencia {META_POR_BRIGADISTA}"]}))
+        .mark_text(align="left", baseline="bottom", dx=4, dy=-4,
+                   color=COLOR["text_muted"], fontSize=11)
+        .encode(y="y:Q", text="t:N")
+    )
+    capas = [barras_b, meta_b, meta_b_txt]
+    if not sin_cap.empty:
+        capas.insert(1, texto_sin)
+    st.altair_chart(
+        alt.layer(*capas).properties(height=300)
+        .configure_view(strokeWidth=0, fill="transparent")
+        .configure(background="transparent"),
+        use_container_width=True,
+    )
+
+    tabla_b = jd[["jornada", "fecha_txt"]].copy()
+    tabla_b.columns = ["Jornada", "Día"]
+    for col, lab in (("entrevistas", "Entrevistas"), ("pct_meta", "% de referencia"),
+                     ("visitas", "Visitas"), ("completas", "Completas"),
+                     ("parciales", "Parciales"), ("rechazos", "Rechazos"),
+                     ("casas_solas", "Casas solas"),
+                     ("volantes_entregados", "Volantes")):
+        if col in jd.columns:
+            tabla_b[lab] = [f"{int(v):,}" if c else "—"
+                            for v, c in zip(jd[col].fillna(0), jd["con_captura"])]
+    tabla_b.insert(2, "Captura", jd["con_captura"].map({True: "sí", False: "sin captura"}))
+    st.dataframe(tabla_b, use_container_width=True, hide_index=True)
+    st.caption(
+        f"Referencia: {META_POR_BRIGADISTA} entrevistas al día, de planeación y "
+        f"no de evaluación. «Sin captura» quiere decir que no hay envíos suyos "
+        f"sincronizados con esa fecha; puede ser un día no trabajado o un "
+        f"teléfono que todavía no envía."
+    )
 
 # ════════════════════════════════════════════════════════════════════════════
 # BLOQUE 5 — PRODUCCIÓN POR DÍA
@@ -412,6 +574,27 @@ serie = diario.sort_values("fecha_visita").copy()
 serie["fecha"] = pd.to_datetime(serie["fecha_visita"], errors="coerce")
 serie["pct_meta"] = (serie["entrevistas"] / META_DIARIA * 100).round(0)
 
+# Un renglón sin fecha significa que el envío llegó sin el campo `inicio`: el
+# conector deriva fecha_visita de ahí. No se grafica (no tiene lugar en el eje)
+# pero tampoco se esconde, porque son visitas reales que no se pueden fechar.
+sin_fecha = serie[serie["fecha"].isna()]
+serie = serie[serie["fecha"].notna()].copy()
+if not sin_fecha.empty:
+    st.warning(
+        f"{int(sin_fecha['visitas'].sum())} visitas llegaron sin fecha de "
+        f"inicio y no aparecen en la gráfica ni en el filtro por día. "
+        f"Suelen venir de envíos donde el formulario no registró el campo "
+        f"`inicio`; sí están contadas en los totales de arriba."
+    )
+
+# Eje ordinal: un lugar por día con operativo. Con escala temporal los días sin
+# trabajo (fines de semana) abren huecos y Altair adelgaza las etiquetas, que es
+# justo lo que hace ilegible la secuencia de jornadas.
+serie["dia"] = serie["fecha"].dt.strftime("%d/%m")
+orden_dias = serie["dia"].tolist()
+serie["jornada"] = range(1, len(serie) + 1)
+_angulo = 0 if len(serie) <= 14 else -45
+
 _eje = dict(grid=True, gridColor=COLOR["border_subtle"], gridOpacity=0.5,
             domainColor=COLOR["border_subtle"], tickColor=COLOR["border_subtle"],
             labelColor=COLOR["text_secondary"], titleColor=COLOR["text_muted"],
@@ -419,12 +602,15 @@ _eje = dict(grid=True, gridColor=COLOR["border_subtle"], gridOpacity=0.5,
 
 barras = (
     alt.Chart(serie)
-    .mark_bar(color=COLOR["amber"], cornerRadiusEnd=4, size=22)
+    .mark_bar(color=COLOR["amber"], cornerRadiusEnd=4)
     .encode(
-        x=alt.X("fecha:T", title=None, axis=alt.Axis(format="%d %b", **_eje)),
+        x=alt.X("dia:O", title=None, sort=orden_dias,
+                scale=alt.Scale(paddingInner=0.25, paddingOuter=0.15),
+                axis=alt.Axis(labelAngle=_angulo, **_eje)),
         y=alt.Y("entrevistas:Q", title="Entrevistas",
                 axis=alt.Axis(**_eje)),
         tooltip=[
+            alt.Tooltip("jornada:Q", title="Jornada"),
             alt.Tooltip("fecha:T", title="Día", format="%d %b %Y"),
             alt.Tooltip("entrevistas:Q", title="Entrevistas"),
             alt.Tooltip("pct_meta:Q", title="% de la meta diaria"),
@@ -555,6 +741,8 @@ with c1:
     fuera_poli = int(estado.get("gps_fuera_de_todo_poligono", 0) or 0)
     no_permitido = int(estado.get("gps_destino_no_permitido", 0) or 0)
     sin_seccion = int(estado.get("visitas_sin_seccion_valida", 0) or 0)
+    fecha_rec = int(estado.get("fecha_recuperada_de_start", 0) or 0)
+    fin_rec = int(estado.get("fin_recuperado_de_end", 0) or 0)
     filas = [
         ("Registros únicos", fmt_num(estado.get("registros_unicos", 0))),
         ("Duplicados de identificador", fmt_num(estado.get("duplicados_identificador", 0))),
@@ -567,9 +755,19 @@ with c1:
         ("GPS fuera de todo polígono", fmt_num(fuera_poli)),
         ("Destino descartado por la regla", fmt_num(no_permitido)),
         ("GPS recuperado de _geolocation", fmt_num(rescatado)),
+        ("Fecha recuperada de `start`", fmt_num(fecha_rec)),
+        ("Duración recuperada de `end`", fmt_num(fin_rec)),
     ]
     st.dataframe(pd.DataFrame(filas, columns=["Indicador", "n"]),
                  use_container_width=True, hide_index=True)
+    if fecha_rec:
+        st.info(
+            f"{fecha_rec} visitas llegaron con la hora bajo `start` en lugar de "
+            f"`inicio`: el formulario se volvió a publicar con los nombres por "
+            f"defecto de ODK. El tablero las recupera, así que el dato está "
+            f"completo, pero conviene devolverle su nombre al campo en el "
+            f"XLSForm para no depender de la traducción."
+        )
     if sin_coord:
         st.warning(
             f"{sin_coord} visita(s) bajo una regla de corrección por GPS no "
