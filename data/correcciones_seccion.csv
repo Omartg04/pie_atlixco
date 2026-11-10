@@ -2,3 +2,10 @@ fecha,seccion_declarada,seccion_corregida,brigadista_codigo,nota
 2026-11-03,208,160,,Dia 1: el equipo trabajo la 160; el catalogo de Kobo no permitio elegirla.
 2026-11-04,162,gps:161,,Dia 2: brigadas que cruzaron a la 161. Solo destino 161: las que resuelven a 160 son ruido de GPS sobre la frontera (mediana 3 m del borde).
 2026-11-09,201,gps:200,,Dia 5: brigadas que cruzaron a la 200 sin saberlo; la frontera 200/201 no es legible en calle. Mediana 110 m del borde contra 23 m de precision del GPS: desplazamiento real. Solo destino 200.
+2026-11-10,200,gps:201,,Dia 6: brigadas en la 201 que declararon 200 tras el aviso del dia 5. Las 26 con GPS dentro de 201 a 162-313 m del borde contra 18 m de precision. Solo destino 201.
+2026-11-04,208,gps:160,,Dia 2: visita en la 160 declarada 208 con la version anterior del formulario (mismo problema de catalogo del dia 1). 1174 m dentro de 160.
+2026-11-05,208,gps:160,,Dia 3: 13 visitas en la 160 declaradas 208 con la version anterior del formulario. Mediana 1591 m dentro de 160.
+2026-11-06,208,gps:160,,Dia 4: 12 visitas en la 160 declaradas 208 con la version anterior del formulario. Mediana 1201 m dentro de 160.
+2026-11-09,160,gps:200,,Dia 5: 19 visitas en la 200 declaradas 160. Mediana 2887 m de la 160: seccion del dia anterior sin cambiar.
+2026-11-10,202,gps:201,,Dia 6: una visita en la 201 declarada 202. 134 m del borde contra 35 m de precision.
+2026-11-10,220,gps:201,,Dia 6: una visita en la 201 declarada 220. 1871 m de la 220: error de seleccion en la lista.

@@ -28,3 +28,5 @@ Thumbs.db
 # Archivos temporales de datos (ajustar si generas exports locales que no van al repo)
 *.tmp
 ~$*
+reportes/brigadistas/
+exportes/
