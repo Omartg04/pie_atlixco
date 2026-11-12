@@ -181,9 +181,10 @@ st.caption(
 # ════════════════════════════════════════════════════════════════════════════
 # BLOQUE 2 — GEORREFERENCIA
 # ════════════════════════════════════════════════════════════════════════════
-# Dos niveles, como en Zacatlán: primero densidad del municipio, que no
-# identifica domicilios; luego, al elegir una sección, los puntos individuales
-# para verificar el recorrido. El detalle exige un acto deliberado.
+# Puntos por defecto, mapa de calor como opción (decisión del 11/11/2026). Con
+# los filtros de día, brigadista y sección se revisa el recorrido de una
+# jornada o de una persona. Son ubicaciones de domicilios visitados: el tablero
+# está tras contraseña y no se exportan.
 
 st.markdown("## Dónde se trabajó")
 
@@ -209,48 +210,79 @@ else:
                  "inicio", "gps_precision_m"]],
         on="registro_id", how="left",
     )
-    gps["categoria"] = gps["resultado"].map(categoria_resultado)
+    gps["categoria"] = [categoria_resultado(r, v) for r, v in
+                        zip(gps["resultado"], gps["entrega_volante"])]
+    gps["seccion_operativa"] = gps["seccion_operativa"].astype(str)
 
-    fechas = sorted(gps["fecha_visita"].dropna().unique(), reverse=True)
-    g1, g2 = st.columns([2, 3])
-    with g1:
-        f_sel = st.selectbox(
-            "Día", ["Todo el operativo"] + list(fechas),
-            help="Todo el operativo para ver zonas de trabajo y de rechazo; "
-                 "un día concreto para verificar el recorrido de esa jornada.",
+    def _orden_sec(x):
+        return int(x) if str(x).isdigit() else 10**9
+
+    TODO_OP, TODO_EQ, TODAS = "Todo el operativo", "Todo el equipo", "Todas"
+    f1, f2, f3 = st.columns(3)
+    with f1:
+        fechas = sorted((f for f in gps["fecha_visita"].dropna().astype(str).unique()
+                         if f.strip()), reverse=True)
+        f_sel = st.selectbox("Día", [TODO_OP] + list(fechas), key="m3_mapa_dia")
+    base = gps if f_sel == TODO_OP else gps[gps["fecha_visita"] == f_sel]
+    with f2:
+        nombres = sorted(base["brigadista"].dropna().astype(str).unique())
+        b_sel = st.selectbox("Brigadista", [TODO_EQ] + nombres, key="m3_mapa_brig")
+    if b_sel != TODO_EQ:
+        base = base[base["brigadista"].astype(str) == b_sel]
+    with f3:
+        secs = sorted(base["seccion_operativa"].unique(), key=_orden_sec)
+        s_sel = st.selectbox("Sección", [TODAS] + secs, key="m3_mapa_sec")
+    if s_sel != TODAS:
+        base = base[base["seccion_operativa"] == s_sel]
+
+    o1, o2 = st.columns([2, 3])
+    with o1:
+        vista = st.radio("Vista", ["Puntos", "Mapa de calor"], horizontal=True,
+                         key="m3_mapa_vista",
+                         help="Puntos: cada visita con su resultado. Mapa de "
+                              "calor: densidad, sin identificar domicilios.")
+    with o2:
+        n_cs = int((base["categoria"] == "casa_sola").sum())
+        ver_cs = st.checkbox(
+            f"Mostrar casas solas ({n_cs:,} en esta selección)",
+            value=False, key="m3_mapa_cs",
+            help="Se capturaron hasta el 10 de noviembre. Sirven para ver dónde "
+                 "quedaron puertas sin abrir si se decide regresar.",
         )
-    gps_v = gps if f_sel == "Todo el operativo" else gps[gps["fecha_visita"] == f_sel]
-    with g2:
-        st.markdown(
-            f"<div style='padding-top:30px;font-size:.84rem;color:"
-            f"{COLOR['text_secondary']}'>{len(gps_v):,} visitas con ubicación "
-            f"de {len(visitas):,} capturadas"
-            f"<span style='color:{COLOR['text_muted']}'> &nbsp;·&nbsp; "
-            f"{len(visitas) - len(gps):,} sin GPS</span></div>",
-            unsafe_allow_html=True,
-        )
+    gps_v = base if ver_cs else base[base["categoria"] != "casa_sola"]
+
+    # Cuántas visitas de la misma selección no tienen GPS: sin esto, un mapa
+    # vacío o ralo se lee como poco trabajo cuando es falta de ubicación.
+    sel_vis = visitas.copy()
+    if f_sel != TODO_OP:
+        sel_vis = sel_vis[sel_vis["fecha_visita"] == f_sel]
+    if b_sel != TODO_EQ:
+        sel_vis = sel_vis[sel_vis["brigadista"].astype(str) == b_sel]
+    if s_sel != TODAS:
+        sel_vis = sel_vis[sel_vis["seccion_operativa"].astype(str) == s_sel]
+    if not ver_cs:
+        sel_vis = sel_vis[sel_vis["resultado"] != "casa_sola"]
+    sin_gps_sel = max(0, len(sel_vis) - len(gps_v))
+    st.markdown(
+        f"<div style='font-size:.84rem;color:{COLOR['text_secondary']};"
+        f"margin:-4px 0 8px'>{len(gps_v):,} visitas con ubicación"
+        f"<span style='color:{COLOR['text_muted']}'> &nbsp;·&nbsp; "
+        f"{sin_gps_sel:,} de la misma selección sin GPS, que no aparecen en el "
+        f"mapa</span></div>",
+        unsafe_allow_html=True,
+    )
 
     if gps_v.empty:
-        st.caption("Sin visitas georreferenciadas en ese día.")
+        st.caption("Sin visitas georreferenciadas con esos filtros.")
     else:
         centro = [gps_v["latitud"].mean(), gps_v["longitud"].mean()]
-        secciones_gps = sorted(gps_v["seccion_operativa"].astype(str).unique(),
-                               key=lambda x: int(x) if str(x).isdigit() else 0)
-        sec_sel = st.selectbox(
-            "Ver los puntos de una sección",
-            ["(solo el mapa de calor)"] + secciones_gps,
-            help="El mapa de calor muestra densidad sin identificar domicilios. "
-                 "Al elegir una sección se dibujan los puntos individuales.",
-        )
-
         mapa = folium.Map(location=centro, zoom_start=13,
                           tiles=carto_tiles(), attr=CARTO_ATTR)
         Fullscreen(position="topleft", title="Pantalla completa",
                    title_cancel="Salir").add_to(mapa)
 
-        # Contorno de las secciones como referencia: sin él, el mapa de calor
-        # es una mancha sin saber a qué territorio corresponde. Va debajo de
-        # los datos, sin relleno y en línea delgada, para no competir.
+        # Contorno de las secciones como referencia, debajo de los datos, sin
+        # relleno y en línea delgada para no competir.
         folium.GeoJson(
             load_m1_contornos(),
             name="Secciones",
@@ -266,75 +298,83 @@ else:
             ),
         ).add_to(mapa)
 
-        if sec_sel == "(solo el mapa de calor)":
-            HeatMap(
-                gps_v[["latitud", "longitud"]].values.tolist(),
-                radius=18, blur=22, min_opacity=0.35,
-            ).add_to(mapa)
-            leyenda = None
+        if vista == "Mapa de calor":
+            HeatMap(gps_v[["latitud", "longitud"]].values.tolist(),
+                    radius=18, blur=22, min_opacity=0.35).add_to(mapa)
         else:
-            pts = gps_v[gps_v["seccion_operativa"].astype(str) == sec_sel].copy()
-            pts = pts.sort_values("inicio")
-            # Forma además de color: el color nunca carga la identidad solo.
-            for _, r in pts.iterrows():
-                cfg = RESULTADO_MAPA[r["categoria"]]
-                hora = str(r.get("inicio") or "")[11:16]
-                folium.CircleMarker(
-                    location=[r["latitud"], r["longitud"]],
-                    radius=6 if cfg["relleno"] else 7,
-                    color=cfg["color"],
-                    weight=2 if cfg["relleno"] else 2.5,
-                    fill=cfg["relleno"],
-                    fill_color=cfg["color"],
-                    fill_opacity=0.75 if cfg["relleno"] else 0,
-                    tooltip=folium.Tooltip(
-                        f"<b>{cfg['etiqueta']}</b><br>"
-                        f"Resultado: {r.get('resultado', '—')}<br>"
-                        f"Volante: {r.get('entrega_volante', '—')}<br>"
-                        f"Brigadista: {r.get('brigadista', '—')}<br>"
-                        f"{r.get('fecha_visita', '')} {hora}<br>"
-                        f"Precisión: {r.get('gps_precision_m', '—')} m"
-                    ),
-                ).add_to(mapa)
-            leyenda = pts["categoria"].value_counts().to_dict()
+            # Orden de dibujo: lo que menos importa abajo. Casas solas, luego
+            # rechazos, y las entrevistas encima.
+            capas = ["casa_sola", "rechazo_sin_volante", "rechazo_volante", "entrevista"]
+            for cat in capas:
+                cfg = RESULTADO_MAPA[cat]
+                for _, r in gps_v[gps_v["categoria"] == cat].iterrows():
+                    hora = str(r.get("inicio") or "")[11:16]
+                    folium.CircleMarker(
+                        location=[r["latitud"], r["longitud"]],
+                        radius=cfg["radio"] if cfg["relleno"] else cfg["radio"] + 1,
+                        color=cfg["color"],
+                        weight=2 if cfg["relleno"] else 2.5,
+                        fill=cfg["relleno"], fill_color=cfg["color"],
+                        fill_opacity=0.75 if cfg["relleno"] else 0,
+                        tooltip=folium.Tooltip(
+                            f"<b>{cfg['etiqueta']}</b><br>"
+                            f"Resultado: {r.get('resultado', '—')}<br>"
+                            f"Brigadista: {r.get('brigadista', '—')}<br>"
+                            f"Sección: {r.get('seccion_operativa', '—')}<br>"
+                            f"{r.get('fecha_visita', '')} {hora}<br>"
+                            f"Precisión: {r.get('gps_precision_m', '—')} m"
+                        ),
+                    ).add_to(mapa)
+        # Siempre al área con puntos: con un zoom fijo de municipio, cientos de
+        # visitas en una sección se amontonan en una mancha.
+        mapa.fit_bounds([[gps_v["latitud"].min(), gps_v["longitud"].min()],
+                         [gps_v["latitud"].max(), gps_v["longitud"].max()]],
+                        padding=(20, 20))
 
         m1c, m2c = st.columns([4, 1])
         with m1c:
             st_folium(mapa, height=620, use_container_width=True,
                       returned_objects=[],
-                      key=f"m3_gps_{f_sel}_{sec_sel}_{len(gps_v)}")
+                      key=f"m3_gps_{f_sel}_{b_sel}_{s_sel}_{vista}_{ver_cs}_{len(gps_v)}")
         with m2c:
-            if leyenda is None:
+            if vista == "Mapa de calor":
                 st.markdown("**Mapa de calor**")
                 st.caption(
                     "Densidad de visitas sobre el contorno de las secciones. "
-                    "No identifica domicilios: sirve para ver dónde se "
-                    "concentró el trabajo. Elige una sección arriba para ver "
-                    "los puntos, y el botón de la esquina superior izquierda "
-                    "para pantalla completa."
+                    "No identifica domicilios. Cambia a «Puntos» para ver el "
+                    "resultado de cada visita."
                 )
             else:
                 st.markdown("**Resultado de la visita**")
+                conteo = gps_v["categoria"].value_counts().to_dict()
                 for clave, cfg in RESULTADO_MAPA.items():
-                    n = leyenda.get(clave, 0)
-                    marca = ("●" if cfg["relleno"] else "○")
+                    if clave == "casa_sola" and not ver_cs:
+                        continue
+                    marca = "●" if cfg["relleno"] else "○"
                     st.markdown(
                         f"<div style='font-size:.82rem;margin-bottom:6px'>"
                         f"<span style='color:{cfg['color']};font-size:1.1rem'>"
                         f"{marca}</span> {cfg['etiqueta']} · "
-                        f"<b>{n}</b></div>", unsafe_allow_html=True)
-                st.caption(
-                    f"Sección {sec_sel}, {len(pts)} puntos. El relleno distingue "
-                    f"las categorías además del color. Pasa el cursor sobre un "
-                    f"punto para ver resultado, volante, brigadista y hora."
-                )
+                        f"<b>{conteo.get(clave, 0):,}</b></div>",
+                        unsafe_allow_html=True)
+                rv = conteo.get("rechazo_volante", 0)
+                rs = conteo.get("rechazo_sin_volante", 0)
+                if rv + rs:
+                    st.caption(
+                        f"El protocolo pide volante también a quien rechaza: "
+                        f"aquí lo recibió {rv / (rv + rs) * 100:.0f}% de los "
+                        f"rechazos con ubicación."
+                    )
+                st.caption("Relleno y tamaño distinguen las categorías además "
+                           "del color. Pasa el cursor sobre un punto para el "
+                           "detalle; esquina superior izquierda para pantalla "
+                           "completa.")
 
     st.caption(
         "Estas son ubicaciones de domicilios visitados. No se exportan a "
         "archivo ni salen del tablero, que está restringido al equipo de "
         "coordinación."
     )
-
 
 # ════════════════════════════════════════════════════════════════════════════
 # BLOQUE 3 — SEÑAL DE CAMPO (q01)
