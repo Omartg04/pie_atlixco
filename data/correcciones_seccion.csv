@@ -10,3 +10,6 @@ fecha,seccion_declarada,seccion_corregida,brigadista_codigo,nota
 2026-11-10,202,gps:201,,Dia 6: una visita en la 201 declarada 202. 134 m del borde contra 35 m de precision.
 2026-11-10,220,gps:201,,Dia 6: una visita en la 201 declarada 220. 1871 m de la 220: error de seleccion en la lista.
 2026-11-11,165,gps:164,,Dia 7: una visita en la 164 declarada 165. 579 m del borde contra 39 m de precision.
+2026-11-12,174,gps:175,,Dia 8: despues de las 12:15 el equipo cruzo a la 175. 20 de 22 visitas con GPS en ese horario. Mediana 41 m del borde contra 29 m de precision.
+2026-11-13,2876,gps:2874,B14,Dia 9: Alejandra Morales cruzo a la 2874 de 10:55 a 11:28. Mediana 108 m del borde contra 21 m de precision. Solo ella: las demas son ruido de frontera.
+2026-11-13,2874,gps:2876,,Dia 9: dos visitas en la 2876 declaradas 2874. 382 y 504 m del borde contra 18 m de precision.
